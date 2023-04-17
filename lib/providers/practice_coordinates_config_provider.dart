@@ -9,7 +9,7 @@ class PracticeCoordinatesConfigProvider with ChangeNotifier {
       PracticeCoordinatesType.findSquare;
   ShowCoordinates _activeShowCoordinates = ShowCoordinates.hide;
   ShowPieces _activeShowPieces = ShowPieces.show;
-  Seconds _activeSeconds = Seconds.infinity;
+  double _activeSeconds = -1;
   List<File> _activeFiles = const [
     File.a,
     File.b,
@@ -48,7 +48,7 @@ class PracticeCoordinatesConfigProvider with ChangeNotifier {
     return _activeShowPieces;
   }
 
-  Seconds getActiveSeconds() {
+  double getActiveSeconds() {
     return _activeSeconds;
   }
 
@@ -78,7 +78,7 @@ class PracticeCoordinatesConfigProvider with ChangeNotifier {
     _activeShowPieces = showPieces;
   }
 
-  void setActiveSeconds(Seconds seconds) {
+  void setActiveSeconds(double seconds) {
     _activeSeconds = seconds;
   }
 

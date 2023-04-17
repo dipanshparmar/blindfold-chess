@@ -8,7 +8,7 @@ import '../helpers/helpers.dart';
 
 class PracticeSquareColorsConfigProvider with ChangeNotifier {
   ShowCoordinates _activeShowCoordinates = ShowCoordinates.hide;
-  Seconds _activeSeconds = Seconds.infinity;
+  double _activeSeconds = -1;
   List<File> _activeFiles = DataHelper.getFilesKeyValuePairs().keys.toList();
   List<Rank> _activeRanks = DataHelper.getRanksKeyValuePairs().keys.toList();
 
@@ -17,7 +17,7 @@ class PracticeSquareColorsConfigProvider with ChangeNotifier {
     return _activeShowCoordinates;
   }
 
-  Seconds getActiveSeconds() {
+  double getActiveSeconds() {
     return _activeSeconds;
   }
 
@@ -34,7 +34,7 @@ class PracticeSquareColorsConfigProvider with ChangeNotifier {
     _activeShowCoordinates = showCoordinates;
   }
 
-  void setActiveSeconds(Seconds seconds) {
+  void setActiveSeconds(double seconds) {
     _activeSeconds = seconds;
   }
 

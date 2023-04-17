@@ -59,12 +59,15 @@ class PracticeCoordinatesPage extends StatelessWidget {
                 const SizedBox(
                   height: 15,
                 ),
-                // TODO:
                 CustomTimeSlider(
-                  defaultValue: provider.getActiveSeconds(),
+                  value: provider.getActiveSeconds(),
+                  min: 30,
+                  count: 3,
+                  stepSize: 15,
                   onChanged: (value) {
                     provider.setActiveSeconds(value);
                   },
+                  // showInfinity: true,
                 ),
                 const SizedBox(
                   height: 15,

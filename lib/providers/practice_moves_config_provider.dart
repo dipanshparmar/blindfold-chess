@@ -9,7 +9,7 @@ import '../helpers/helpers.dart';
 class PracticeMovesConfigProvider with ChangeNotifier {
   PieceColor _activePieceColor = PieceColor.white;
   ShowCoordinates _activeShowCoordinates = ShowCoordinates.hide;
-  Seconds _activeSeconds = Seconds.infinity;
+  double _activeSeconds = -1;
   List<PieceType> _activePieceTypes =
       DataHelper.getPieceTypeKeyValuePairs().keys.toList();
 
@@ -22,7 +22,7 @@ class PracticeMovesConfigProvider with ChangeNotifier {
     return _activeShowCoordinates;
   }
 
-  Seconds getActiveSeconds() {
+  double getActiveSeconds() {
     return _activeSeconds;
   }
 
@@ -39,7 +39,7 @@ class PracticeMovesConfigProvider with ChangeNotifier {
     _activeShowCoordinates = showCoordinates;
   }
 
-  void setActiveSeconds(Seconds seconds) {
+  void setActiveSeconds(double seconds) {
     _activeSeconds = seconds;
   }
 

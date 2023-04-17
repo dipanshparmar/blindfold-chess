@@ -44,12 +44,14 @@ class PracticeSquareColorsPage extends StatelessWidget {
                       const SizedBox(
                         height: 15,
                       ),
-                      // TODO:
                       CustomTimeSlider(
                         onChanged: (value) {
                           provider.setActiveSeconds(value);
                         },
-                        defaultValue: provider.getActiveSeconds(),
+                        min: 30,
+                        count: 3,
+                        stepSize: 15,
+                        value: provider.getActiveSeconds(),
                       ),
                       const SizedBox(
                         height: 15,

@@ -2,18 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
-// enums
-import '../utils/enums/enums.dart';
-
 class CustomTimeSlider extends StatefulWidget {
   const CustomTimeSlider({
     super.key,
     required this.onChanged,
-    required this.defaultValue,
+    required this.value,
+    required this.min,
+    required this.count,
+    required this.stepSize,
   });
 
-  final Function(Seconds) onChanged;
-  final Seconds defaultValue;
+  final Function(double) onChanged;
+  final double min;
+  final int count;
+  final double value;
+  final double stepSize;
 
   @override
   State<CustomTimeSlider> createState() => _CustomTimeSliderState();
@@ -22,44 +25,50 @@ class CustomTimeSlider extends StatefulWidget {
 class _CustomTimeSliderState extends State<CustomTimeSlider> {
   late double _value;
 
-  final double min = 30;
-  final double max = 75;
-  final double stepSize = 15;
-  final showInfinity = true;
+  // to hold the max value
+  late double max;
+
+  // max representing infinity
+  late double maxRepresentingInfinity;
 
   @override
   void initState() {
     super.initState();
 
-    // setting the value to the default value
-    _value = getSecondsFromEnum(widget.defaultValue);
-  }
+    // calculating the value of max
+    max = widget.min + (widget.stepSize * (widget.count - 1));
 
-  // method to get the enum for the seconds
-  Seconds getEnumValueForSeconds(double value) {
-    if (value == 30) {
-      return Seconds.thirty;
-    } else if (value == 45) {
-      return Seconds.fortyFive;
-    } else if (value == 60) {
-      return Seconds.sixty;
-    } else {
-      // for any other value (possibly 75)
-      return Seconds.infinity;
+    // getting the max representing infinity
+    maxRepresentingInfinity = max + widget.stepSize;
+
+    // assigning the value
+    _value = widget.value == -1 ? maxRepresentingInfinity : widget.value;
+
+    // if value is not maxRepresentinginfinity but less than min value or greater than max infinity value then throw an error
+    if (_value != maxRepresentingInfinity &&
+        (_value < widget.min || _value > max)) {
+      throw 'Value can not be smaller than minimum or greater than maximum';
     }
-  }
 
-  // method to get the seconds value from the enum
-  double getSecondsFromEnum(Seconds seconds) {
-    if (seconds == Seconds.thirty) {
-      return 30;
-    } else if (seconds == Seconds.fortyFive) {
-      return 45;
-    } else if (seconds == Seconds.sixty) {
-      return 60;
-    } else {
-      // returning 75 to represent infinity at the step of 15
-      return 75;
+    // if value is not a multiple of step size then throw an error
+    if (_value != maxRepresentingInfinity && _value % widget.stepSize != 0) {
+      throw 'Value needs to be a multiple of step size';
+    }
+
+    // if count is less than 2 then throw an error
+    if (widget.count < 2) {
+      throw 'Count can not be less than 2';
+    }
+
+    // if min is greater than or equals max then throw an error
+    if (widget.min >= max) {
+      throw 'Min can not be greater than or equals to max';
+    }
+
+    // if (count * stepSize) is greater than max then throw an error as we can't fit enough count
+    // widget.count - 1 because the minimum value is inclusive
+    if (widget.min + ((widget.count - 1) * widget.stepSize) > max) {
+      throw 'min + ((count - 1) * stepSize) exceeds the maximum value';
     }
   }
 
@@ -84,18 +93,19 @@ class _CustomTimeSliderState extends State<CustomTimeSlider> {
         ),
         child: SfSlider(
           value: _value,
-          min: min,
-          max: max,
+          min: widget.min,
+          max: maxRepresentingInfinity,
           onChanged: (value) {
-            widget.onChanged(getEnumValueForSeconds(value));
+            // send -1 if infinity is true and value is max, value otherwise
+            widget.onChanged(value == maxRepresentingInfinity ? -1 : value);
 
             setState(() {
               _value = value;
             });
           },
-          stepSize: stepSize,
+          stepSize: widget.stepSize,
           thumbIcon: Center(
-            child: showInfinity && _value == max
+            child: _value == maxRepresentingInfinity
                 ? const Icon(
                     Icons.all_inclusive,
                     size: 20,
