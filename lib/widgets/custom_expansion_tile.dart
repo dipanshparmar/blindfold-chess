@@ -28,7 +28,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
   void initState() {
     super.initState();
 
-    selectedValues = widget.values!.toList();
+    selectedValues = widget.values.toList();
   }
 
   // function to get the selected values string
@@ -48,7 +48,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
   String getTitle() {
     // if all the values are selected
     if (selectedValues.length == widget.keyValuePairs.length) {
-      return widget.allSelectedText!;
+      return widget.allSelectedText;
     }
 
     return getSelectedValuesString();
