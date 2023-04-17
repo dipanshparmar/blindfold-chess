@@ -83,6 +83,9 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (context) => PracticeCoordinatesConfigProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => PracticeSquareColorsConfigProvider(),
         )
       ],
       child: MaterialApp(
