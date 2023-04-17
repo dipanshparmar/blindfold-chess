@@ -86,7 +86,10 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => PracticeSquareColorsConfigProvider(),
-        )
+        ),
+        ChangeNotifierProvider(
+          create: (context) => PracticeMovesConfigProvider(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

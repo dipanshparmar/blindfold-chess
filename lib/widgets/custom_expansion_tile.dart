@@ -136,7 +136,9 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
                             fontWeight: isExpanded
                                 ? FontWeight.w500
                                 : FontWeight.normal,
+                            overflow: TextOverflow.ellipsis,
                           ),
+                      maxLines: 1,
                     ),
                   ),
                   Container(

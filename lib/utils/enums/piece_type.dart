@@ -1,4 +1,9 @@
 enum PieceType {
-  white,
-  black
+  king,
+  queen,
+  rook,
+  bishop,
+  knight,
+  pawn,
+  all,
 }

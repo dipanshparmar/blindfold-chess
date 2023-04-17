@@ -16,23 +16,26 @@ class PracticeSquareColorsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         children: [
           Expanded(child: Consumer<PracticeSquareColorsConfigProvider>(
-            builder: (context, value, child) {
+            builder: (context, provider, child) {
               return SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
                 child: Column(
                   children: [
+                    const SizedBox(
+                      height: 20,
+                    ),
                     SelectOne(
                       keyValuePairs: const {
                         ShowCoordinates.hide: 'No coords',
                         ShowCoordinates.show: 'Show coords',
                       },
-                      defaultValue: value.getShowCoordinates(),
+                      defaultValue: provider.getShowCoordinates(),
                       onChange: (value) {
-                        print(value);
+                        provider.setShowCoordinates(value as ShowCoordinates);
                       },
                     ),
                     const SizedBox(
@@ -40,9 +43,9 @@ class PracticeSquareColorsPage extends StatelessWidget {
                     ),
                     CustomTimeSlider(
                       onChanged: (value) {
-                        print(value);
+                        provider.setSeconds(value);
                       },
-                      defaultValue: value.getSeconds(),
+                      defaultValue: provider.getSeconds(),
                     ),
                     const SizedBox(
                       height: 15,
@@ -59,11 +62,11 @@ class PracticeSquareColorsPage extends StatelessWidget {
                         Files.h: 'h',
                         Files.all: 'All',
                       },
-                      initiallySelected: value.getFiles(),
+                      initiallySelected: provider.getFiles(),
                       keyToRepresentAll: Files.all,
                       allSelectedText: 'All Files',
                       onChange: (values) {
-                        print(values);
+                        provider.setFiles(values as List<Files>);
                       },
                     ),
                     const SizedBox(
@@ -82,10 +85,10 @@ class PracticeSquareColorsPage extends StatelessWidget {
                         Ranks.all: 'All',
                       },
                       allSelectedText: 'All ranks',
-                      initiallySelected: value.getRanks(),
+                      initiallySelected: provider.getRanks(),
                       keyToRepresentAll: Ranks.all,
                       onChange: (values) {
-                        print(values);
+                        provider.setRanks(values as List<Ranks>);
                       },
                     ),
                     const SizedBox(

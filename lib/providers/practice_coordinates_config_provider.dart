@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../utils/enums/enums.dart';
 
 class PracticeCoordinatesConfigProvider with ChangeNotifier {
-  PieceType _pieceType = PieceType.white;
+  PieceColor _pieceColor = PieceColor.white;
   PracticeCoordinatesType _practiceCoordinatesType =
       PracticeCoordinatesType.findSquare;
   ShowCoordinates _showCoordinates = ShowCoordinates.hide;
@@ -32,8 +32,8 @@ class PracticeCoordinatesConfigProvider with ChangeNotifier {
   ];
 
   // getters
-  PieceType getPieceType() {
-    return _pieceType;
+  PieceColor getPieceColor() {
+    return _pieceColor;
   }
 
   PracticeCoordinatesType getPracticeCoordinatesType() {
@@ -44,7 +44,7 @@ class PracticeCoordinatesConfigProvider with ChangeNotifier {
     return _showCoordinates;
   }
 
-  ShowPieces getPieces() {
+  ShowPieces getShowPieces() {
     return _showPieces;
   }
 
@@ -61,8 +61,8 @@ class PracticeCoordinatesConfigProvider with ChangeNotifier {
   }
 
   // setters
-  void setPieceType(PieceType pieceType) {
-    _pieceType = pieceType;
+  void setPieceColor(PieceColor pieceType) {
+    _pieceColor = pieceType;
   }
 
   void setPracticeCoordinatesType(
@@ -74,7 +74,7 @@ class PracticeCoordinatesConfigProvider with ChangeNotifier {
     _showCoordinates = showCoordinates;
   }
 
-  void setPieces(ShowPieces showPieces) {
+  void setShowPieces(ShowPieces showPieces) {
     _showPieces = showPieces;
   }
 

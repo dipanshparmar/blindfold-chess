@@ -23,7 +23,7 @@ class _CustomPageViewControllerState extends State<CustomPageViewController> {
   final List<Widget> _pages = const [
     PracticeCoordinatesPage(),
     PracticeSquareColorsPage(),
-    Text('3')
+    PracticeMovesPage(),
   ];
 
   // page controller
@@ -105,6 +105,7 @@ class _CustomPageViewControllerState extends State<CustomPageViewController> {
         Expanded(
           child: PageView(
             controller: _pageController,
+            physics: const BouncingScrollPhysics(),
             children: _pages,
             onPageChanged: (value) {
               setState(() {
@@ -115,7 +116,7 @@ class _CustomPageViewControllerState extends State<CustomPageViewController> {
         ),
         Padding(
           padding: const EdgeInsets.all(20.0),
-          child: ElevatedButton(onPressed: () {}, child: Text('Start')),
+          child: ElevatedButton(onPressed: () {}, child: const Text('Start')),
         )
       ],
     );
