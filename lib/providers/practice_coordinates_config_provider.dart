@@ -4,89 +4,89 @@ import 'package:flutter/material.dart';
 import '../utils/enums/enums.dart';
 
 class PracticeCoordinatesConfigProvider with ChangeNotifier {
-  PieceColor _pieceColor = PieceColor.white;
-  PracticeCoordinatesType _practiceCoordinatesType =
+  PieceColor _activePieceColor = PieceColor.white;
+  PracticeCoordinatesType _activePracticeCoordinatesType =
       PracticeCoordinatesType.findSquare;
-  ShowCoordinates _showCoordinates = ShowCoordinates.hide;
-  ShowPieces _showPieces = ShowPieces.show;
-  Seconds _seconds = Seconds.infinity;
-  List<Files> _files = const [
-    Files.a,
-    Files.b,
-    Files.c,
-    Files.d,
-    Files.e,
-    Files.f,
-    Files.g,
-    Files.h
+  ShowCoordinates _activeShowCoordinates = ShowCoordinates.hide;
+  ShowPieces _activeShowPieces = ShowPieces.show;
+  Seconds _activeSeconds = Seconds.infinity;
+  List<File> _activeFiles = const [
+    File.a,
+    File.b,
+    File.c,
+    File.d,
+    File.e,
+    File.f,
+    File.g,
+    File.h
   ];
-  List<Ranks> _ranks = const [
-    Ranks.one,
-    Ranks.two,
-    Ranks.three,
-    Ranks.four,
-    Ranks.five,
-    Ranks.six,
-    Ranks.seven,
-    Ranks.eight
+  List<Rank> _activeRanks = const [
+    Rank.one,
+    Rank.two,
+    Rank.three,
+    Rank.four,
+    Rank.five,
+    Rank.six,
+    Rank.seven,
+    Rank.eight
   ];
 
   // getters
-  PieceColor getPieceColor() {
-    return _pieceColor;
+  PieceColor getActivePieceColor() {
+    return _activePieceColor;
   }
 
-  PracticeCoordinatesType getPracticeCoordinatesType() {
-    return _practiceCoordinatesType;
+  PracticeCoordinatesType getActivePracticeCoordinatesType() {
+    return _activePracticeCoordinatesType;
   }
 
-  ShowCoordinates getCoordinates() {
-    return _showCoordinates;
+  ShowCoordinates getActiveShowCoordinates() {
+    return _activeShowCoordinates;
   }
 
-  ShowPieces getShowPieces() {
-    return _showPieces;
+  ShowPieces getActiveShowPieces() {
+    return _activeShowPieces;
   }
 
-  Seconds getSeconds() {
-    return _seconds;
+  Seconds getActiveSeconds() {
+    return _activeSeconds;
   }
 
-  List<Files> getFiles() {
-    return _files;
+  List<File> getActiveFiles() {
+    return _activeFiles;
   }
 
-  List<Ranks> getRanks() {
-    return _ranks;
+  List<Rank> getActiveRanks() {
+    return _activeRanks;
   }
 
   // setters
-  void setPieceColor(PieceColor pieceType) {
-    _pieceColor = pieceType;
+  void setActivePieceColor(PieceColor pieceType) {
+    _activePieceColor = pieceType;
   }
 
-  void setPracticeCoordinatesType(
+  void setActivePracticeCoordinatesType(
       PracticeCoordinatesType practiceCoordinatesType) {
-    _practiceCoordinatesType = practiceCoordinatesType;
+    _activePracticeCoordinatesType = practiceCoordinatesType;
   }
 
-  void setCoordinates(ShowCoordinates showCoordinates) {
-    _showCoordinates = showCoordinates;
+  void setActiveShowCoordinates(ShowCoordinates showCoordinates) {
+    _activeShowCoordinates = showCoordinates;
   }
 
-  void setShowPieces(ShowPieces showPieces) {
-    _showPieces = showPieces;
+  void setActiveShowPieces(ShowPieces showPieces) {
+    _activeShowPieces = showPieces;
   }
 
-  void setSeconds(Seconds seconds) {
-    _seconds = seconds;
+  void setActiveSeconds(Seconds seconds) {
+    _activeSeconds = seconds;
   }
 
-  void setFiles(List<Files> files) {
-    _files = files;
+  void setActiveFiles(List<File> files) {
+    _activeFiles = files;
   }
 
-  void setRanks(List<Ranks> ranks) {
-    _ranks = ranks;
+  void setActiveRanks(List<Rank> ranks) {
+    _activeRanks = ranks;
   }
 }

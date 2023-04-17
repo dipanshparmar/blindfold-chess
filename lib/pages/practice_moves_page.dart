@@ -10,6 +10,9 @@ import '../widgets/widgets.dart';
 // providers
 import '../providers/providers.dart';
 
+// helpers
+import '../helpers/helpers.dart';
+
 class PracticeMovesPage extends StatelessWidget {
   const PracticeMovesPage({super.key});
 
@@ -27,53 +30,41 @@ class PracticeMovesPage extends StatelessWidget {
                   height: 20,
                 ),
                 SelectOne(
-                  keyValuePairs: const {
-                    PieceColor.white: 'White',
-                    PieceColor.black: 'Black',
-                  },
-                  defaultValue: provider.getPieceColor(),
+                  keyValuePairs: DataHelper.getPieceColorKeyValuePairs(),
+                  defaultValue: provider.getActivePieceColor(),
                   onChange: (value) {
-                    provider.setPieceColor(value as PieceColor);
+                    provider.setActivePieceColor(value as PieceColor);
                   },
                 ),
                 const SizedBox(
                   height: 15,
                 ),
                 SelectOne(
-                  keyValuePairs: const {
-                    ShowCoordinates.hide: 'No coords',
-                    ShowCoordinates.show: 'Show coords',
-                  },
-                  defaultValue: provider.getShowCoordinates(),
+                  keyValuePairs: DataHelper.getShowCoordinatesKeyValuePairs(),
+                  defaultValue: provider.getActiveShowCoordinates(),
                   onChange: (value) {
-                    provider.setShowCoordinates(value as ShowCoordinates);
+                    provider.setActiveShowCoordinates(value as ShowCoordinates);
                   },
                 ),
                 const SizedBox(
                   height: 15,
                 ),
+                // TODO:
                 CustomTimeSlider(
                   onChanged: (value) {
-                    provider.setSeconds(value);
+                    provider.setActiveSeconds(value);
                   },
-                  defaultValue: provider.getSeconds(),
+                  defaultValue: provider.getActiveSeconds(),
                 ),
                 const SizedBox(
                   height: 15,
                 ),
                 CustomExpansionTile(
-                  keyValuePairs: const {
-                    PieceType.king: 'King',
-                    PieceType.queen: 'Queen',
-                    PieceType.rook: 'Rook',
-                    PieceType.bishop: 'Bishop',
-                    PieceType.knight: 'Knight',
-                    PieceType.pawn: 'Pawn',
-                  },
+                  keyValuePairs: DataHelper.getPieceTypeKeyValuePairs(),
                   allSelectedText: 'All pieces',
-                  values: provider.getPieceTypes(),
+                  values: provider.getActivePieceTypes(),
                   onChange: (values) {
-                    provider.setPieceTypes(values as List<PieceType>);
+                    provider.setActivePieceTypes(values as List<PieceType>);
                   },
                 ),
                 const SizedBox(

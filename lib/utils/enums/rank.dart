@@ -1,4 +1,4 @@
-enum Ranks {
+enum Rank {
   one,
   two,
   three,

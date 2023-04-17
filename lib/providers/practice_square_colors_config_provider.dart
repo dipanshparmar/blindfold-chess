@@ -3,61 +3,46 @@ import 'package:flutter/material.dart';
 // enums
 import '../utils/enums/enums.dart';
 
+// helpers
+import '../helpers/helpers.dart';
+
 class PracticeSquareColorsConfigProvider with ChangeNotifier {
-  ShowCoordinates _showCoordinates = ShowCoordinates.hide;
-  Seconds _seconds = Seconds.infinity;
-  List<Files> _files = [
-    Files.a,
-    Files.b,
-    Files.c,
-    Files.d,
-    Files.e,
-    Files.f,
-    Files.g,
-    Files.h
-  ];
-  List<Ranks> _ranks = [
-    Ranks.one,
-    Ranks.two,
-    Ranks.three,
-    Ranks.four,
-    Ranks.five,
-    Ranks.six,
-    Ranks.seven,
-    Ranks.eight
-  ];
+  ShowCoordinates _activeShowCoordinates = ShowCoordinates.hide;
+  Seconds _activeSeconds = Seconds.infinity;
+  List<File> _activeFiles = DataHelper.getFilesKeyValuePairs().keys.toList();
+  List<Rank> _activeRanks = DataHelper.getRanksKeyValuePairs().keys.toList();
 
   // getters
-  ShowCoordinates getShowCoordinates() {
-    return _showCoordinates;
+  ShowCoordinates getActiveShowCoordinates() {
+    return _activeShowCoordinates;
   }
 
-  Seconds getSeconds() {
-    return _seconds;
+  Seconds getActiveSeconds() {
+    return _activeSeconds;
   }
 
-  List<Files> getFiles() {
-    return _files;
+  List<File> getActiveFiles() {
+    return _activeFiles;
   }
 
-  List<Ranks> getRanks() {
-    return _ranks;
+  List<Rank> getActiveRanks() {
+    return _activeRanks;
   }
 
   // setters
-  void setShowCoordinates(ShowCoordinates showCoordinates) {
-    _showCoordinates = showCoordinates;
+  void setActiveShowCoordinates(ShowCoordinates showCoordinates) {
+    _activeShowCoordinates = showCoordinates;
   }
 
-  void setSeconds(Seconds seconds) {
-    _seconds = seconds;
+  void setActiveSeconds(Seconds seconds) {
+    _activeSeconds = seconds;
   }
 
-  void setFiles(List<Files> files) {
-    _files = files;
+  void setActiveFiles(List<File> files) {
+    _activeFiles = files;
   }
 
-  void setRanks(List<Ranks> ranks) {
-    _ranks = ranks;
+  void setActiveRanks(List<Rank> ranks) {
+    _activeRanks = ranks;
   }
 }

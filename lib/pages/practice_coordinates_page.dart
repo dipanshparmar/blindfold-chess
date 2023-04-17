@@ -10,6 +10,9 @@ import '../utils/enums/enums.dart';
 // providers
 import '../providers/providers.dart';
 
+// helpers
+import '../helpers/helpers.dart';
+
 class PracticeCoordinatesPage extends StatelessWidget {
   const PracticeCoordinatesPage({super.key});
 
@@ -25,26 +28,21 @@ class PracticeCoordinatesPage extends StatelessWidget {
               children: [
                 const SizedBox(height: 20),
                 SelectOne(
-                  keyValuePairs: const {
-                    PieceColor.white: 'White',
-                    PieceColor.black: 'Black',
-                  },
-                  defaultValue: provider.getPieceColor(),
+                  keyValuePairs: DataHelper.getPieceColorKeyValuePairs(),
+                  defaultValue: provider.getActivePieceColor(),
                   onChange: (value) {
-                    provider.setPieceColor(value as PieceColor);
+                    provider.setActivePieceColor(value as PieceColor);
                   },
                 ),
                 const SizedBox(
                   height: 15,
                 ),
                 SelectOne(
-                  keyValuePairs: const {
-                    PracticeCoordinatesType.findSquare: 'Find square',
-                    PracticeCoordinatesType.nameSquare: 'Name square',
-                  },
-                  defaultValue: provider.getPracticeCoordinatesType(),
+                  keyValuePairs:
+                      DataHelper.getPracticeCoordinatesTypeKeyValuePairs(),
+                  defaultValue: provider.getActivePracticeCoordinatesType(),
                   onChange: (value) {
-                    provider.setPracticeCoordinatesType(
+                    provider.setActivePracticeCoordinatesType(
                         value as PracticeCoordinatesType);
                   },
                 ),
@@ -52,75 +50,52 @@ class PracticeCoordinatesPage extends StatelessWidget {
                   height: 15,
                 ),
                 SelectOne(
-                  keyValuePairs: const {
-                    ShowCoordinates.show: 'Show coords',
-                    ShowCoordinates.hide: 'No coords',
-                  },
-                  defaultValue: provider.getCoordinates(),
+                  keyValuePairs: DataHelper.getShowCoordinatesKeyValuePairs(),
+                  defaultValue: provider.getActiveShowCoordinates(),
                   onChange: (value) {
-                    provider.setCoordinates(value as ShowCoordinates);
+                    provider.setActiveShowCoordinates(value as ShowCoordinates);
                   },
                 ),
                 const SizedBox(
                   height: 15,
                 ),
+                // TODO:
                 CustomTimeSlider(
-                  defaultValue: provider.getSeconds(),
+                  defaultValue: provider.getActiveSeconds(),
                   onChanged: (value) {
-                    provider.setSeconds(value);
+                    provider.setActiveSeconds(value);
                   },
                 ),
                 const SizedBox(
                   height: 15,
                 ),
                 CustomExpansionTile(
-                  keyValuePairs: const {
-                    Files.a: 'a',
-                    Files.b: 'b',
-                    Files.c: 'c',
-                    Files.d: 'd',
-                    Files.e: 'e',
-                    Files.f: 'f',
-                    Files.g: 'g',
-                    Files.h: 'h',
-                  },
-                  values: provider.getFiles(),
+                  keyValuePairs: DataHelper.getFilesKeyValuePairs(),
+                  values: provider.getActiveFiles(),
                   allSelectedText: 'All files',
                   onChange: (selectedValues) {
-                    provider.setFiles(selectedValues as List<Files>);
+                    provider.setActiveFiles(selectedValues as List<File>);
                   },
                 ),
                 const SizedBox(
                   height: 15,
                 ),
                 CustomExpansionTile(
-                  keyValuePairs: const {
-                    Ranks.one: '1',
-                    Ranks.two: '2',
-                    Ranks.three: '3',
-                    Ranks.four: '4',
-                    Ranks.five: '5',
-                    Ranks.six: '6',
-                    Ranks.seven: '7',
-                    Ranks.eight: '8',
-                  },
+                  keyValuePairs: DataHelper.getRanksKeyValuePairs(),
                   allSelectedText: 'All ranks',
-                  values: provider.getRanks(),
+                  values: provider.getActiveRanks(),
                   onChange: (selectedValues) {
-                    provider.setRanks(selectedValues as List<Ranks>);
+                    provider.setActiveRanks(selectedValues as List<Rank>);
                   },
                 ),
                 const SizedBox(
                   height: 15,
                 ),
                 SelectOne(
-                  keyValuePairs: const {
-                    ShowPieces.show: 'Show pieces',
-                    ShowPieces.hide: 'No pieces',
-                  },
-                  defaultValue: provider.getShowPieces(),
+                  keyValuePairs: DataHelper.getShowPiecesKeyValuePairs(),
+                  defaultValue: provider.getActiveShowPieces(),
                   onChange: (value) {
-                    provider.setShowPieces(value as ShowPieces);
+                    provider.setActiveShowPieces(value as ShowPieces);
                   },
                 ),
                 const SizedBox(

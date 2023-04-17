@@ -10,6 +10,9 @@ import '../utils/enums/enums.dart';
 // providers
 import '../providers/providers.dart';
 
+// helpers
+import '../helpers/helpers.dart';
+
 class PracticeSquareColorsPage extends StatelessWidget {
   const PracticeSquareColorsPage({super.key});
 
@@ -19,82 +22,66 @@ class PracticeSquareColorsPage extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         children: [
-          Expanded(child: Consumer<PracticeSquareColorsConfigProvider>(
-            builder: (context, provider, child) {
-              return SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                child: Column(
-                  children: [
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    SelectOne(
-                      keyValuePairs: const {
-                        ShowCoordinates.hide: 'No coords',
-                        ShowCoordinates.show: 'Show coords',
-                      },
-                      defaultValue: provider.getShowCoordinates(),
-                      onChange: (value) {
-                        provider.setShowCoordinates(value as ShowCoordinates);
-                      },
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    CustomTimeSlider(
-                      onChanged: (value) {
-                        provider.setSeconds(value);
-                      },
-                      defaultValue: provider.getSeconds(),
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    CustomExpansionTile(
-                      keyValuePairs: const {
-                        Files.a: 'a',
-                        Files.b: 'b',
-                        Files.c: 'c',
-                        Files.d: 'd',
-                        Files.e: 'e',
-                        Files.f: 'f',
-                        Files.g: 'g',
-                        Files.h: 'h',
-                      },
-                      values: provider.getFiles(),
-                      allSelectedText: 'All Files',
-                      onChange: (values) {
-                        provider.setFiles(values as List<Files>);
-                      },
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    CustomExpansionTile(
-                      keyValuePairs: const {
-                        Ranks.one: '1',
-                        Ranks.two: '2',
-                        Ranks.three: '3',
-                        Ranks.four: '4',
-                        Ranks.five: '5',
-                        Ranks.six: '6',
-                        Ranks.seven: '7',
-                        Ranks.eight: '8',
-                      },
-                      allSelectedText: 'All ranks',
-                      values: provider.getRanks(),
-                      onChange: (values) {
-                        provider.setRanks(values as List<Ranks>);
-                      },
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                  ],
-                ),
-              );
-            },
-          )),
+          Expanded(
+            child: Consumer<PracticeSquareColorsConfigProvider>(
+              builder: (context, provider, child) {
+                return SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      SelectOne(
+                        keyValuePairs:
+                            DataHelper.getShowCoordinatesKeyValuePairs(),
+                        defaultValue: provider.getActiveShowCoordinates(),
+                        onChange: (value) {
+                          provider.setActiveShowCoordinates(
+                              value as ShowCoordinates);
+                        },
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      // TODO:
+                      CustomTimeSlider(
+                        onChanged: (value) {
+                          provider.setActiveSeconds(value);
+                        },
+                        defaultValue: provider.getActiveSeconds(),
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      CustomExpansionTile(
+                        keyValuePairs: DataHelper.getFilesKeyValuePairs(),
+                        values: provider.getActiveFiles(),
+                        allSelectedText: 'All Files',
+                        onChange: (values) {
+                          provider.setActiveFiles(values as List<File>);
+                        },
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      CustomExpansionTile(
+                        keyValuePairs: DataHelper.getRanksKeyValuePairs(),
+                        allSelectedText: 'All ranks',
+                        values: provider.getActiveRanks(),
+                        onChange: (values) {
+                          provider.setActiveRanks(values as List<Rank>);
+                        },
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
           Container(
             width: double.infinity,
             padding: const EdgeInsets.all(10),

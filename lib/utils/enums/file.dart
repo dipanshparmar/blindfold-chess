@@ -1,4 +1,4 @@
-enum Files {
+enum File {
   a,
   b,
   c,

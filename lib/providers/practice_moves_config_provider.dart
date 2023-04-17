@@ -3,50 +3,47 @@ import 'package:flutter/material.dart';
 // enums
 import '../utils/enums/enums.dart';
 
+// helpers
+import '../helpers/helpers.dart';
+
 class PracticeMovesConfigProvider with ChangeNotifier {
-  PieceColor _pieceColor = PieceColor.white;
-  ShowCoordinates _showCoordinates = ShowCoordinates.hide;
-  Seconds _seconds = Seconds.infinity;
-  List<PieceType> _pieceTypes = [
-    PieceType.king,
-    PieceType.queen,
-    PieceType.rook,
-    PieceType.bishop,
-    PieceType.knight,
-    PieceType.pawn
-  ];
+  PieceColor _activePieceColor = PieceColor.white;
+  ShowCoordinates _activeShowCoordinates = ShowCoordinates.hide;
+  Seconds _activeSeconds = Seconds.infinity;
+  List<PieceType> _activePieceTypes =
+      DataHelper.getPieceTypeKeyValuePairs().keys.toList();
 
   // getters
-  PieceColor getPieceColor() {
-    return _pieceColor;
+  PieceColor getActivePieceColor() {
+    return _activePieceColor;
   }
 
-  ShowCoordinates getShowCoordinates() {
-    return _showCoordinates;
+  ShowCoordinates getActiveShowCoordinates() {
+    return _activeShowCoordinates;
   }
 
-  Seconds getSeconds() {
-    return _seconds;
+  Seconds getActiveSeconds() {
+    return _activeSeconds;
   }
 
-  List<PieceType> getPieceTypes() {
-    return _pieceTypes;
+  List<PieceType> getActivePieceTypes() {
+    return _activePieceTypes;
   }
 
   // setters
-  void setPieceColor(PieceColor pieceColor) {
-    _pieceColor = pieceColor;
+  void setActivePieceColor(PieceColor pieceColor) {
+    _activePieceColor = pieceColor;
   }
 
-  void setShowCoordinates(ShowCoordinates showCoordinates) {
-    _showCoordinates = showCoordinates;
+  void setActiveShowCoordinates(ShowCoordinates showCoordinates) {
+    _activeShowCoordinates = showCoordinates;
   }
 
-  void setSeconds(Seconds seconds) {
-    _seconds = seconds;
+  void setActiveSeconds(Seconds seconds) {
+    _activeSeconds = seconds;
   }
 
-  void setPieceTypes(List<PieceType> pieceTypes) {
-    _pieceTypes = pieceTypes;
+  void setActivePieceTypes(List<PieceType> pieceTypes) {
+    _activePieceTypes = pieceTypes;
   }
 }
