@@ -10,9 +10,9 @@ class CustomExpansionTile extends StatefulWidget {
   });
 
   final Map<Enum, String> keyValuePairs;
-  final List<Enum>? values;
+  final List<Enum> values;
   final Function(List<Enum>) onChange;
-  final String? allSelectedText;
+  final String allSelectedText;
 
   @override
   State<CustomExpansionTile> createState() => _CustomExpansionTileState();
