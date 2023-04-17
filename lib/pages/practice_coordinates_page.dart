@@ -83,10 +83,8 @@ class PracticeCoordinatesPage extends StatelessWidget {
                     Files.f: 'f',
                     Files.g: 'g',
                     Files.h: 'h',
-                    Files.all: 'All',
                   },
-                  initiallySelected: provider.getFiles(),
-                  keyToRepresentAll: Files.all,
+                  values: provider.getFiles(),
                   allSelectedText: 'All files',
                   onChange: (selectedValues) {
                     provider.setFiles(selectedValues as List<Files>);
@@ -105,11 +103,9 @@ class PracticeCoordinatesPage extends StatelessWidget {
                     Ranks.six: '6',
                     Ranks.seven: '7',
                     Ranks.eight: '8',
-                    Ranks.all: 'All'
                   },
                   allSelectedText: 'All ranks',
-                  keyToRepresentAll: Ranks.all,
-                  initiallySelected: provider.getRanks(),
+                  values: provider.getRanks(),
                   onChange: (selectedValues) {
                     provider.setRanks(selectedValues as List<Ranks>);
                   },

@@ -5,5 +5,4 @@ enum PieceType {
   bishop,
   knight,
   pawn,
-  all,
 }

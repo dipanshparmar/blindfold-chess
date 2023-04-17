@@ -7,5 +7,4 @@ enum Files {
   f,
   g,
   h,
-  all,
 }

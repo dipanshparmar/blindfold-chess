@@ -7,5 +7,4 @@ enum Ranks {
   six,
   seven,
   eight,
-  all
 }

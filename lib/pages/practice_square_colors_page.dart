@@ -60,10 +60,8 @@ class PracticeSquareColorsPage extends StatelessWidget {
                         Files.f: 'f',
                         Files.g: 'g',
                         Files.h: 'h',
-                        Files.all: 'All',
                       },
-                      initiallySelected: provider.getFiles(),
-                      keyToRepresentAll: Files.all,
+                      values: provider.getFiles(),
                       allSelectedText: 'All Files',
                       onChange: (values) {
                         provider.setFiles(values as List<Files>);
@@ -82,11 +80,9 @@ class PracticeSquareColorsPage extends StatelessWidget {
                         Ranks.six: '6',
                         Ranks.seven: '7',
                         Ranks.eight: '8',
-                        Ranks.all: 'All',
                       },
                       allSelectedText: 'All ranks',
-                      initiallySelected: provider.getRanks(),
-                      keyToRepresentAll: Ranks.all,
+                      values: provider.getRanks(),
                       onChange: (values) {
                         provider.setRanks(values as List<Ranks>);
                       },

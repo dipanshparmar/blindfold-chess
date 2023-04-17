@@ -69,11 +69,9 @@ class PracticeMovesPage extends StatelessWidget {
                     PieceType.bishop: 'Bishop',
                     PieceType.knight: 'Knight',
                     PieceType.pawn: 'Pawn',
-                    PieceType.all: 'All',
                   },
                   allSelectedText: 'All pieces',
-                  keyToRepresentAll: PieceType.all,
-                  initiallySelected: provider.getPieceTypes(),
+                  values: provider.getPieceTypes(),
                   onChange: (values) {
                     provider.setPieceTypes(values as List<PieceType>);
                   },
