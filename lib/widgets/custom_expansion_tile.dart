@@ -161,111 +161,88 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
             ),
           ),
           if (isExpanded)
-            Column(
-              children: [
-                // Divider(),
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.only(top: 10, bottom: 20),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
-                    borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(5),
-                      bottomRight: Radius.circular(5),
-                    ),
-                  ),
-                  child: SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: widget.keyValuePairs.keys.map((key) {
-                        return Padding(
-                          padding: EdgeInsets.only(
-                            left: 10.0,
-                            right:
-                                widget.keyValuePairs.keys.last == key ? 10 : 0,
-                          ),
-                          child: GestureDetector(
-                            onTap: () {
-                              // if current key equals keyToRepresentAll
-                              if (widget.keyToRepresentAll != null &&
-                                  key == widget.keyToRepresentAll) {
-                                setState(() {
-                                  // if all the keys are already present then remove all the keys and add the first key i.e. not representative
-                                  if (selectedValues.length ==
-                                      widget.keyValuePairs.length - 1) {
-                                    // -1 because one key is representative
-                                    selectedValues.clear();
-
-                                    for (var key in widget.keyValuePairs.keys) {
-                                      if (key != widget.keyToRepresentAll) {
-                                        selectedValues.add(key);
-                                        break;
-                                      }
-                                    }
-                                  } else {
-                                    // if not all selected already then select all that are not present already
-                                    for (var key in widget.keyValuePairs.keys) {
-                                      if (key != widget.keyToRepresentAll &&
-                                          !selectedValues.contains(key)) {
-                                        selectedValues.add(key);
-                                      }
-                                    }
-                                  }
-                                });
-                              } else {
-                                // if not a representative key then add it simply if not already present
-                                if (!selectedValues.contains(key)) {
-                                  setState(() {
-                                    selectedValues.add(key);
-                                  });
-                                } else {
-                                  // if already present then remove it but only if it is not the only value in the list
-                                  if (selectedValues.length > 1) {
-                                    setState(() {
-                                      selectedValues.remove(key);
-                                    });
-                                  }
-                                }
-                              }
-
-                              // executing the user entered function
-                              widget.onChange(selectedValues);
-                            },
-                            child: Container(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              color: Theme.of(context).primaryColor,
-                              child: Text(
-                                widget.keyValuePairs[key]!,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium!
-                                    .copyWith(
-                                      color: selectedValues.contains(key) ||
-                                              (widget.keyToRepresentAll !=
-                                                      null &&
-                                                  selectedValues.length ==
-                                                      widget.keyValuePairs
-                                                              .length -
-                                                          1 &&
-                                                  key ==
-                                                      widget.keyToRepresentAll)
-                                          ? Theme.of(context)
-                                              .colorScheme
-                                              .secondary
-                                          : Colors.white,
-                                    ),
-                              ),
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  ),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.only(
+                  top: 10, bottom: 20, right: 10, left: 10),
+              decoration: BoxDecoration(
+                color: Theme.of(context)
+                    .primaryColor, // this is important so that GestureDetector takes in the padding in account
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(5),
+                  bottomRight: Radius.circular(5),
                 ),
-              ],
+              ),
+              child: Wrap(
+                spacing: 10,
+                runSpacing: 10,
+                children: widget.keyValuePairs.keys.map((key) {
+                  return GestureDetector(
+                    onTap: () {
+                      // if current key equals keyToRepresentAll
+                      if (widget.keyToRepresentAll != null &&
+                          key == widget.keyToRepresentAll) {
+                        setState(() {
+                          // if all the keys are already present then remove all the keys and add the first key i.e. not representative
+                          if (selectedValues.length ==
+                              widget.keyValuePairs.length - 1) {
+                            // -1 because one key is representative
+                            selectedValues.clear();
+
+                            for (var key in widget.keyValuePairs.keys) {
+                              if (key != widget.keyToRepresentAll) {
+                                selectedValues.add(key);
+                                break;
+                              }
+                            }
+                          } else {
+                            // if not all selected already then select all that are not present already
+                            for (var key in widget.keyValuePairs.keys) {
+                              if (key != widget.keyToRepresentAll &&
+                                  !selectedValues.contains(key)) {
+                                selectedValues.add(key);
+                              }
+                            }
+                          }
+                        });
+                      } else {
+                        // if not a representative key then add it simply if not already present
+                        if (!selectedValues.contains(key)) {
+                          setState(() {
+                            selectedValues.add(key);
+                          });
+                        } else {
+                          // if already present then remove it but only if it is not the only value in the list
+                          if (selectedValues.length > 1) {
+                            setState(() {
+                              selectedValues.remove(key);
+                            });
+                          }
+                        }
+                      }
+
+                      // executing the user entered function
+                      widget.onChange(selectedValues);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      color: Theme.of(context).primaryColor,
+                      child: Text(
+                        widget.keyValuePairs[key]!,
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                              color: selectedValues.contains(key) ||
+                                      (widget.keyToRepresentAll != null &&
+                                          selectedValues.length ==
+                                              widget.keyValuePairs.length - 1 &&
+                                          key == widget.keyToRepresentAll)
+                                  ? Theme.of(context).colorScheme.secondary
+                                  : Colors.white,
+                            ),
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
             ),
         ],
       ),
