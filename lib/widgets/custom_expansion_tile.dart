@@ -30,6 +30,11 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
   void initState() {
     super.initState();
 
+    // if initially selected is empty then throw an error
+    if (widget.initiallySelected != null && widget.initiallySelected!.isEmpty) {
+      throw 'Initially selected values can not be empty';
+    }
+
     // if key values pairs is empty then throw an error
     if (widget.keyValuePairs.isEmpty) {
       throw 'keyValuePairs can not be empty';

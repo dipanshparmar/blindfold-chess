@@ -3,14 +3,15 @@ import 'package:flutter/material.dart';
 // pages
 import '../pages/pages.dart';
 
-class CustomPageView extends StatefulWidget {
-  const CustomPageView({super.key});
+class CustomPageViewController extends StatefulWidget {
+  const CustomPageViewController({super.key});
 
   @override
-  State<CustomPageView> createState() => _CustomPageViewState();
+  State<CustomPageViewController> createState() =>
+      _CustomPageViewControllerState();
 }
 
-class _CustomPageViewState extends State<CustomPageView> {
+class _CustomPageViewControllerState extends State<CustomPageViewController> {
   final _pageTitles = [
     'Practice coordinates',
     'Practice square colors',
@@ -21,7 +22,7 @@ class _CustomPageViewState extends State<CustomPageView> {
 
   final List<Widget> _pages = const [
     PracticeCoordinatesPage(),
-    Text('2'),
+    PracticeSquareColorsPage(),
     Text('3')
   ];
 
@@ -112,6 +113,10 @@ class _CustomPageViewState extends State<CustomPageView> {
             },
           ),
         ),
+        Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: ElevatedButton(onPressed: () {}, child: Text('Start')),
+        )
       ],
     );
   }

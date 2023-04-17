@@ -65,44 +65,50 @@ class _CustomTimeSliderState extends State<CustomTimeSlider> {
 
   @override
   Widget build(BuildContext context) {
-    return SfSliderTheme(
-      data: SfSliderThemeData(
-        activeTrackHeight: 37,
-        inactiveTrackHeight: 37,
-        thumbRadius: 18.5,
-        thumbColor: Colors.white,
-        activeTrackColor: Theme.of(context).primaryColor,
-        inactiveTrackColor: Theme.of(context).primaryColor,
-        thumbStrokeWidth: 2,
-        thumbStrokeColor: Theme.of(context).primaryColor,
-        overlayRadius: 0,
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).primaryColor,
+        borderRadius: BorderRadius.circular(100),
       ),
-      child: SfSlider(
-        value: _value,
-        min: min,
-        max: max,
-        onChanged: (value) {
-          widget.onChanged(getEnumValueForSeconds(value));
+      child: SfSliderTheme(
+        data: SfSliderThemeData(
+          activeTrackHeight: 37,
+          inactiveTrackHeight: 37,
+          thumbRadius: 18.5,
+          thumbColor: Colors.white,
+          activeTrackColor: Theme.of(context).primaryColor,
+          inactiveTrackColor: Theme.of(context).primaryColor,
+          thumbStrokeWidth: 2,
+          thumbStrokeColor: Theme.of(context).primaryColor,
+          overlayRadius: 0,
+        ),
+        child: SfSlider(
+          value: _value,
+          min: min,
+          max: max,
+          onChanged: (value) {
+            widget.onChanged(getEnumValueForSeconds(value));
 
-          setState(() {
-            _value = value;
-          });
-        },
-        stepSize: stepSize,
-        thumbIcon: Center(
-          child: showInfinity && _value == max
-              ? const Icon(
-                  Icons.all_inclusive,
-                  size: 20,
-                  weight: 600,
-                )
-              : Text(
-                  '${_value.toInt()}s',
-                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                ),
+            setState(() {
+              _value = value;
+            });
+          },
+          stepSize: stepSize,
+          thumbIcon: Center(
+            child: showInfinity && _value == max
+                ? const Icon(
+                    Icons.all_inclusive,
+                    size: 20,
+                    weight: 600,
+                  )
+                : Text(
+                    '${_value.toInt()}s',
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                  ),
+          ),
         ),
       ),
     );

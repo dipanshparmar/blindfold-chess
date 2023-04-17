@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 // widgets
-import '../widgets/widgets.dart';
+import '../controllers/custom_page_view_controller.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -22,7 +22,7 @@ class HomePage extends StatelessWidget {
           )
         ],
       ),
-      body: const CustomPageView(),
+      body: const CustomPageViewController(),
     );
   }
 }

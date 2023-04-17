@@ -66,17 +66,11 @@ class PracticeCoordinatesPage extends StatelessWidget {
                       const SizedBox(
                         height: 15,
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor,
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                        child: CustomTimeSlider(
-                          defaultValue: value.getSeconds(),
-                          onChanged: (value) {
-                            print(value);
-                          },
-                        ),
+                      CustomTimeSlider(
+                        defaultValue: value.getSeconds(),
+                        onChanged: (value) {
+                          print(value);
+                        },
                       ),
                       const SizedBox(
                         height: 15,
@@ -142,13 +136,6 @@ class PracticeCoordinatesPage extends StatelessWidget {
                   ),
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                child: ElevatedButton(
-                  child: const Text('START'),
-                  onPressed: () {},
-                ),
-              )
             ],
           );
         },
