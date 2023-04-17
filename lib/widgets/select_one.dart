@@ -54,7 +54,7 @@ class _SelectOneState extends State<SelectOne> {
               },
               child: Container(
                 alignment: Alignment.center,
-                padding: const EdgeInsets.all(13),
+                padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
                   color: isSelected ? Colors.white : null,
                   borderRadius: BorderRadius.circular(100),

@@ -67,14 +67,15 @@ class _CustomTimeSliderState extends State<CustomTimeSlider> {
   Widget build(BuildContext context) {
     return SfSliderTheme(
       data: SfSliderThemeData(
-        activeTrackHeight: 51,
-        inactiveTrackHeight: 51,
-        thumbRadius: 25.5,
+        activeTrackHeight: 37,
+        inactiveTrackHeight: 37,
+        thumbRadius: 18.5,
         thumbColor: Colors.white,
         activeTrackColor: Theme.of(context).primaryColor,
-        inactiveTrackColor: Theme.of(context).primaryColor.withOpacity(.2),
+        inactiveTrackColor: Theme.of(context).primaryColor,
         thumbStrokeWidth: 2,
         thumbStrokeColor: Theme.of(context).primaryColor,
+        overlayRadius: 0,
       ),
       child: SfSlider(
         value: _value,
@@ -97,8 +98,9 @@ class _CustomTimeSliderState extends State<CustomTimeSlider> {
                 )
               : Text(
                   '${_value.toInt()}s',
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
                         fontWeight: FontWeight.w600,
+                        color: Theme.of(context).primaryColor,
                       ),
                 ),
         ),

@@ -66,11 +66,17 @@ class PracticeCoordinatesPage extends StatelessWidget {
                       const SizedBox(
                         height: 15,
                       ),
-                      CustomTimeSlider(
-                        defaultValue: value.getSeconds(),
-                        onChanged: (value) {
-                          print(value);
-                        },
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor,
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                        child: CustomTimeSlider(
+                          defaultValue: value.getSeconds(),
+                          onChanged: (value) {
+                            print(value);
+                          },
+                        ),
                       ),
                       const SizedBox(
                         height: 15,

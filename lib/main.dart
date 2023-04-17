@@ -35,6 +35,7 @@ class MyApp extends StatelessWidget {
           fontWeight: FontWeight.w600,
           fontSize: 12,
         ), // styles for the text input
+        titleSmall: TextStyle(fontSize: 12),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(

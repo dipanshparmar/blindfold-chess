@@ -135,7 +135,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.all(11.5),
+                    padding: const EdgeInsets.all(4.5),
                     decoration: BoxDecoration(
                       color: isExpanded
                           ? Theme.of(context).primaryColor
