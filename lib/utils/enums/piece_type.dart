@@ -1,0 +1,4 @@
+enum PieceType {
+  white,
+  black
+}

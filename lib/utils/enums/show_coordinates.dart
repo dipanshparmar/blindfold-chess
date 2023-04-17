@@ -1,0 +1,4 @@
+enum ShowCoordinates {
+  show,
+  hide
+}

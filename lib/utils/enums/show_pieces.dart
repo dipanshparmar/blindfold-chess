@@ -1,0 +1,4 @@
+enum ShowPieces {
+  hide,
+  show
+}

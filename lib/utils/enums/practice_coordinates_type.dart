@@ -1,0 +1,4 @@
+enum PracticeCoordinatesType {
+  findSquare,
+  nameSquare
+}

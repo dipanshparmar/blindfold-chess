@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+// pages
+import '../pages/pages.dart';
+
 class CustomPageView extends StatefulWidget {
   const CustomPageView({super.key});
 
@@ -16,7 +19,11 @@ class _CustomPageViewState extends State<CustomPageView> {
 
   int _currentPageIndex = 0;
 
-  final List<Widget> _pages = [Text('1'), Text('2'), Text('3')];
+  final List<Widget> _pages = const [
+    PracticeCoordinatesPage(),
+    Text('2'),
+    Text('3')
+  ];
 
   // page controller
   late final PageController _pageController;

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 // pages
 import 'pages/pages.dart';
+
+// providers
+import 'providers/providers.dart';
 
 void main() {
   runApp(const MyApp());
@@ -74,18 +78,25 @@ class MyApp extends StatelessWidget {
       ),
     );
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: theme.copyWith(
-        colorScheme: theme.colorScheme.copyWith(
-          secondary: const Color(0xFFFFD465),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => PracticeCoordinatesConfigProvider(),
+        )
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: theme.copyWith(
+          colorScheme: theme.colorScheme.copyWith(
+            secondary: const Color(0xFFFFD465),
+          ),
         ),
+        home: const IntroPage(),
+        routes: {
+          NameInputPage.routeName: (context) => const NameInputPage(),
+          HomePage.routeName: (context) => const HomePage(),
+        },
       ),
-      home: const IntroPage(),
-      routes: {
-        NameInputPage.routeName: (context) => const NameInputPage(),
-        HomePage.routeName: (context) => const HomePage(),
-      },
     );
   }
 }
