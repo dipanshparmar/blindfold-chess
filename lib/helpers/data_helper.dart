@@ -61,6 +61,12 @@ class DataHelper {
     ShowPieces.hide: 'No pieces',
   };
 
+  // show board data
+  static const Map<ShowBoard, String> _showBoardKeyValuePairs = {
+    ShowBoard.show: 'Show board',
+    ShowBoard.hide: 'No board',
+  };
+
   // getters to get the data
   static Map<PieceColor, String> getPieceColorKeyValuePairs() {
     return _pieceColorKeyValuePairs;
@@ -89,5 +95,9 @@ class DataHelper {
 
   static Map<PieceType, String> getPieceTypeKeyValuePairs() {
     return _pieceTypeKeyValuePairs;
+  }
+
+  static Map<ShowBoard, String> getShowBoardKeyValuePairs() {
+    return _showBoardKeyValuePairs;
   }
 }

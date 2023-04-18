@@ -1,0 +1,4 @@
+enum ShowBoard {
+  show,
+  hide
+}

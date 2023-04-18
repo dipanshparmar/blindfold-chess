@@ -30,6 +30,16 @@ class PracticeMovesPage extends StatelessWidget {
                   height: 20,
                 ),
                 SelectOne(
+                  keyValuePairs: DataHelper.getShowBoardKeyValuePairs(),
+                  defaultValue: provider.getActiveShowBoard(),
+                  onChange: (value) {
+                    provider.setActiveShowBoard(value as ShowBoard);
+                  },
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                SelectOne(
                   keyValuePairs: DataHelper.getPieceColorKeyValuePairs(),
                   defaultValue: provider.getActivePieceColor(),
                   onChange: (value) {
@@ -49,6 +59,17 @@ class PracticeMovesPage extends StatelessWidget {
                 const SizedBox(
                   height: 15,
                 ),
+                CustomExpansionTile(
+                  keyValuePairs: DataHelper.getPieceTypeKeyValuePairs(),
+                  allSelectedText: 'All pieces',
+                  values: provider.getActivePieceTypes(),
+                  onChange: (values) {
+                    provider.setActivePieceTypes(values as List<PieceType>);
+                  },
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
                 CustomTimeSlider(
                   onChanged: (value) {
                     provider.setActiveSeconds(value);
@@ -57,17 +78,6 @@ class PracticeMovesPage extends StatelessWidget {
                   min: 30,
                   count: 3,
                   stepSize: 15,
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                CustomExpansionTile(
-                  keyValuePairs: DataHelper.getPieceTypeKeyValuePairs(),
-                  allSelectedText: 'All pieces',
-                  values: provider.getActivePieceTypes(),
-                  onChange: (values) {
-                    provider.setActivePieceTypes(values as List<PieceType>);
-                  },
                 ),
                 const SizedBox(
                   height: 20,

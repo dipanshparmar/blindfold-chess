@@ -33,6 +33,16 @@ class PracticeSquareColorsPage extends StatelessWidget {
                         height: 20,
                       ),
                       SelectOne(
+                        keyValuePairs: DataHelper.getShowBoardKeyValuePairs(),
+                        defaultValue: provider.getActiveShowBoard(),
+                        onChange: (value) {
+                          provider.setActiveShowBoard(value as ShowBoard);
+                        },
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      SelectOne(
                         keyValuePairs:
                             DataHelper.getShowCoordinatesKeyValuePairs(),
                         defaultValue: provider.getActiveShowCoordinates(),
@@ -40,18 +50,6 @@ class PracticeSquareColorsPage extends StatelessWidget {
                           provider.setActiveShowCoordinates(
                               value as ShowCoordinates);
                         },
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      CustomTimeSlider(
-                        onChanged: (value) {
-                          provider.setActiveSeconds(value);
-                        },
-                        min: 30,
-                        count: 3,
-                        stepSize: 15,
-                        value: provider.getActiveSeconds(),
                       ),
                       const SizedBox(
                         height: 15,
@@ -74,6 +72,18 @@ class PracticeSquareColorsPage extends StatelessWidget {
                         onChange: (values) {
                           provider.setActiveRanks(values as List<Rank>);
                         },
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      CustomTimeSlider(
+                        onChanged: (value) {
+                          provider.setActiveSeconds(value);
+                        },
+                        min: 30,
+                        count: 3,
+                        stepSize: 15,
+                        value: provider.getActiveSeconds(),
                       ),
                       const SizedBox(
                         height: 20,

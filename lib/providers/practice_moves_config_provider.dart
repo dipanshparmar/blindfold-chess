@@ -10,6 +10,7 @@ class PracticeMovesConfigProvider with ChangeNotifier {
   PieceColor _activePieceColor = PieceColor.white;
   ShowCoordinates _activeShowCoordinates = ShowCoordinates.hide;
   double _activeSeconds = -1;
+  ShowBoard _activeShowBoard = ShowBoard.hide;
   List<PieceType> _activePieceTypes =
       DataHelper.getPieceTypeKeyValuePairs().keys.toList();
 
@@ -24,6 +25,10 @@ class PracticeMovesConfigProvider with ChangeNotifier {
 
   double getActiveSeconds() {
     return _activeSeconds;
+  }
+
+  ShowBoard getActiveShowBoard() {
+    return _activeShowBoard;
   }
 
   List<PieceType> getActivePieceTypes() {
@@ -41,6 +46,10 @@ class PracticeMovesConfigProvider with ChangeNotifier {
 
   void setActiveSeconds(double seconds) {
     _activeSeconds = seconds;
+  }
+
+  void setActiveShowBoard(ShowBoard showBoard) {
+    _activeShowBoard = showBoard;
   }
 
   void setActivePieceTypes(List<PieceType> pieceTypes) {
