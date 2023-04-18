@@ -37,21 +37,31 @@ class PracticeSquareColorsConfigProvider with ChangeNotifier {
   // setters
   void setActiveShowCoordinates(ShowCoordinates showCoordinates) {
     _activeShowCoordinates = showCoordinates;
+
+    notifyListeners();
   }
 
   void setActiveSeconds(double seconds) {
     _activeSeconds = seconds;
+
+    notifyListeners();
   }
 
   void setActiveShowBoard(ShowBoard showBoard) {
     _activeShowBoard = showBoard;
+
+    notifyListeners();
   }
 
   void setActiveFiles(List<File> files) {
     _activeFiles = files;
+
+    notifyListeners();
   }
 
   void setActiveRanks(List<Rank> ranks) {
     _activeRanks = ranks;
+
+    notifyListeners();
   }
 }
