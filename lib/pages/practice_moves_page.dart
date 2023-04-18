@@ -45,6 +45,7 @@ class PracticeMovesPage extends StatelessWidget {
                   onChange: (value) {
                     provider.setActivePieceColor(value as PieceColor);
                   },
+                  disabled: provider.getActivePieceColor() == null,
                 ),
                 const SizedBox(
                   height: 15,
@@ -55,6 +56,7 @@ class PracticeMovesPage extends StatelessWidget {
                   onChange: (value) {
                     provider.setActiveShowCoordinates(value as ShowCoordinates);
                   },
+                  disabled: provider.getActiveShowCoordinates() == null,
                 ),
                 const SizedBox(
                   height: 15,
