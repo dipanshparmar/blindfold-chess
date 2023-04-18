@@ -29,7 +29,7 @@ class PracticeCoordinatesPage extends StatelessWidget {
                 const SizedBox(height: 20),
                 SelectOne(
                   keyValuePairs: DataHelper.getPieceColorKeyValuePairs(),
-                  defaultValue: provider.getActivePieceColor(),
+                  activeValue: provider.getActivePieceColor(),
                   onChange: (value) {
                     provider.setActivePieceColor(value as PieceColor);
                   },
@@ -40,7 +40,7 @@ class PracticeCoordinatesPage extends StatelessWidget {
                 SelectOne(
                   keyValuePairs:
                       DataHelper.getPracticeCoordinatesTypeKeyValuePairs(),
-                  defaultValue: provider.getActivePracticeCoordinatesType(),
+                  activeValue: provider.getActivePracticeCoordinatesType(),
                   onChange: (value) {
                     provider.setActivePracticeCoordinatesType(
                         value as PracticeCoordinatesType);
@@ -51,7 +51,7 @@ class PracticeCoordinatesPage extends StatelessWidget {
                 ),
                 SelectOne(
                   keyValuePairs: DataHelper.getShowCoordinatesKeyValuePairs(),
-                  defaultValue: provider.getActiveShowCoordinates(),
+                  activeValue: provider.getActiveShowCoordinates(),
                   onChange: (value) {
                     provider.setActiveShowCoordinates(value as ShowCoordinates);
                   },
@@ -89,6 +89,7 @@ class PracticeCoordinatesPage extends StatelessWidget {
                   values: provider.getActiveRanks(),
                   onChange: (selectedValues) {
                     provider.setActiveRanks(selectedValues as List<Rank>);
+                    print(selectedValues);
                   },
                 ),
                 const SizedBox(
@@ -96,7 +97,7 @@ class PracticeCoordinatesPage extends StatelessWidget {
                 ),
                 SelectOne(
                   keyValuePairs: DataHelper.getShowPiecesKeyValuePairs(),
-                  defaultValue: provider.getActiveShowPieces(),
+                  activeValue: provider.getActiveShowPieces(),
                   onChange: (value) {
                     provider.setActiveShowPieces(value as ShowPieces);
                   },

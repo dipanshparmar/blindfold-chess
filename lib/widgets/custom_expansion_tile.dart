@@ -207,6 +207,9 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
                           }
                         });
                       }
+
+                      // executing the user entered function
+                      widget.onChange(selectedValues);
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(

@@ -35,7 +35,7 @@ class PracticeSquareColorsPage extends StatelessWidget {
                       ),
                       SelectOne(
                         keyValuePairs: DataHelper.getShowBoardKeyValuePairs(),
-                        defaultValue: provider.getActiveShowBoard(),
+                        activeValue: provider.getActiveShowBoard(),
                         onChange: (value) {
                           provider.setActiveShowBoard(value as ShowBoard);
                         },
@@ -46,7 +46,7 @@ class PracticeSquareColorsPage extends StatelessWidget {
                       SelectOne(
                         keyValuePairs:
                             DataHelper.getShowCoordinatesKeyValuePairs(),
-                        defaultValue: provider.getActiveShowCoordinates(),
+                        activeValue: provider.getActiveShowCoordinates(),
                         onChange: (value) {
                           provider.setActiveShowCoordinates(
                               value as ShowCoordinates);

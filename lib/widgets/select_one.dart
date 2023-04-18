@@ -4,14 +4,14 @@ class SelectOne extends StatefulWidget {
   const SelectOne({
     super.key,
     required this.keyValuePairs,
-    required this.defaultValue,
+    required this.activeValue,
     required this.onChange,
     this.disabled = false,
   });
 
   // getting the key values
   final Map<Enum, String> keyValuePairs;
-  final Enum? defaultValue;
+  final Enum? activeValue;
   final Function(Enum value) onChange;
   final bool disabled;
 
@@ -20,19 +20,6 @@ class SelectOne extends StatefulWidget {
 }
 
 class _SelectOneState extends State<SelectOne> {
-  // selected key equals the default value
-  late Enum? selectedKey = widget.defaultValue;
-
-  @override
-  void didUpdateWidget(covariant SelectOne oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    // changing the value of the selected key
-    setState(() {
-      selectedKey = widget.defaultValue;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     // if data is empty then throw an error
@@ -41,8 +28,8 @@ class _SelectOneState extends State<SelectOne> {
     }
 
     // if default value is not null but disabled is true or if disabled is false but default value is null then throw an error
-    if ((widget.defaultValue != null && widget.disabled) ||
-        (!widget.disabled && widget.defaultValue == null)) {
+    if ((widget.activeValue != null && widget.disabled) ||
+        (!widget.disabled && widget.activeValue == null)) {
       throw 'Widget can only be disabled when no default value is provided';
     }
 
@@ -63,7 +50,7 @@ class _SelectOneState extends State<SelectOne> {
               children: widget.keyValuePairs.keys.map(
             (key) {
               // whether the item is selected or not
-              final bool isSelected = key == selectedKey;
+              final bool isSelected = key == widget.activeValue;
 
               return Expanded(
                 child: GestureDetector(
@@ -72,12 +59,8 @@ class _SelectOneState extends State<SelectOne> {
                       return;
                     }
 
-                    // updating the selected key
-                    setState(() {
-                      selectedKey = key;
-                    });
-
-                    widget.onChange(selectedKey!);
+                    // calling the onChange function by passing the current element's key
+                    widget.onChange(key);
                   },
                   child: Container(
                     alignment: Alignment.center,
