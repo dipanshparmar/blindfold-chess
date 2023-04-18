@@ -63,30 +63,44 @@ class PracticeCoordinatesConfigProvider with ChangeNotifier {
   // setters
   void setActivePieceColor(PieceColor pieceType) {
     _activePieceColor = pieceType;
+
+    notifyListeners();
   }
 
   void setActivePracticeCoordinatesType(
       PracticeCoordinatesType practiceCoordinatesType) {
     _activePracticeCoordinatesType = practiceCoordinatesType;
+
+    notifyListeners();
   }
 
   void setActiveShowCoordinates(ShowCoordinates showCoordinates) {
     _activeShowCoordinates = showCoordinates;
+
+    notifyListeners();
   }
 
   void setActiveShowPieces(ShowPieces showPieces) {
     _activeShowPieces = showPieces;
+
+    notifyListeners();
   }
 
   void setActiveSeconds(double seconds) {
     _activeSeconds = seconds;
+
+    notifyListeners();
   }
 
   void setActiveFiles(List<File> files) {
     _activeFiles = files;
+
+    notifyListeners();
   }
 
   void setActiveRanks(List<Rank> ranks) {
     _activeRanks = ranks;
+
+    notifyListeners();
   }
 }
