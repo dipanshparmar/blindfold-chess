@@ -7,14 +7,14 @@ import '../utils/enums/enums.dart';
 import '../helpers/helpers.dart';
 
 class PracticeSquareColorsConfigProvider with ChangeNotifier {
-  ShowCoordinates _activeShowCoordinates = ShowCoordinates.hide;
+  ShowCoordinates? _activeShowCoordinates;
   double _activeSeconds = -1;
   ShowBoard _activeShowBoard = ShowBoard.hide;
   List<File> _activeFiles = DataHelper.getFilesKeyValuePairs().keys.toList();
   List<Rank> _activeRanks = DataHelper.getRanksKeyValuePairs().keys.toList();
 
   // getters
-  ShowCoordinates getActiveShowCoordinates() {
+  ShowCoordinates? getActiveShowCoordinates() {
     return _activeShowCoordinates;
   }
 
@@ -49,6 +49,13 @@ class PracticeSquareColorsConfigProvider with ChangeNotifier {
 
   void setActiveShowBoard(ShowBoard showBoard) {
     _activeShowBoard = showBoard;
+
+    // set the show coordinates to null if show board = show, to no coords otherwise
+    if (showBoard == ShowBoard.hide) {
+      _activeShowCoordinates = null;
+    } else {
+      _activeShowCoordinates = ShowCoordinates.hide;
+    }
 
     notifyListeners();
   }
