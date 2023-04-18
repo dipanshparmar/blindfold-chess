@@ -89,7 +89,6 @@ class PracticeCoordinatesPage extends StatelessWidget {
                   values: provider.getActiveRanks(),
                   onChange: (selectedValues) {
                     provider.setActiveRanks(selectedValues as List<Rank>);
-                    print(selectedValues);
                   },
                 ),
                 const SizedBox(

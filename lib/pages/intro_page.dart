@@ -16,7 +16,7 @@ class IntroPage extends StatelessWidget {
           children: [
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.all(50.0),
                 child: SvgPicture.asset(
                   'assets/images/chess_board.svg',
                   width: double.infinity,
@@ -30,17 +30,17 @@ class IntroPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'Lorem ipsum',
+                    'Improve Your Board Vision',
                     style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 18,
                     ),
                   ),
                   const SizedBox(
                     height: 5,
                   ),
                   Text(
-                    'Lorem ipsum dolor sit amet consectetur. Risus malesuada vulputate tristique risus lorem dui hendrerit. Et integer quam non.',
+                    'Train your board vision by practicing coordinates, colors of squares, and moves of each piece on the board.',
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   const SizedBox(

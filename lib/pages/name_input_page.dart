@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 // pages
 import './pages.dart';
@@ -12,44 +11,40 @@ class NameInputPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-          child: Column(
-        children: [
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(100.0),
-              child: SvgPicture.asset(
-                'assets/images/username_symbol.svg',
-                width: double.infinity,
+        body: SafeArea(
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        height: MediaQuery.of(context).size.height,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'You can update it any time in settings',
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            const TextField(
+              decoration: InputDecoration(
+                hintText: 'What should we call you?',
               ),
+              keyboardType: TextInputType.name,
+              textCapitalization: TextCapitalization.words,
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              children: [
-                const TextField(
-                  decoration: InputDecoration(
-                    hintText: 'What should we call you?',
-                  ),
-                  maxLength: 12,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pushReplacementNamed(
-                      HomePage.routeName,
-                    );
-                  },
-                  child: const Text('CALL ME THIS'),
-                )
-              ],
+            const SizedBox(
+              height: 20,
             ),
-          )
-        ],
-      )),
-    );
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pushReplacementNamed(HomePage.routeName);
+              },
+              child: const Text('GREAT'),
+            )
+          ],
+        ),
+      ),
+    ));
   }
 }

@@ -25,7 +25,6 @@ class PracticeSquareColorsPage extends StatelessWidget {
           Expanded(
             child: Consumer<PracticeSquareColorsConfigProvider>(
               builder: (context, provider, child) {
-                print(provider.getActiveShowCoordinates());
                 return SingleChildScrollView(
                   physics: const BouncingScrollPhysics(),
                   child: Column(

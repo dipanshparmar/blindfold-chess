@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
         ),
         titleMedium: TextStyle(
           fontWeight: FontWeight.w600,
-          fontSize: 12,
+          fontSize: 14,
         ), // styles for the text input
         titleSmall: TextStyle(fontSize: 12),
       ),
@@ -68,9 +68,13 @@ class MyApp extends StatelessWidget {
         ),
         hintStyle: const TextStyle(
           fontWeight: FontWeight.w600,
-          fontSize: 12,
+          fontSize: 14,
         ),
-        contentPadding: const EdgeInsets.all(20),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 17.5,
+        ),
+        isDense: true,
       ),
       textSelectionTheme: const TextSelectionThemeData(
         cursorColor: Color(0xFF212028),
