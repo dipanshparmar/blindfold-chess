@@ -64,12 +64,6 @@ class _CustomTimeSliderState extends State<CustomTimeSlider> {
     if (widget.min >= max) {
       throw 'Min can not be greater than or equals to max';
     }
-
-    // if (count * stepSize) is greater than max then throw an error as we can't fit enough count
-    // widget.count - 1 because the minimum value is inclusive
-    if (widget.min + ((widget.count - 1) * widget.stepSize) > max) {
-      throw 'min + ((count - 1) * stepSize) exceeds the maximum value';
-    }
   }
 
   @override
