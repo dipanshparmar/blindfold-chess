@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
           fontSize: 16,
           fontFamily: 'Poppins',
         ),
+        centerTitle: true,
       ),
       textTheme: const TextTheme(
         bodyMedium: TextStyle(
@@ -106,6 +107,8 @@ class MyApp extends StatelessWidget {
         routes: {
           NameInputPage.routeName: (context) => const NameInputPage(),
           HomePage.routeName: (context) => const HomePage(),
+          PracticeCoordinatesGameplayPage.routeName: (context) =>
+              const PracticeCoordinatesGameplayPage(),
         },
       ),
     );

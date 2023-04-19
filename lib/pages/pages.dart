@@ -4,3 +4,4 @@ export './home_page.dart';
 export './practice_coordinates_page.dart';
 export './practice_square_colors_page.dart';
 export './practice_moves_page.dart';
+export './practice_coordinates_gameplay_page.dart';

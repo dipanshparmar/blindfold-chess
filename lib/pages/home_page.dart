@@ -21,6 +21,7 @@ class HomePage extends StatelessWidget {
             iconSize: 20,
           )
         ],
+        centerTitle: false,
       ),
       body: const CustomPageViewController(),
     );

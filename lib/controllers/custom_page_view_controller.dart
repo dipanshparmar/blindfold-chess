@@ -29,6 +29,11 @@ class _CustomPageViewControllerState extends State<CustomPageViewController> {
   // page controller
   late final PageController _pageController;
 
+  // follow up page routes
+  final List<String> _followUpPageRoutes = [
+    PracticeCoordinatesGameplayPage.routeName,
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -116,7 +121,13 @@ class _CustomPageViewControllerState extends State<CustomPageViewController> {
         ),
         Padding(
           padding: const EdgeInsets.all(20.0),
-          child: ElevatedButton(onPressed: () {}, child: const Text('Start')),
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.of(context)
+                  .pushNamed(_followUpPageRoutes[_currentPageIndex]);
+            },
+            child: const Text('Start'),
+          ),
         )
       ],
     );
