@@ -97,7 +97,7 @@ class _ChessBoardState extends State<ChessBoard> {
 
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(width: 2, color: Theme.of(context).primaryColor),
+        border: Border.all(width: 1, color: Theme.of(context).primaryColor),
       ),
       child: Column(
         children: _ranks.keys.toList().reversed.map((rank) {
@@ -106,6 +106,11 @@ class _ChessBoardState extends State<ChessBoard> {
             children: _files.keys.map((file) {
               return GestureDetector(
                 onTap: () async {
+                  // if click coordinates not null then we already have a click
+                  if (clickCoordinates != null) {
+                    return;
+                  }
+
                   // updating the click coordinates
                   setState(() {
                     clickCoordinates = Coordinates(file, rank);
@@ -124,24 +129,36 @@ class _ChessBoardState extends State<ChessBoard> {
                 child: Container(
                   height: squareWidth,
                   width: squareWidth,
-                  color: clickCoordinates == null
-                      ? getSquareColor(file, rank)
-                      : getResultColor(
-                          Coordinates(file, rank), clickCoordinates!),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      width: .5,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    color: clickCoordinates == null
+                        ? getSquareColor(file, rank)
+                        : getResultColor(
+                            Coordinates(file, rank), clickCoordinates!),
+                  ),
                   child: Stack(
                     children: [
                       widget.showCoordinates && rank == Rank.one
                           ? Positioned(
                               left: 5,
                               bottom: 0,
-                              child: Text(_files[file]!),
+                              child: Text(
+                                _files[file]!,
+                                style: const TextStyle(fontSize: 12),
+                              ),
                             )
                           : const SizedBox.shrink(),
                       widget.showCoordinates && file == File.h
                           ? Positioned(
                               right: 5,
                               top: 0,
-                              child: Text(_ranks[rank]!),
+                              child: Text(
+                                _ranks[rank]!,
+                                style: const TextStyle(fontSize: 12),
+                              ),
                             )
                           : const SizedBox.shrink(),
                     ],

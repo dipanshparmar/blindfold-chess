@@ -61,6 +61,7 @@ class _PracticeCoordinatesGameplayPageState
 
   @override
   Widget build(BuildContext context) {
+    print('build called');
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -104,36 +105,46 @@ class _PracticeCoordinatesGameplayPageState
           const SizedBox(
             height: 15,
           ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            width: double.infinity,
+            child: Text(
+              'Correct: 5',
+              textAlign: TextAlign.left,
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+            ),
+          ),
+          const SizedBox(
+            height: 15,
+          ),
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // disabling clicks on the board if clicked
-                AbsorbPointer(
-                  absorbing: clicked,
-                  child: ChessBoard(
-                    showCoordinates: true,
-                    questionCoordinates: question,
-                    onTap: (result) async {
-                      // setting the click to true
-                      setState(() {
-                        clicked = true;
-                      });
+                ChessBoard(
+                  showCoordinates: true,
+                  questionCoordinates: question,
+                  onTap: (result) async {
+                    // delay duration
+                    const Duration duration = Duration(milliseconds: 500);
 
-                      // waiting for duration time
-                      await Future.delayed(const Duration(milliseconds: 250));
+                    // setting the click to true
+                    setState(() {
+                      clicked = true;
+                    });
 
-                      // setting clicked to false
-                      setState(() {
-                        clicked = false;
-                      });
+                    // waiting for duration time
+                    await Future.delayed(duration);
 
-                      // create a new question
-                      setState(() {
-                        question = getQuestionCoordinates();
-                      });
-                    },
-                  ),
+                    // setting clicked to false
+                    // create a new question
+                    setState(() {
+                      clicked = false;
+                      question = getQuestionCoordinates();
+                    });
+                  },
                 ),
                 const SizedBox(
                   height: 15,
