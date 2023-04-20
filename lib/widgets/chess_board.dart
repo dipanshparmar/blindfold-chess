@@ -19,6 +19,7 @@ class ChessBoard extends StatefulWidget {
     this.reds,
     this.greens,
     required this.width,
+    this.forWhite = true,
   });
 
   final bool showCoordinates;
@@ -28,6 +29,7 @@ class ChessBoard extends StatefulWidget {
   final List<Coordinates>? reds;
   final List<Coordinates>? greens;
   final double width;
+  final bool forWhite;
 
   @override
   State<ChessBoard> createState() => _ChessBoardState();
@@ -39,6 +41,24 @@ class _ChessBoardState extends State<ChessBoard> {
 
   // grabbing the ranks
   final Map<Rank, String> _ranks = DataHelper.getRanksKeyValuePairs();
+
+  // to hold the desired rank and file
+  late final Rank desiredRank;
+  late final File desiredFile;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // setting up the desired rank and file
+    if (widget.forWhite) {
+      desiredRank = Rank.one;
+      desiredFile = File.a;
+    } else {
+      desiredRank = Rank.eight;
+      desiredFile = File.h;
+    }
+  }
 
   // function to get whether the file is even or not
   bool isFileEven(File file) {
@@ -131,6 +151,15 @@ class _ChessBoardState extends State<ChessBoard> {
     // getting the width for each square
     final double squareWidth = widget.width / 8;
 
+    // getting the ranks and files according to the board type
+    final List<Rank> finalRanks = widget.forWhite
+        ? _ranks.keys.toList().reversed.toList()
+        : _ranks.keys.toList();
+
+    final List<File> finalFiles = widget.forWhite
+        ? _files.keys.toList()
+        : _files.keys.toList().reversed.toList();
+
     return AbsorbPointer(
       absorbing: widget.viewOnly,
       child: Container(
@@ -138,10 +167,10 @@ class _ChessBoardState extends State<ChessBoard> {
           border: Border.all(width: 1, color: Theme.of(context).primaryColor),
         ),
         child: Column(
-          children: _ranks.keys.toList().reversed.map((rank) {
+          children: finalRanks.map((rank) {
             return Row(
               mainAxisSize: MainAxisSize.min,
-              children: _files.keys.map((file) {
+              children: finalFiles.map((file) {
                 return GestureDetector(
                   onTap: () async {
                     // if only viewOnly then just return
@@ -186,9 +215,9 @@ class _ChessBoardState extends State<ChessBoard> {
                     ),
                     child: Stack(
                       children: [
-                        widget.showCoordinates && rank == Rank.one
+                        widget.showCoordinates && rank == desiredRank
                             ? Positioned(
-                                left: 5,
+                                right: 5,
                                 bottom: 0,
                                 child: Text(
                                   _files[file]!,
@@ -196,9 +225,9 @@ class _ChessBoardState extends State<ChessBoard> {
                                 ),
                               )
                             : const SizedBox.shrink(),
-                        widget.showCoordinates && file == File.h
+                        widget.showCoordinates && file == desiredFile
                             ? Positioned(
-                                right: 5,
+                                left: 5,
                                 top: 0,
                                 child: Text(
                                   _ranks[rank]!,

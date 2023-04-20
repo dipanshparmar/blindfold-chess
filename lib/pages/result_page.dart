@@ -167,86 +167,97 @@ class _QuestionDetailsState extends State<QuestionDetails> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          child: Text(
-            'Please choose any question number below to see the details about the question',
-            style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                  fontWeight: FontWeight.w500,
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          color: Theme.of(context).primaryColor.withOpacity(.1),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Text(
+                  'Please choose any question number below to see the details about the question',
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        fontWeight: FontWeight.w500,
+                      ),
                 ),
-          ),
-        ),
-        const SizedBox(
-          height: 5,
-        ),
-        SizedBox(
-          height: 35,
-          child: ListView.builder(
-            padding: const EdgeInsets.only(left: 20, right: 5),
-            physics: const BouncingScrollPhysics(),
-            scrollDirection: Axis.horizontal,
-            itemCount: widget.data.length,
-            itemBuilder: (context, index) {
-              // getting the key
-              final int key = widget.data.keys.toList()[index];
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              SizedBox(
+                height: 35,
+                child: ListView.builder(
+                  padding: const EdgeInsets.only(left: 20, right: 5),
+                  physics: const BouncingScrollPhysics(),
+                  scrollDirection: Axis.horizontal,
+                  itemCount: widget.data.length,
+                  itemBuilder: (context, index) {
+                    // getting the key
+                    final int key = widget.data.keys.toList()[index];
 
-              // status of isActive
-              final bool isActive = key == activeKey;
+                    // status of isActive
+                    final bool isActive = key == activeKey;
 
-              return Row(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      // setting the active key
-                      setState(() {
-                        activeKey = key;
-                      });
-                    },
-                    child: Stack(
+                    return Row(
                       children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 12),
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                                color: Theme.of(context).primaryColor,
-                                width: 2),
-                            borderRadius: BorderRadius.circular(5),
-                            color: isActive ? Colors.black : null,
-                          ),
-                          child: Text(
-                            (key + 1).toString(),
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium!
-                                .copyWith(
-                                  color: isActive ? Colors.white : Colors.black,
+                        GestureDetector(
+                          onTap: () {
+                            // setting the active key
+                            setState(() {
+                              activeKey = key;
+                            });
+                          },
+                          child: Stack(
+                            children: [
+                              Container(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 12),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: Theme.of(context).primaryColor,
+                                      width: 2),
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: isActive ? Colors.black : Colors.white,
                                 ),
+                                child: Text(
+                                  (key + 1).toString(),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium!
+                                      .copyWith(
+                                        color: isActive
+                                            ? Colors.white
+                                            : Colors.black,
+                                      ),
+                                ),
+                              ),
+                              Positioned(
+                                bottom: 5,
+                                right: 5,
+                                child: Container(
+                                  height: 5,
+                                  width: 5,
+                                  decoration: BoxDecoration(
+                                    color: widget.data[key]!['Result']
+                                        ? Colors.green
+                                        : Colors.red,
+                                    shape: BoxShape.circle,
+                                  ),
+                                ),
+                              )
+                            ],
                           ),
                         ),
-                        Positioned(
-                          bottom: 5,
-                          right: 5,
-                          child: Container(
-                            height: 5,
-                            width: 5,
-                            decoration: BoxDecoration(
-                              color: widget.data[key]!['Result']
-                                  ? Colors.green
-                                  : Colors.red,
-                              shape: BoxShape.circle,
-                            ),
-                          ),
-                        )
+                        const SizedBox(
+                          width: 15,
+                        ),
                       ],
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                ],
-              );
-            },
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
         ),
         const SizedBox(

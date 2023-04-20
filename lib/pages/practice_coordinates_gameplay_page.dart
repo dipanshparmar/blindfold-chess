@@ -235,60 +235,70 @@ class _PracticeCoordinatesGameplayPageState
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ChessBoard(
-                  showCoordinates: provider.getActiveShowCoordinates() ==
-                          ShowCoordinates.show
-                      ? true
-                      : false,
-                  width: deviceWidth - 8,
-                  questionCoordinates: question,
-                  onTap: (result, userChose) async {
-                    // delay duration
-                    const Duration duration = Duration(milliseconds: 300);
+                Consumer<PracticeCoordinatesConfigProvider>(
+                  builder: (context, consumerProvider, child) {
+                    return ChessBoard(
+                      showCoordinates:
+                          consumerProvider.getActiveShowCoordinates() ==
+                              ShowCoordinates.show,
+                      width: deviceWidth - 8,
+                      questionCoordinates: question,
+                      forWhite: consumerProvider.getActivePieceColor() ==
+                          PieceColor.white,
+                      onTap: (result, userChose) async {
+                        // delay duration
+                        const Duration duration = Duration(milliseconds: 300);
 
-                    // setting the click to true
-                    setState(() {
-                      clicked = true;
-                    });
+                        // setting the click to true
+                        setState(() {
+                          clicked = true;
+                        });
 
-                    // waiting for duration time
-                    await Future.delayed(duration);
+                        // waiting for duration time
+                        await Future.delayed(duration);
 
-                    // grabbing the question coordinates text and the user answered coordinates text
-                    final String questionText = getCoordinatesAsText(question);
-                    final String userChoseText =
-                        getCoordinatesAsText(userChose);
+                        // grabbing the question coordinates text and the user answered coordinates text
+                        final String questionText =
+                            getCoordinatesAsText(question);
+                        final String userChoseText =
+                            getCoordinatesAsText(userChose);
 
-                    // updating the questions data
-                    questionsData[total] = {
-                      'Square to choose': questionText,
-                      'You chose': userChoseText,
-                      'Result': result,
-                      'Board view': ChessBoard(
-                        greens: result ? [userChose] : [question],
-                        reds: result ? [] : [userChose],
-                        viewOnly: true,
-                        showCoordinates: true,
-                        width: deviceWidth -
-                            42, // because on the next page we are going to have padding of 20 each side horizontally and the board itself is going to have borders of width 1 both side
-                      ),
-                    };
+                        // updating the questions data
+                        questionsData[total] = {
+                          'Square to choose': questionText,
+                          'You chose': userChoseText,
+                          'Result': result,
+                          'Board view': ChessBoard(
+                            greens: result ? [userChose] : [question],
+                            reds: result ? [] : [userChose],
+                            viewOnly: true,
+                            showCoordinates:
+                                consumerProvider.getActiveShowCoordinates() ==
+                                    ShowCoordinates.show,
+                            forWhite: consumerProvider.getActivePieceColor() ==
+                                PieceColor.white,
+                            width: deviceWidth -
+                                42, // because on the next page we are going to have padding of 20 each side horizontally and the board itself is going to have borders of width 1 both side
+                          ),
+                        };
 
-                    setState(() {
-                      // incrementing the total
-                      total++;
+                        setState(() {
+                          // incrementing the total
+                          total++;
 
-                      // if result is positive then increment the correct answers count
-                      if (result) {
-                        correct++;
-                      }
+                          // if result is positive then increment the correct answers count
+                          if (result) {
+                            correct++;
+                          }
 
-                      // setting clicked to false
-                      clicked = false;
+                          // setting clicked to false
+                          clicked = false;
 
-                      // generating a new question
-                      question = getQuestionCoordinates();
-                    });
+                          // generating a new question
+                          question = getQuestionCoordinates();
+                        });
+                      },
+                    );
                   },
                 ),
                 const SizedBox(
