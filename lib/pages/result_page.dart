@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sticky_headers/sticky_headers.dart';
 
 // widgets
 import '../widgets/widgets.dart';
@@ -168,141 +169,139 @@ class _QuestionDetailsState extends State<QuestionDetails> {
     return Column(
       children: [
         Container(
-          padding: const EdgeInsets.symmetric(vertical: 20),
+          padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
           color: Theme.of(context).primaryColor.withOpacity(.1),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Text(
-                  'Please choose any question number below to see the details about the question',
-                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                        fontWeight: FontWeight.w500,
-                      ),
+          child: Text(
+            'Please choose any question number below to see the details about the question',
+            style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                  fontWeight: FontWeight.w500,
                 ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              SizedBox(
-                height: 35,
-                child: ListView.builder(
-                  padding: const EdgeInsets.only(left: 20, right: 5),
-                  physics: const BouncingScrollPhysics(),
-                  scrollDirection: Axis.horizontal,
-                  itemCount: widget.data.length,
-                  itemBuilder: (context, index) {
-                    // getting the key
-                    final int key = widget.data.keys.toList()[index];
+          ),
+        ),
+        StickyHeader(
+          header: Container(
+            color: const Color(0xFFE9E9EA),
+            padding: const EdgeInsets.only(bottom: 20, top: 20),
+            child: SizedBox(
+              height: 35,
+              child: ListView.builder(
+                padding: const EdgeInsets.only(left: 20, right: 5),
+                physics: const BouncingScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                itemCount: widget.data.length,
+                itemBuilder: (context, index) {
+                  // getting the key
+                  final int key = widget.data.keys.toList()[index];
 
-                    // status of isActive
-                    final bool isActive = key == activeKey;
+                  // status of isActive
+                  final bool isActive = key == activeKey;
 
-                    return Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            // setting the active key
-                            setState(() {
-                              activeKey = key;
-                            });
-                          },
-                          child: Stack(
-                            children: [
-                              Container(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 12),
-                                alignment: Alignment.center,
+                  return Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          // setting the active key
+                          setState(() {
+                            activeKey = key;
+                          });
+                        },
+                        child: Stack(
+                          children: [
+                            Container(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 12),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Theme.of(context).primaryColor,
+                                    width: 2),
+                                borderRadius: BorderRadius.circular(5),
+                                color: isActive ? Colors.black : Colors.white,
+                              ),
+                              child: Text(
+                                (key + 1).toString(),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
+                                    .copyWith(
+                                      color: isActive
+                                          ? Colors.white
+                                          : Colors.black,
+                                    ),
+                              ),
+                            ),
+                            Positioned(
+                              bottom: 5,
+                              right: 5,
+                              child: Container(
+                                height: 5,
+                                width: 5,
                                 decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: Theme.of(context).primaryColor,
-                                      width: 2),
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: isActive ? Colors.black : Colors.white,
-                                ),
-                                child: Text(
-                                  (key + 1).toString(),
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium!
-                                      .copyWith(
-                                        color: isActive
-                                            ? Colors.white
-                                            : Colors.black,
-                                      ),
+                                  color: widget.data[key]!['Result']
+                                      ? Colors.green
+                                      : Colors.red,
+                                  shape: BoxShape.circle,
                                 ),
                               ),
-                              Positioned(
-                                bottom: 5,
-                                right: 5,
-                                child: Container(
-                                  height: 5,
-                                  width: 5,
-                                  decoration: BoxDecoration(
-                                    color: widget.data[key]!['Result']
-                                        ? Colors.green
-                                        : Colors.red,
-                                    shape: BoxShape.circle,
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
+                            )
+                          ],
                         ),
-                        const SizedBox(
-                          width: 15,
-                        ),
-                      ],
-                    );
-                  },
-                ),
+                      ),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                    ],
+                  );
+                },
               ),
-            ],
+            ),
           ),
-        ),
-        const SizedBox(
-          height: 15,
-        ),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          width: double.infinity,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-
-            // mapping through current questions' data
-            children: widget.data[activeKey]!.keys.map((key) {
-              // getting the value
-              final dynamic value = widget.data[activeKey]![key];
-
-              return Column(
+          content: Column(children: [
+            const SizedBox(
+              height: 15,
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              width: double.infinity,
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    key,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodySmall!
-                        .copyWith(fontWeight: FontWeight.w500),
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  value is ChessBoard
-                      ? value
-                      : value is bool
-                          ? Text(value ? 'Correct' : 'Incorrect')
-                          : Text(value),
-                  const SizedBox(
-                    height: 15,
-                  )
-                ],
-              );
-            }).toList(),
-          ),
+
+                // mapping through current questions' data
+                children: widget.data[activeKey]!.keys.map((key) {
+                  // getting the value
+                  final dynamic value = widget.data[activeKey]![key];
+
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        key,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodySmall!
+                            .copyWith(fontWeight: FontWeight.w500),
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      value is ChessBoard
+                          ? value
+                          : value is bool
+                              ? Text(value ? 'Correct' : 'Incorrect')
+                              : Text(value),
+                      const SizedBox(
+                        height: 15,
+                      )
+                    ],
+                  );
+                }).toList(),
+              ),
+            ),
+            const SizedBox(
+              height: 5, // this will add to the bottom sizedbox of 15 above
+            ),
+          ]),
         ),
-        const SizedBox(
-          height: 5, // this will add to the bottom sizedbox of 15 above
-        )
       ],
     );
   }
