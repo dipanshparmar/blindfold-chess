@@ -54,19 +54,23 @@ class ResultPage extends StatelessWidget {
                   const SizedBox(
                     height: 15,
                   ),
-                  Text(
-                    'Time elapsed',
-                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                          fontWeight: FontWeight.w500,
-                        ),
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Text(data['timeElapsed']),
-                  const SizedBox(
-                    height: 15,
-                  ),
+                  if (data.containsKey('timeElapsed'))
+                    Text(
+                      'Time elapsed',
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                            fontWeight: FontWeight.w500,
+                          ),
+                    ),
+                  if (data.containsKey('timeElapsed'))
+                    const SizedBox(
+                      height: 5,
+                    ),
+                  if (data.containsKey('timeElapsed'))
+                    Text(data['timeElapsed']),
+                  if (data.containsKey('timeElapsed'))
+                    const SizedBox(
+                      height: 15,
+                    ),
                   Text(
                     'Total',
                     style: Theme.of(context).textTheme.bodySmall!.copyWith(
@@ -110,7 +114,10 @@ class ResultPage extends StatelessWidget {
                 ],
               ),
             ),
-            QuestionDetails(data: data['questionsData'])
+            if (data['questionsData'].isNotEmpty)
+              QuestionDetails(
+                data: data['questionsData'],
+              ),
           ],
         ),
       ),

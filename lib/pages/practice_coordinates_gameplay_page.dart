@@ -62,6 +62,34 @@ class _PracticeCoordinatesGameplayPageState
   // timer reference
   Timer? timer;
 
+  // the time defined above will change over time, so we get a copy of the original time
+  late double originalTime;
+
+  // method to push the follow up page
+  void pushFollowUpPage() {
+    // preparing the data
+    final Map<String, dynamic> data = {
+      'practiceType':
+          DataHelper.getPracticeTypeKeyValuePairs()[PracticeType.coordinates],
+      'timeElapsed': '${originalTime}s',
+      'total': total.toString(),
+      'correct': correct.toString(),
+      'incorrect': (total - correct).toString(),
+      'questionsData': questionsData,
+    };
+
+    // if original time is -1 then removed the time elapsed field
+    if (originalTime == -1) {
+      data.removeWhere((key, value) => key == 'timeElapsed');
+    }
+
+    // pushing the page with the required data
+    Navigator.of(context).pushReplacementNamed(
+      ResultPage.routeName,
+      arguments: data,
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -75,7 +103,7 @@ class _PracticeCoordinatesGameplayPageState
             .getActiveSeconds();
 
     // getting the copy of original time
-    int originalTime = time.toInt();
+    originalTime = time;
 
     // if time is -1 then return
     if (time == -1) {
@@ -93,19 +121,7 @@ class _PracticeCoordinatesGameplayPageState
         // if time reaches 0 then cancel the timer and push the results page
         timer.cancel();
 
-        // pushing the page with the required data
-        Navigator.of(context).pushReplacementNamed(
-          ResultPage.routeName,
-          arguments: <String, dynamic>{
-            'practiceType': DataHelper.getPracticeTypeKeyValuePairs()[
-                PracticeType.coordinates],
-            'timeElapsed': '${originalTime}s',
-            'total': total.toString(),
-            'correct': correct.toString(),
-            'incorrect': (total - correct).toString(),
-            'questionsData': questionsData,
-          },
-        );
+        pushFollowUpPage();
       }
     });
   }
@@ -159,6 +175,15 @@ class _PracticeCoordinatesGameplayPageState
                   color: Theme.of(context).colorScheme.secondary,
                 ),
               ),
+            )
+          else
+            IconButton(
+              icon: const Icon(Icons.check),
+              iconSize: 20,
+              onPressed: () {
+                // pushing up the page
+                pushFollowUpPage();
+              },
             )
         ],
         title: const Text('Practice Coordinates'),
