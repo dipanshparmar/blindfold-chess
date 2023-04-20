@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 // helpers
 import '../helpers/helpers.dart';
@@ -13,6 +14,7 @@ class ChessBoard extends StatefulWidget {
   const ChessBoard({
     super.key,
     this.showCoordinates = false,
+    this.showPieces = false,
     this.onTap,
     this.questionCoordinates,
     this.viewOnly = false,
@@ -23,6 +25,7 @@ class ChessBoard extends StatefulWidget {
   });
 
   final bool showCoordinates;
+  final bool showPieces;
   final Function(bool, Coordinates)? onTap;
   final Coordinates? questionCoordinates;
   final bool viewOnly;
@@ -46,6 +49,9 @@ class _ChessBoardState extends State<ChessBoard> {
   late final Rank desiredRank;
   late final File desiredFile;
 
+  // variable to hold the pieces and their locations
+  Map<PieceType, Map<String, Map<String, dynamic>>>? piecesData;
+
   @override
   void initState() {
     super.initState();
@@ -57,6 +63,93 @@ class _ChessBoardState extends State<ChessBoard> {
     } else {
       desiredRank = Rank.eight;
       desiredFile = File.h;
+    }
+
+    // setting up the pieces and their locations if asked for
+    if (widget.showPieces) {
+      piecesData = {
+        PieceType.king: {
+          'white': {
+            'coordinates': [Coordinates(File.e, Rank.one)],
+            'imagePath': 'assets/images/chess_pieces/white/king.svg'
+          },
+          'black': {
+            'coordinates': [Coordinates(File.e, Rank.eight)],
+            'imagePath': 'assets/images/chess_pieces/black/king.svg'
+          }
+        },
+        PieceType.queen: {
+          'white': {
+            'coordinates': [Coordinates(File.d, Rank.one)],
+            'imagePath': 'assets/images/chess_pieces/white/queen.svg',
+          },
+          'black': {
+            'coordinates': [Coordinates(File.d, Rank.eight)],
+            'imagePath': 'assets/images/chess_pieces/black/queen.svg',
+          }
+        },
+        PieceType.rook: {
+          'white': {
+            'coordinates': [
+              Coordinates(File.a, Rank.one),
+              Coordinates(File.h, Rank.one)
+            ],
+            'imagePath': 'assets/images/chess_pieces/white/rook.svg'
+          },
+          'black': {
+            'coordinates': [
+              Coordinates(File.a, Rank.eight),
+              Coordinates(File.h, Rank.eight)
+            ],
+            'imagePath': 'assets/images/chess_pieces/black/rook.svg'
+          }
+        },
+        PieceType.bishop: {
+          'white': {
+            'coordinates': [
+              Coordinates(File.c, Rank.one),
+              Coordinates(File.f, Rank.one)
+            ],
+            'imagePath': 'assets/images/chess_pieces/white/bishop.svg',
+          },
+          'black': {
+            'coordinates': [
+              Coordinates(File.c, Rank.eight),
+              Coordinates(File.f, Rank.eight)
+            ],
+            'imagePath': 'assets/images/chess_pieces/black/bishop.svg',
+          }
+        },
+        PieceType.knight: {
+          'white': {
+            'coordinates': [
+              Coordinates(File.b, Rank.one),
+              Coordinates(File.g, Rank.one)
+            ],
+            'imagePath': 'assets/images/chess_pieces/white/knight.svg'
+          },
+          'black': {
+            'coordinates': [
+              Coordinates(File.b, Rank.eight),
+              Coordinates(File.g, Rank.eight)
+            ],
+            'imagePath': 'assets/images/chess_pieces/black/knight.svg'
+          }
+        },
+        PieceType.pawn: {
+          'white': {
+            'coordinates':
+                _files.keys.map((file) => Coordinates(file, Rank.two)).toList(),
+            'imagePath': 'assets/images/chess_pieces/white/pawn.svg',
+          },
+          'black': {
+            'coordinates': _files.keys
+                .map((file) => Coordinates(file, Rank.seven))
+                .toList(),
+            'imagePath': 'assets/images/chess_pieces/black/pawn.svg',
+          }
+        },
+      };
     }
   }
 
@@ -132,6 +225,67 @@ class _ChessBoardState extends State<ChessBoard> {
     } else {
       return getSquareColor(coords.getFile(), coords.getRank());
     }
+  }
+
+  // function to return the widget for the white pieces
+  Widget renderPiece(Coordinates coordinates) {
+    // going through all the pieces
+
+    for (int i = 0; i < piecesData!.keys.length; i++) {
+      // getting the current key
+      final key = piecesData!.keys.toList()[i];
+
+      // getting the coordinates for current key
+      // for white piece
+      final List<Coordinates> currentKeyCoordinatesForWhite =
+          piecesData![key]!['white']!['coordinates'];
+
+      // for black piece
+      final List<Coordinates> currentKeyCoordinatesForBlack =
+          piecesData![key]!['black']!['coordinates'];
+
+      // grabbing the image url
+      // for white
+      final String imageUrlForWhite = piecesData![key]!['white']!['imagePath'];
+
+      // for black
+      final String imageUrlForBlack = piecesData![key]!['black']!['imagePath'];
+
+      // if current key's coordinates for black have the passed location then return the black image
+      bool blackFound = currentKeyCoordinatesForBlack.any((current) {
+        if (current.getFile() == coordinates.getFile() &&
+            current.getRank() == coordinates.getRank()) {
+          return true;
+        }
+        return false;
+      });
+
+      // if black found then return the svg
+      if (blackFound) {
+        return SvgPicture.asset(
+          imageUrlForBlack,
+        );
+      }
+
+      // if current key's coordinates for white have the passed location then return the white image
+      bool whiteFound = currentKeyCoordinatesForWhite.any((current) {
+        if (current.getFile() == coordinates.getFile() &&
+            current.getRank() == coordinates.getRank()) {
+          return true;
+        }
+        return false;
+      });
+
+      // if black found then return the svg
+      if (whiteFound) {
+        return SvgPicture.asset(
+          imageUrlForWhite,
+        );
+      }
+    }
+
+    // if we didn't find this location for any piece then return a sized box
+    return const SizedBox.shrink();
   }
 
   @override
@@ -217,11 +371,11 @@ class _ChessBoardState extends State<ChessBoard> {
                       children: [
                         widget.showCoordinates && rank == desiredRank
                             ? Positioned(
-                                right: 5,
+                                right: 1,
                                 bottom: 0,
                                 child: Text(
                                   _files[file]!,
-                                  style: const TextStyle(fontSize: 12),
+                                  style: const TextStyle(fontSize: 10),
                                 ),
                               )
                             : const SizedBox.shrink(),
@@ -231,8 +385,17 @@ class _ChessBoardState extends State<ChessBoard> {
                                 top: 0,
                                 child: Text(
                                   _ranks[rank]!,
-                                  style: const TextStyle(fontSize: 12),
+                                  style: const TextStyle(fontSize: 10),
                                 ),
+                              )
+                            : const SizedBox.shrink(),
+                        widget.showPieces
+                            ? Positioned(
+                                top: 5,
+                                bottom: 5,
+                                right: 5,
+                                left: 5,
+                                child: renderPiece(Coordinates(file, rank)),
                               )
                             : const SizedBox.shrink(),
                       ],

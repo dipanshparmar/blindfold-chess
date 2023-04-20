@@ -243,6 +243,8 @@ class _PracticeCoordinatesGameplayPageState
                               ShowCoordinates.show,
                       width: deviceWidth - 8,
                       questionCoordinates: question,
+                      showPieces: consumerProvider.getActiveShowPieces() ==
+                          ShowPieces.show,
                       forWhite: consumerProvider.getActivePieceColor() ==
                           PieceColor.white,
                       onTap: (result, userChose) async {
@@ -272,6 +274,9 @@ class _PracticeCoordinatesGameplayPageState
                             greens: result ? [userChose] : [question],
                             reds: result ? [] : [userChose],
                             viewOnly: true,
+                            showPieces:
+                                consumerProvider.getActiveShowPieces() ==
+                                    ShowPieces.show,
                             showCoordinates:
                                 consumerProvider.getActiveShowCoordinates() ==
                                     ShowCoordinates.show,
