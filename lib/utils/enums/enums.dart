@@ -6,3 +6,4 @@ export './file.dart';
 export './rank.dart';
 export './piece_type.dart';
 export './show_board.dart';
+export './practice_type.dart';

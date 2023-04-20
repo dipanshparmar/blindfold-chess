@@ -67,6 +67,13 @@ class DataHelper {
     ShowBoard.hide: 'No board',
   };
 
+  // practice type data
+  static const Map<PracticeType, String> _practiceTypeKeyValuePairs = {
+    PracticeType.coordinates: 'Coordinates',
+    PracticeType.squareColors: 'Square colors',
+    PracticeType.moves: 'Moves',
+  };
+
   // getters to get the data
   static Map<PieceColor, String> getPieceColorKeyValuePairs() {
     return _pieceColorKeyValuePairs;
@@ -99,5 +106,9 @@ class DataHelper {
 
   static Map<ShowBoard, String> getShowBoardKeyValuePairs() {
     return _showBoardKeyValuePairs;
+  }
+
+  static Map<PracticeType, String> getPracticeTypeKeyValuePairs() {
+    return _practiceTypeKeyValuePairs;
   }
 }

@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 // widgets
 import '../widgets/widgets.dart';
@@ -13,6 +15,12 @@ import '../helpers/helpers.dart';
 
 // enums
 import '../utils/enums/enums.dart';
+
+// providers
+import '../providers/providers.dart';
+
+// pages
+import './pages.dart';
 
 class PracticeCoordinatesGameplayPage extends StatefulWidget {
   const PracticeCoordinatesGameplayPage({super.key});
@@ -41,12 +49,18 @@ class _PracticeCoordinatesGameplayPageState
   }
 
   // function to get the question text
-  String getQuestionText() {
-    return '${files[question.getFile()]}${ranks[question.getRank()]}';
+  String getCoordinatesAsText(Coordinates coordinates) {
+    return '${files[coordinates.getFile()]}${ranks[coordinates.getRank()]}';
   }
 
   // to hold the question coordinates
   late Coordinates question;
+
+  // to hold the time left
+  late double time;
+
+  // timer reference
+  Timer? timer;
 
   @override
   void initState() {
@@ -54,14 +68,75 @@ class _PracticeCoordinatesGameplayPageState
 
     // assigning the question
     question = getQuestionCoordinates();
+
+    // grabbing the time from the config
+    time =
+        Provider.of<PracticeCoordinatesConfigProvider>(context, listen: false)
+            .getActiveSeconds();
+
+    // getting the copy of original time
+    int originalTime = time.toInt();
+
+    // if time is -1 then return
+    if (time == -1) {
+      return;
+    }
+
+    // setting up a timer
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      // if time is greater than 1 then decrement it
+      if (time > 1) {
+        setState(() {
+          time--;
+        });
+      } else {
+        // if time reaches 0 then cancel the timer and push the results page
+        timer.cancel();
+
+        // pushing the page with the required data
+        Navigator.of(context).pushReplacementNamed(
+          ResultPage.routeName,
+          arguments: <String, dynamic>{
+            'practiceType': DataHelper.getPracticeTypeKeyValuePairs()[
+                PracticeType.coordinates],
+            'timeElapsed': '${originalTime}s',
+            'total': total.toString(),
+            'correct': correct.toString(),
+            'incorrect': (total - correct).toString(),
+            'questionsData': questionsData,
+          },
+        );
+      }
+    });
+  }
+
+  // map to store the each question data
+  final Map<int, Map<String, dynamic>> questionsData = {};
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    // cancelling the timer
+    if (timer != null) {
+      timer!.cancel();
+    }
   }
 
   // clicked state
   bool clicked = false;
 
+  // total questions
+  int total = 0; // 0 initially
+
+  // correct answers
+  int correct = 0; // 0 initially
+
   @override
   Widget build(BuildContext context) {
-    print('build called');
+    // getting the device width
+    final double deviceWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -73,6 +148,19 @@ class _PracticeCoordinatesGameplayPageState
             Navigator.of(context).pop();
           },
         ),
+        actions: [
+          if (time != -1)
+            Container(
+              padding: const EdgeInsets.only(right: 20),
+              alignment: Alignment.center,
+              child: Text(
+                '${time.toInt()}s',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+              ),
+            )
+        ],
         title: const Text('Practice Coordinates'),
       ),
       body: Column(
@@ -86,34 +174,20 @@ class _PracticeCoordinatesGameplayPageState
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Total: 6',
+                  'Total: $total',
                   style: Theme.of(context)
                       .textTheme
                       .bodyMedium!
                       .copyWith(fontWeight: FontWeight.w600),
                 ),
                 Text(
-                  'Time Left: 22s',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium!
-                      .copyWith(fontWeight: FontWeight.w600),
+                  'Correct: $correct',
+                  textAlign: TextAlign.left,
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
               ],
-            ),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            width: double.infinity,
-            child: Text(
-              'Correct: 5',
-              textAlign: TextAlign.left,
-              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
             ),
           ),
           const SizedBox(
@@ -125,10 +199,11 @@ class _PracticeCoordinatesGameplayPageState
               children: [
                 ChessBoard(
                   showCoordinates: true,
+                  width: deviceWidth - 8,
                   questionCoordinates: question,
-                  onTap: (result) async {
+                  onTap: (result, userChose) async {
                     // delay duration
-                    const Duration duration = Duration(milliseconds: 500);
+                    const Duration duration = Duration(milliseconds: 300);
 
                     // setting the click to true
                     setState(() {
@@ -138,10 +213,39 @@ class _PracticeCoordinatesGameplayPageState
                     // waiting for duration time
                     await Future.delayed(duration);
 
-                    // setting clicked to false
-                    // create a new question
+                    // grabbing the question coordinates text and the user answered coordinates text
+                    final String questionText = getCoordinatesAsText(question);
+                    final String userChoseText =
+                        getCoordinatesAsText(userChose);
+
+                    // updating the questions data
+                    questionsData[total] = {
+                      'Square to choose': questionText,
+                      'You chose': userChoseText,
+                      'Result': result,
+                      'Board view': ChessBoard(
+                        greens: result ? [userChose] : [question],
+                        reds: result ? [] : [userChose],
+                        viewOnly: true,
+                        showCoordinates: true,
+                        width: deviceWidth -
+                            42, // because on the next page we are going to have padding of 20 each side horizontally and the board itself is going to have borders of width 1 both side
+                      ),
+                    };
+
                     setState(() {
+                      // incrementing the total
+                      total++;
+
+                      // if result is positive then increment the correct answers count
+                      if (result) {
+                        correct++;
+                      }
+
+                      // setting clicked to false
                       clicked = false;
+
+                      // generating a new question
                       question = getQuestionCoordinates();
                     });
                   },
@@ -150,7 +254,7 @@ class _PracticeCoordinatesGameplayPageState
                   height: 15,
                 ),
                 Text(
-                  getQuestionText(),
+                  getCoordinatesAsText(question),
                   style: const TextStyle(
                     fontSize: 40,
                   ),

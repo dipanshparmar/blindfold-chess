@@ -13,13 +13,21 @@ class ChessBoard extends StatefulWidget {
   const ChessBoard({
     super.key,
     this.showCoordinates = false,
-    required this.onTap,
-    required this.questionCoordinates,
+    this.onTap,
+    this.questionCoordinates,
+    this.viewOnly = false,
+    this.reds,
+    this.greens,
+    required this.width,
   });
 
   final bool showCoordinates;
-  final Function(bool) onTap;
-  final Coordinates questionCoordinates;
+  final Function(bool, Coordinates)? onTap;
+  final Coordinates? questionCoordinates;
+  final bool viewOnly;
+  final List<Coordinates>? reds;
+  final List<Coordinates>? greens;
+  final double width;
 
   @override
   State<ChessBoard> createState() => _ChessBoardState();
@@ -56,8 +64,8 @@ class _ChessBoardState extends State<ChessBoard> {
   // function to get the result
   bool getResult(File file, Rank rank) {
     // return true if same as the question coordinate, false otherwise
-    return file == widget.questionCoordinates.getFile() &&
-        rank == widget.questionCoordinates.getRank();
+    return file == widget.questionCoordinates!.getFile() &&
+        rank == widget.questionCoordinates!.getRank();
   }
 
   // to hold the click coordinates
@@ -70,16 +78,18 @@ class _ChessBoardState extends State<ChessBoard> {
       Coordinates clickedCoordinates) {
     if (currentCoordinates.getRank() == clickCoordinates!.getRank() &&
         currentCoordinates.getFile() == clickedCoordinates.getFile()) {
-      if (clickCoordinates!.getRank() == widget.questionCoordinates.getRank() &&
-          clickCoordinates!.getFile() == widget.questionCoordinates.getFile()) {
+      if (clickCoordinates!.getRank() ==
+              widget.questionCoordinates!.getRank() &&
+          clickCoordinates!.getFile() ==
+              widget.questionCoordinates!.getFile()) {
         return Colors.green;
       }
 
       return Colors.red;
       // this will help to color the correct coordinate if incorrect coordinate was clicked
     } else if (currentCoordinates.getRank() ==
-            widget.questionCoordinates.getRank() &&
-        currentCoordinates.getFile() == widget.questionCoordinates.getFile()) {
+            widget.questionCoordinates!.getRank() &&
+        currentCoordinates.getFile() == widget.questionCoordinates!.getFile()) {
       return Colors.green;
     } else {
       return getSquareColor(
@@ -87,87 +97,123 @@ class _ChessBoardState extends State<ChessBoard> {
     }
   }
 
+  // function to get the color for view only mode
+  Color getViewOnlyColor(Coordinates coords) {
+    // if greens have it
+    if (widget.greens!.any((element) =>
+        element.getFile() == coords.getFile() &&
+        element.getRank() == coords.getRank())) {
+      return Colors.green;
+    } else if (widget.reds!.any((element) =>
+        element.getFile() == coords.getFile() &&
+        element.getRank() == coords.getRank())) {
+      // if any of the reds contain it then return red
+      return Colors.red;
+    } else {
+      return getSquareColor(coords.getFile(), coords.getRank());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    // getting the device width
-    final double deviceWidth = MediaQuery.of(context).size.width;
+    // if view only but reds or greens is null then throw an exception
+    if ((widget.viewOnly && widget.reds == null) ||
+        (widget.viewOnly && widget.greens == null)) {
+      throw '(widget.viewOnly && widget.reds == null) || (widget.viewOnly && widget.greens == null) == true';
+    }
+
+    // if not view only then we need the required params
+    if ((!widget.viewOnly && widget.onTap == null) ||
+        (!widget.viewOnly && widget.questionCoordinates == null)) {
+      throw '(!widget.viewOnly && widget.onTap == null) || (!widget.viewOnly && widget.questionCoordinates == null) == true';
+    }
 
     // getting the width for each square
-    final double squareWidth = (deviceWidth - 10) / 8;
+    final double squareWidth = widget.width / 8;
 
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(width: 1, color: Theme.of(context).primaryColor),
-      ),
-      child: Column(
-        children: _ranks.keys.toList().reversed.map((rank) {
-          return Row(
-            mainAxisSize: MainAxisSize.min,
-            children: _files.keys.map((file) {
-              return GestureDetector(
-                onTap: () async {
-                  // if click coordinates not null then we already have a click
-                  if (clickCoordinates != null) {
-                    return;
-                  }
+    return AbsorbPointer(
+      absorbing: widget.viewOnly,
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(width: 1, color: Theme.of(context).primaryColor),
+        ),
+        child: Column(
+          children: _ranks.keys.toList().reversed.map((rank) {
+            return Row(
+              mainAxisSize: MainAxisSize.min,
+              children: _files.keys.map((file) {
+                return GestureDetector(
+                  onTap: () async {
+                    // if only viewOnly then just return
+                    if (widget.viewOnly) {
+                      return;
+                    }
 
-                  // updating the click coordinates
-                  setState(() {
-                    clickCoordinates = Coordinates(file, rank);
-                  });
+                    // if click coordinates not null then we already have a click
+                    if (clickCoordinates != null) {
+                      return;
+                    }
 
-                  final bool result = getResult(file, rank);
+                    // updating the click coordinates
+                    setState(() {
+                      clickCoordinates = Coordinates(file, rank);
+                    });
 
-                  // calling the user defined function
-                  await widget.onTap(result);
+                    final bool result = getResult(file, rank);
 
-                  // setting the click coordinates to null
-                  setState(() {
-                    clickCoordinates = null;
-                  });
-                },
-                child: Container(
-                  height: squareWidth,
-                  width: squareWidth,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      width: .5,
-                      color: Theme.of(context).primaryColor,
+                    // calling the user defined function
+                    await widget.onTap!(result, clickCoordinates!);
+
+                    // setting the click coordinates to null
+                    setState(() {
+                      clickCoordinates = null;
+                    });
+                  },
+                  child: Container(
+                    height: squareWidth,
+                    width: squareWidth,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        width: .5,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      color: widget.viewOnly
+                          ? getViewOnlyColor(Coordinates(file, rank))
+                          : clickCoordinates == null
+                              ? getSquareColor(file, rank)
+                              : getResultColor(
+                                  Coordinates(file, rank), clickCoordinates!),
                     ),
-                    color: clickCoordinates == null
-                        ? getSquareColor(file, rank)
-                        : getResultColor(
-                            Coordinates(file, rank), clickCoordinates!),
+                    child: Stack(
+                      children: [
+                        widget.showCoordinates && rank == Rank.one
+                            ? Positioned(
+                                left: 5,
+                                bottom: 0,
+                                child: Text(
+                                  _files[file]!,
+                                  style: const TextStyle(fontSize: 12),
+                                ),
+                              )
+                            : const SizedBox.shrink(),
+                        widget.showCoordinates && file == File.h
+                            ? Positioned(
+                                right: 5,
+                                top: 0,
+                                child: Text(
+                                  _ranks[rank]!,
+                                  style: const TextStyle(fontSize: 12),
+                                ),
+                              )
+                            : const SizedBox.shrink(),
+                      ],
+                    ),
                   ),
-                  child: Stack(
-                    children: [
-                      widget.showCoordinates && rank == Rank.one
-                          ? Positioned(
-                              left: 5,
-                              bottom: 0,
-                              child: Text(
-                                _files[file]!,
-                                style: const TextStyle(fontSize: 12),
-                              ),
-                            )
-                          : const SizedBox.shrink(),
-                      widget.showCoordinates && file == File.h
-                          ? Positioned(
-                              right: 5,
-                              top: 0,
-                              child: Text(
-                                _ranks[rank]!,
-                                style: const TextStyle(fontSize: 12),
-                              ),
-                            )
-                          : const SizedBox.shrink(),
-                    ],
-                  ),
-                ),
-              );
-            }).toList(),
-          );
-        }).toList(),
+                );
+              }).toList(),
+            );
+          }).toList(),
+        ),
       ),
     );
   }
