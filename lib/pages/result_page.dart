@@ -27,99 +27,121 @@ class ResultPage extends StatelessWidget {
         ),
         title: const Text('Results'),
       ),
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              width: double.infinity,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    'Practice type',
-                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                          fontWeight: FontWeight.w500,
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    width: double.infinity,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(
+                          height: 20,
                         ),
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Text(data['practiceType']),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  if (data.containsKey('timeElapsed'))
-                    Text(
-                      'Time elapsed',
-                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                            fontWeight: FontWeight.w500,
+                        Text(
+                          'Practice type',
+                          style:
+                              Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text(data['practiceType']),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        if (data.containsKey('timeElapsed'))
+                          Text(
+                            'Time elapsed',
+                            style:
+                                Theme.of(context).textTheme.bodySmall!.copyWith(
+                                      fontWeight: FontWeight.w500,
+                                    ),
                           ),
-                    ),
-                  if (data.containsKey('timeElapsed'))
-                    const SizedBox(
-                      height: 5,
-                    ),
-                  if (data.containsKey('timeElapsed'))
-                    Text(data['timeElapsed']),
-                  if (data.containsKey('timeElapsed'))
-                    const SizedBox(
-                      height: 15,
-                    ),
-                  Text(
-                    'Total',
-                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                          fontWeight: FontWeight.w500,
+                        if (data.containsKey('timeElapsed'))
+                          const SizedBox(
+                            height: 5,
+                          ),
+                        if (data.containsKey('timeElapsed'))
+                          Text(data['timeElapsed']),
+                        if (data.containsKey('timeElapsed'))
+                          const SizedBox(
+                            height: 15,
+                          ),
+                        Text(
+                          'Total',
+                          style:
+                              Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                  ),
                         ),
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Text(data['total']),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Text(
-                    'Correct',
-                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                          fontWeight: FontWeight.w500,
+                        const SizedBox(
+                          height: 5,
                         ),
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Text(data['correct']),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Text(
-                    'Incorrect',
-                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                          fontWeight: FontWeight.w500,
+                        Text(data['total']),
+                        const SizedBox(
+                          height: 15,
                         ),
+                        Text(
+                          'Correct',
+                          style:
+                              Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text(data['correct']),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        Text(
+                          'Incorrect',
+                          style:
+                              Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text((int.parse(data['total']) -
+                                int.parse(data['correct']))
+                            .toString()),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                      ],
+                    ),
                   ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Text((int.parse(data['total']) - int.parse(data['correct']))
-                      .toString()),
-                  const SizedBox(
-                    height: 15,
-                  ),
+                  if (data['questionsData'].isNotEmpty)
+                    QuestionDetails(
+                      data: data['questionsData'],
+                    ),
                 ],
               ),
             ),
-            if (data['questionsData'].isNotEmpty)
-              QuestionDetails(
-                data: data['questionsData'],
-              ),
-          ],
-        ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: ElevatedButton(
+              onPressed: () {
+                // popping the page
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          )
+        ],
       ),
     );
   }
