@@ -38,11 +38,15 @@ class _PracticeCoordinatesGameplayPageState
   final Map<File, String> files = DataHelper.getFilesKeyValuePairs();
   final Map<Rank, String> ranks = DataHelper.getRanksKeyValuePairs();
 
+  // active files and ranks
+  late final List<File> activeFiles;
+  late final List<Rank> activeRanks;
+
   // function to return the question coordinate
   Coordinates getQuestionCoordinates() {
     // getting random files and ranks
-    final File randomFile = files.keys.toList()[Random().nextInt(files.length)];
-    final Rank randomRank = ranks.keys.toList()[Random().nextInt(ranks.length)];
+    final File randomFile = activeFiles[Random().nextInt(activeFiles.length)];
+    final Rank randomRank = activeRanks[Random().nextInt(activeRanks.length)];
 
     // returning the coordinate
     return Coordinates(randomFile, randomRank);
@@ -90,17 +94,26 @@ class _PracticeCoordinatesGameplayPageState
     );
   }
 
+  // provider
+  late final PracticeCoordinatesConfigProvider provider;
+
   @override
   void initState() {
     super.initState();
+
+    // getting the provider
+    provider =
+        Provider.of<PracticeCoordinatesConfigProvider>(context, listen: false);
+
+    // setting active files and ranks
+    activeFiles = provider.getActiveFiles();
+    activeRanks = provider.getActiveRanks();
 
     // assigning the question
     question = getQuestionCoordinates();
 
     // grabbing the time from the config
-    time =
-        Provider.of<PracticeCoordinatesConfigProvider>(context, listen: false)
-            .getActiveSeconds();
+    time = provider.getActiveSeconds();
 
     // getting the copy of original time
     originalTime = time;
@@ -223,7 +236,10 @@ class _PracticeCoordinatesGameplayPageState
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ChessBoard(
-                  showCoordinates: true,
+                  showCoordinates: provider.getActiveShowCoordinates() ==
+                          ShowCoordinates.show
+                      ? true
+                      : false,
                   width: deviceWidth - 8,
                   questionCoordinates: question,
                   onTap: (result, userChose) async {
