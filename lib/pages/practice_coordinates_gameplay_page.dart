@@ -152,14 +152,17 @@ class _PracticeCoordinatesGameplayPageState
     }
   }
 
-  // clicked state
-  bool clicked = false;
-
   // total questions
   int total = 0; // 0 initially
 
   // correct answers
   int correct = 0; // 0 initially
+
+  // result for name square
+  bool? result;
+
+  // user choice for name square
+  Coordinates? userChoice;
 
   @override
   Widget build(BuildContext context) {
@@ -201,43 +204,60 @@ class _PracticeCoordinatesGameplayPageState
         ],
         title: const Text('Practice Coordinates'),
       ),
-      body: Column(
-        children: [
-          const SizedBox(
-            height: 20,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Total: $total',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium!
-                      .copyWith(fontWeight: FontWeight.w600),
+      body: Consumer<PracticeCoordinatesConfigProvider>(
+        builder: (context, consumerProvider, child) {
+          return Column(
+            children: [
+              const SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Total: $total',
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium!
+                          .copyWith(fontWeight: FontWeight.w600),
+                    ),
+                    Text(
+                      'Correct: $correct',
+                      textAlign: TextAlign.left,
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                    ),
+                  ],
                 ),
-                Text(
-                  'Correct: $correct',
-                  textAlign: TextAlign.left,
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Consumer<PracticeCoordinatesConfigProvider>(
-                  builder: (context, consumerProvider, child) {
-                    return ChessBoard(
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ChessBoard(
+                      viewOnly:
+                          consumerProvider.getActivePracticeCoordinatesType() ==
+                              PracticeCoordinatesType.nameSquare,
+                      greens: userChoice != null
+                          ? userChoice!.getFile() == question.getFile() &&
+                                  userChoice!.getRank() == question.getRank()
+                              ? [question]
+                              : []
+                          : [],
+                      reds: result == null
+                          ? []
+                          : !result!
+                              ? userChoice != null
+                                  ? [userChoice!]
+                                  : []
+                              : [],
+                      accents: [question],
                       showCoordinates:
                           consumerProvider.getActiveShowCoordinates() ==
                               ShowCoordinates.show,
@@ -248,13 +268,15 @@ class _PracticeCoordinatesGameplayPageState
                       forWhite: consumerProvider.getActivePieceColor() ==
                           PieceColor.white,
                       onTap: (result, userChose) async {
+                        // if we are doing name square then we don't want to execute anything below
+                        if (consumerProvider
+                                .getActivePracticeCoordinatesType() ==
+                            PracticeCoordinatesType.nameSquare) {
+                          return;
+                        }
+
                         // delay duration
                         const Duration duration = Duration(milliseconds: 300);
-
-                        // setting the click to true
-                        setState(() {
-                          clicked = true;
-                        });
 
                         // waiting for duration time
                         await Future.delayed(duration);
@@ -273,6 +295,7 @@ class _PracticeCoordinatesGameplayPageState
                           'Board view': ChessBoard(
                             greens: result ? [userChose] : [question],
                             reds: result ? [] : [userChose],
+                            accents: const [],
                             viewOnly: true,
                             showPieces:
                                 consumerProvider.getActiveShowPieces() ==
@@ -296,29 +319,100 @@ class _PracticeCoordinatesGameplayPageState
                             correct++;
                           }
 
-                          // setting clicked to false
-                          clicked = false;
-
                           // generating a new question
                           question = getQuestionCoordinates();
                         });
                       },
-                    );
+                    ),
+                    if (provider.getActivePracticeCoordinatesType() ==
+                        PracticeCoordinatesType.findSquare)
+                      const SizedBox(
+                        height: 15,
+                      ),
+                    if (provider.getActivePracticeCoordinatesType() ==
+                        PracticeCoordinatesType.findSquare)
+                      Text(
+                        getCoordinatesAsText(question),
+                        style: const TextStyle(
+                          fontSize: 40,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+              if (provider.getActivePracticeCoordinatesType() ==
+                  PracticeCoordinatesType.nameSquare)
+                CoordinatesInputButtons(
+                  onSelected: (Coordinates userChose) async {
+                    // delay duration
+                    const Duration duration = Duration(milliseconds: 300);
+
+                    setState(() {
+                      // calculating the result
+                      result = userChose.getFile() == question.getFile() &&
+                          userChose.getRank() == question.getRank();
+
+                      // setting the user choice
+                      userChoice = userChose;
+                    });
+
+                    // waiting for duration time
+                    await Future.delayed(duration);
+
+                    // grabbing the question coordinates text and the user answered coordinates text
+                    final String questionText = getCoordinatesAsText(question);
+                    final String userChoseText =
+                        getCoordinatesAsText(userChose);
+
+                    // updating the questions data
+                    questionsData[total] = {
+                      'Square to choose': questionText,
+                      'You chose': userChoseText,
+                      'Result': result,
+                      'Board view': ChessBoard(
+                        greens: userChoice!.getFile() == question.getFile() &&
+                                userChoice!.getRank() == question.getRank()
+                            ? [question]
+                            : [],
+                        reds: result == null
+                            ? []
+                            : !result!
+                                ? [userChoice!]
+                                : [],
+                        accents: [question],
+                        viewOnly: true,
+                        showPieces: consumerProvider.getActiveShowPieces() ==
+                            ShowPieces.show,
+                        showCoordinates:
+                            consumerProvider.getActiveShowCoordinates() ==
+                                ShowCoordinates.show,
+                        forWhite: consumerProvider.getActivePieceColor() ==
+                            PieceColor.white,
+                        width: deviceWidth -
+                            42, // because on the next page we are going to have padding of 20 each side horizontally and the board itself is going to have borders of width 1 both side
+                      ),
+                    };
+
+                    setState(() {
+                      // incrementing the total
+                      total++;
+
+                      // if result is positive then increment the correct answers count
+                      if (result!) {
+                        correct++;
+                      }
+
+                      // resetting result
+                      result = null;
+
+                      // generating a new question
+                      question = getQuestionCoordinates();
+                    });
                   },
                 ),
-                const SizedBox(
-                  height: 15,
-                ),
-                Text(
-                  getCoordinatesAsText(question),
-                  style: const TextStyle(
-                    fontSize: 40,
-                  ),
-                ),
-              ],
-            ),
-          )
-        ],
+            ],
+          );
+        },
       ),
     );
   }

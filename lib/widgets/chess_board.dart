@@ -22,6 +22,7 @@ class ChessBoard extends StatefulWidget {
     this.greens,
     required this.width,
     this.forWhite = true,
+    this.accents,
   });
 
   final bool showCoordinates;
@@ -31,6 +32,7 @@ class ChessBoard extends StatefulWidget {
   final bool viewOnly;
   final List<Coordinates>? reds;
   final List<Coordinates>? greens;
+  final List<Coordinates>? accents;
   final double width;
   final bool forWhite;
 
@@ -222,6 +224,11 @@ class _ChessBoardState extends State<ChessBoard> {
         element.getRank() == coords.getRank())) {
       // if any of the reds contain it then return red
       return Colors.red;
+    } else if (widget.accents!.any((element) =>
+        element.getFile() == coords.getFile() &&
+        element.getRank() == coords.getRank())) {
+      // if any of the reds contain it then return red
+      return Theme.of(context).colorScheme.secondary;
     } else {
       return getSquareColor(coords.getFile(), coords.getRank());
     }
@@ -290,10 +297,11 @@ class _ChessBoardState extends State<ChessBoard> {
 
   @override
   Widget build(BuildContext context) {
-    // if view only but reds or greens is null then throw an exception
+    // if view only but reds greens, or accents is null then throw an exception
     if ((widget.viewOnly && widget.reds == null) ||
-        (widget.viewOnly && widget.greens == null)) {
-      throw '(widget.viewOnly && widget.reds == null) || (widget.viewOnly && widget.greens == null) == true';
+        (widget.viewOnly && widget.greens == null) ||
+        (widget.viewOnly && widget.accents == null)) {
+      throw '(widget.viewOnly && widget.reds == null) || (widget.viewOnly && widget.greens == null) == true || ((widget.viewOnly && widget.accents == null) == true)';
     }
 
     // if not view only then we need the required params
