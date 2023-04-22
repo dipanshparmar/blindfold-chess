@@ -110,6 +110,8 @@ class MyApp extends StatelessWidget {
           PracticeCoordinatesGameplayPage.routeName: (context) =>
               const PracticeCoordinatesGameplayPage(),
           ResultPage.routeName: (context) => const ResultPage(),
+          PracticeSquareColorsGameplayPage.routeName: (context) =>
+              const PracticeSquareColorsGameplayPage(),
         },
       ),
     );

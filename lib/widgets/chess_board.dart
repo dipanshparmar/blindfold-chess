@@ -23,6 +23,8 @@ class ChessBoard extends StatefulWidget {
     required this.width,
     this.forWhite = true,
     this.accents,
+    this.showNativeBoardColors = true,
+    this.bordersOnly = false,
   });
 
   final bool showCoordinates;
@@ -35,6 +37,8 @@ class ChessBoard extends StatefulWidget {
   final List<Coordinates>? accents;
   final double width;
   final bool forWhite;
+  final bool showNativeBoardColors;
+  final bool bordersOnly;
 
   @override
   State<ChessBoard> createState() => _ChessBoardState();
@@ -295,6 +299,30 @@ class _ChessBoardState extends State<ChessBoard> {
     return const SizedBox.shrink();
   }
 
+  // function to check whether the coordinate is in view only coordinates or not
+  bool isInViewOnlyCoordinates(Coordinates coords) {
+    if (widget.greens!.any((element) =>
+        element.getFile() == coords.getFile() &&
+        element.getRank() == coords.getRank())) {
+      print('${coords.getFile()} ${coords.getRank()}');
+      return true;
+    } else if (widget.reds!.any((element) =>
+        element.getFile() == coords.getFile() &&
+        element.getRank() == coords.getRank())) {
+      print('${coords.getFile()} ${coords.getRank()}');
+
+      return true;
+    } else if (widget.accents!.any((element) =>
+        element.getFile() == coords.getFile() &&
+        element.getRank() == coords.getRank())) {
+      print('${coords.getFile()} ${coords.getRank()}');
+
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // if view only but reds greens, or accents is null then throw an exception
@@ -365,15 +393,31 @@ class _ChessBoardState extends State<ChessBoard> {
                     width: squareWidth,
                     decoration: BoxDecoration(
                       border: Border.all(
-                        width: .5,
-                        color: Theme.of(context).primaryColor,
+                        width: widget.viewOnly &&
+                                isInViewOnlyCoordinates(
+                                    Coordinates(file, rank)) &&
+                                widget.bordersOnly
+                            ? 3
+                            : .5,
+                        color: widget.viewOnly
+                            ? isInViewOnlyCoordinates(
+                                      Coordinates(file, rank),
+                                    ) &&
+                                    widget.bordersOnly
+                                ? getViewOnlyColor(Coordinates(file, rank))
+                                : Theme.of(context).primaryColor
+                            : Theme.of(context).primaryColor,
                       ),
-                      color: widget.viewOnly
-                          ? getViewOnlyColor(Coordinates(file, rank))
-                          : clickCoordinates == null
-                              ? getSquareColor(file, rank)
-                              : getResultColor(
-                                  Coordinates(file, rank), clickCoordinates!),
+                      color: widget.showNativeBoardColors
+                          ? widget.viewOnly
+                              ? widget.bordersOnly
+                                  ? getSquareColor(file, rank)
+                                  : getViewOnlyColor(Coordinates(file, rank))
+                              : clickCoordinates == null
+                                  ? getSquareColor(file, rank)
+                                  : getResultColor(Coordinates(file, rank),
+                                      clickCoordinates!)
+                          : Colors.white,
                     ),
                     child: Stack(
                       children: [

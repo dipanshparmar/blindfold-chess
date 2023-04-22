@@ -32,6 +32,7 @@ class _CustomPageViewControllerState extends State<CustomPageViewController> {
   // follow up page routes
   final List<String> _followUpPageRoutes = [
     PracticeCoordinatesGameplayPage.routeName,
+    PracticeSquareColorsGameplayPage.routeName,
   ];
 
   @override

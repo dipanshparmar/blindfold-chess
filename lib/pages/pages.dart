@@ -6,3 +6,4 @@ export './practice_square_colors_page.dart';
 export './practice_moves_page.dart';
 export './practice_coordinates_gameplay_page.dart';
 export './result_page.dart';
+export './practice_square_colors_gameplay_page.dart';
