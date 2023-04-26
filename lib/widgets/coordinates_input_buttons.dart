@@ -10,9 +10,17 @@ import '../utils/enums/enums.dart';
 import '../models/models.dart';
 
 class CoordinatesInputButtons extends StatefulWidget {
-  const CoordinatesInputButtons({super.key, required this.onSelected});
+  const CoordinatesInputButtons(
+      {super.key,
+      required this.onSelected,
+      this.attempts,
+      this.showAttempts = false,
+      this.toAvoid});
 
   final Function(Coordinates) onSelected;
+  final int? attempts;
+  final bool showAttempts;
+  final List<Coordinates>? toAvoid;
 
   @override
   State<CoordinatesInputButtons> createState() =>
@@ -54,6 +62,11 @@ class _CoordinatesInputButtonsState extends State<CoordinatesInputButtons> {
 
   @override
   Widget build(BuildContext context) {
+    // if no show attempts but attempts has a value
+    if (!widget.showAttempts && widget.attempts != null) {
+      throw 'showAttempts is false while attempts value is given.';
+    }
+
     // grabbing the device width
     final double deviceWidth = MediaQuery.of(context).size.width;
 
@@ -76,8 +89,7 @@ class _CoordinatesInputButtonsState extends State<CoordinatesInputButtons> {
             ),
             IconButton(
               icon: const Icon(Icons.keyboard_arrow_left),
-              onPressed: (answerRank == null && answerFile == null) ||
-                      (answerRank != null && answerFile != null)
+              onPressed: (answerRank == null && answerFile == null)
                   ? null
                   : () {
                       setState(() {
@@ -97,8 +109,23 @@ class _CoordinatesInputButtonsState extends State<CoordinatesInputButtons> {
             )
           ],
         ),
-        const SizedBox(
-          height: 20,
+        if (widget.showAttempts)
+          const SizedBox(
+            height: 20,
+          ),
+        if (widget.showAttempts)
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Text(
+              widget.attempts != null && widget.attempts != 0
+                  ? 'Attempts left: ${widget.attempts.toString()}'
+                  : 'No more attempts!',
+              textAlign: TextAlign.start,
+            ),
+          ),
+        SizedBox(
+          height: widget.showAttempts ? 5 : 20,
         ),
         Container(
           decoration: BoxDecoration(
@@ -131,6 +158,14 @@ class _CoordinatesInputButtonsState extends State<CoordinatesInputButtons> {
 
                   // if both are already there then call the user defined function and reset
                   if (answerFile != null && answerRank != null) {
+                    // if there are coordinates to avoid and if it is present in those coordinates then skip it
+                    if (widget.toAvoid != null &&
+                        isInToAvoid(
+                          Coordinates(answerFile!, answerRank!),
+                        )) {
+                      return;
+                    }
+
                     await widget
                         .onSelected(Coordinates(answerFile!, answerRank!));
 
@@ -138,8 +173,6 @@ class _CoordinatesInputButtonsState extends State<CoordinatesInputButtons> {
                       answerFile = null;
                       answerRank = null;
                     });
-
-                    return;
                   }
                 },
                 child: Container(
@@ -195,6 +228,14 @@ class _CoordinatesInputButtonsState extends State<CoordinatesInputButtons> {
 
                   // if both are already there then call the user defined function and reset
                   if (answerFile != null && answerRank != null) {
+                    // if there are coordinates to avoid and if it is present in those coordinates then skip it
+                    if (widget.toAvoid != null &&
+                        isInToAvoid(
+                          Coordinates(answerFile!, answerRank!),
+                        )) {
+                      return;
+                    }
+
                     await widget
                         .onSelected(Coordinates(answerFile!, answerRank!));
 
@@ -202,8 +243,6 @@ class _CoordinatesInputButtonsState extends State<CoordinatesInputButtons> {
                       answerFile = null;
                       answerRank = null;
                     });
-
-                    return;
                   }
                 },
                 child: Container(
@@ -230,5 +269,13 @@ class _CoordinatesInputButtonsState extends State<CoordinatesInputButtons> {
         ),
       ],
     );
+  }
+
+  // function to check whether the coordinates is in the toAvoid or not
+  bool isInToAvoid(Coordinates coordinates) {
+    // finding the coordinates in the toAvoid
+    return widget.toAvoid!.any((element) =>
+        element.getRank() == coordinates.getRank() &&
+        element.getFile() == coordinates.getFile());
   }
 }

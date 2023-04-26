@@ -25,6 +25,8 @@ class ChessBoard extends StatefulWidget {
     this.accents,
     this.showNativeBoardColors = true,
     this.bordersOnly = false,
+    this.onlyPieceToShow,
+    this.onlyPieceToShowCoordinates,
   });
 
   final bool showCoordinates;
@@ -39,6 +41,8 @@ class ChessBoard extends StatefulWidget {
   final bool forWhite;
   final bool showNativeBoardColors;
   final bool bordersOnly;
+  final PieceType? onlyPieceToShow;
+  final Coordinates? onlyPieceToShowCoordinates;
 
   @override
   State<ChessBoard> createState() => _ChessBoardState();
@@ -73,89 +77,7 @@ class _ChessBoardState extends State<ChessBoard> {
 
     // setting up the pieces and their locations if asked for
     if (widget.showPieces) {
-      piecesData = {
-        PieceType.king: {
-          'white': {
-            'coordinates': [Coordinates(File.e, Rank.one)],
-            'imagePath': 'assets/images/chess_pieces/white/king.svg'
-          },
-          'black': {
-            'coordinates': [Coordinates(File.e, Rank.eight)],
-            'imagePath': 'assets/images/chess_pieces/black/king.svg'
-          }
-        },
-        PieceType.queen: {
-          'white': {
-            'coordinates': [Coordinates(File.d, Rank.one)],
-            'imagePath': 'assets/images/chess_pieces/white/queen.svg',
-          },
-          'black': {
-            'coordinates': [Coordinates(File.d, Rank.eight)],
-            'imagePath': 'assets/images/chess_pieces/black/queen.svg',
-          }
-        },
-        PieceType.rook: {
-          'white': {
-            'coordinates': [
-              Coordinates(File.a, Rank.one),
-              Coordinates(File.h, Rank.one)
-            ],
-            'imagePath': 'assets/images/chess_pieces/white/rook.svg'
-          },
-          'black': {
-            'coordinates': [
-              Coordinates(File.a, Rank.eight),
-              Coordinates(File.h, Rank.eight)
-            ],
-            'imagePath': 'assets/images/chess_pieces/black/rook.svg'
-          }
-        },
-        PieceType.bishop: {
-          'white': {
-            'coordinates': [
-              Coordinates(File.c, Rank.one),
-              Coordinates(File.f, Rank.one)
-            ],
-            'imagePath': 'assets/images/chess_pieces/white/bishop.svg',
-          },
-          'black': {
-            'coordinates': [
-              Coordinates(File.c, Rank.eight),
-              Coordinates(File.f, Rank.eight)
-            ],
-            'imagePath': 'assets/images/chess_pieces/black/bishop.svg',
-          }
-        },
-        PieceType.knight: {
-          'white': {
-            'coordinates': [
-              Coordinates(File.b, Rank.one),
-              Coordinates(File.g, Rank.one)
-            ],
-            'imagePath': 'assets/images/chess_pieces/white/knight.svg'
-          },
-          'black': {
-            'coordinates': [
-              Coordinates(File.b, Rank.eight),
-              Coordinates(File.g, Rank.eight)
-            ],
-            'imagePath': 'assets/images/chess_pieces/black/knight.svg'
-          }
-        },
-        PieceType.pawn: {
-          'white': {
-            'coordinates':
-                _files.keys.map((file) => Coordinates(file, Rank.two)).toList(),
-            'imagePath': 'assets/images/chess_pieces/white/pawn.svg',
-          },
-          'black': {
-            'coordinates': _files.keys
-                .map((file) => Coordinates(file, Rank.seven))
-                .toList(),
-            'imagePath': 'assets/images/chess_pieces/black/pawn.svg',
-          }
-        },
-      };
+      piecesData = DataHelper.getPiecesData();
     }
   }
 
@@ -240,6 +162,24 @@ class _ChessBoardState extends State<ChessBoard> {
 
   // function to return the widget for the white pieces
   Widget renderPiece(Coordinates coordinates) {
+    // if only piece to show is present
+    if (widget.onlyPieceToShow != null) {
+      // if these coordinates match
+      if (coordinates.getFile() ==
+              widget.onlyPieceToShowCoordinates!.getFile() &&
+          coordinates.getRank() ==
+              widget.onlyPieceToShowCoordinates!.getRank()) {
+        // color string
+        final String colorString = widget.forWhite == true ? 'white' : 'black';
+
+        return SvgPicture.asset(
+          piecesData![widget.onlyPieceToShow]![colorString]!['imagePath'],
+        );
+      }
+
+      return const SizedBox.shrink();
+    }
+
     // going through all the pieces
 
     for (int i = 0; i < piecesData!.keys.length; i++) {
