@@ -4,6 +4,9 @@ import 'package:sticky_headers/sticky_headers.dart';
 // widgets
 import '../widgets/widgets.dart';
 
+// models
+import '../models/models.dart';
+
 class ResultPage extends StatelessWidget {
   const ResultPage({super.key});
 
@@ -284,11 +287,13 @@ class _QuestionDetailsState extends State<QuestionDetails> {
                       const SizedBox(
                         height: 5,
                       ),
-                      value is ChessBoard
-                          ? value
-                          : value is bool
-                              ? Text(value ? 'Correct' : 'Incorrect')
-                              : Text(value),
+                      value is List<Coordinates>
+                          ? Text(value.join(', '))
+                          : value is ChessBoard
+                              ? value
+                              : value is bool
+                                  ? Text(value ? 'Positive' : 'Negative')
+                                  : Text(value),
                       const SizedBox(
                         height: 15,
                       )

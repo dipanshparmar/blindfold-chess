@@ -15,6 +15,10 @@ class _MovesCountInputButtonsState extends State<MovesCountInputButtons> {
   // numbers count
   final List<int> numbers = const [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
 
+  // to hold the first and the secod row of the numbers
+  late final List<int> firstRowNumbers;
+  late final List<int> secondRowNumbers;
+
   // to show the selected numbers
   String selectedNumbers = '';
 
@@ -22,116 +26,173 @@ class _MovesCountInputButtonsState extends State<MovesCountInputButtons> {
   bool isSelected = false;
 
   @override
+  void initState() {
+    super.initState();
+
+    firstRowNumbers = numbers.sublist(0, 8);
+    secondRowNumbers = numbers.sublist(8);
+  }
+
+  @override
   Widget build(BuildContext context) {
     // grabbing the device width
     final double deviceWidth = MediaQuery.of(context).size.width;
 
     // calculating the squares size
-    final double squareSize = (deviceWidth - 2) / 10;
+    final double squareSize = (deviceWidth - 2) / 8;
 
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Expanded(
-              child: Center(
-                child: Text(
-                  selectedNumbers.isEmpty ? '00' : selectedNumbers,
-                  style: TextStyle(
-                      fontSize: 40,
-                      color: selectedNumbers.isEmpty
-                          ? const Color(0xFFBCBCBF)
-                          : isSelected
-                              ? widget.afterSelectionColor
-                              : null),
-                ),
-              ),
-            ),
-            Row(
-              children: [
-                IconButton(
-                  onPressed: selectedNumbers.isEmpty
-                      ? null
-                      : () {
-                          // removing the last character
-                          setState(() {
-                            selectedNumbers = selectedNumbers.substring(
-                                0, selectedNumbers.length - 1);
-                          });
-                        },
-                  icon: const Icon(
-                    Icons.keyboard_arrow_left,
-                  ),
-                  splashColor: Colors.transparent,
-                  hoverColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                ),
-                IconButton(
-                  onPressed: selectedNumbers.isEmpty
-                      ? null
-                      : () async {
-                          // setting the isSelected state to true
-                          setState(() {
-                            isSelected = true;
-                          });
-
-                          // calling the user defined function if provided
-                          if (widget.onSelected != null) {
-                            await widget
-                                .onSelected!(int.parse(selectedNumbers));
-                          }
-
-                          // updated the selected numbers to empty
-                          setState(() {
-                            selectedNumbers = '';
-
-                            // setting the selected state to false
-                            isSelected = false;
-                          });
-                        },
-                  icon: const Icon(
-                    Icons.done,
-                  ),
-                  iconSize: 20,
-                  splashColor: Colors.transparent,
-                  hoverColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                ),
-              ],
-            ),
-          ],
+        Text(
+          selectedNumbers.isEmpty ? '00' : selectedNumbers,
+          style: TextStyle(
+              fontSize: 40,
+              color: selectedNumbers.isEmpty
+                  ? const Color(0xFFBCBCBF)
+                  : isSelected
+                      ? widget.afterSelectionColor
+                      : null),
+        ),
+        const SizedBox(
+          height: 20,
         ),
         Container(
           decoration: BoxDecoration(
             border: Border.all(width: 1, color: Theme.of(context).primaryColor),
           ),
-          child: Row(
-            children: numbers.map((number) {
-              return GestureDetector(
-                onTap: () {
-                  setState(() {
-                    // if number length is less than 2 only then add it
-                    if (selectedNumbers.length != 2) {
-                      selectedNumbers += number.toString();
-                    }
-                  });
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      width: 1,
-                      color: Theme.of(context).primaryColor,
+          child: Column(
+            children: [
+              Row(
+                children: firstRowNumbers.map((number) {
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        // if number length is less than 2 only then add it
+                        if (selectedNumbers.length != 2) {
+                          selectedNumbers += number.toString();
+                        }
+                      });
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 1,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        color: const Color(0xFFD9D9D9),
+                      ),
+                      height: squareSize,
+                      width: squareSize,
+                      alignment: Alignment.center,
+                      child: Text(
+                        number.toString(),
+                        style: const TextStyle(
+                          fontSize: 18,
+                        ),
+                      ),
                     ),
-                    color: const Color(0xFFD9D9D9),
+                  );
+                }).toList(),
+              ),
+              Row(
+                children: [
+                  Row(
+                    children: secondRowNumbers.map((number) {
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            // if number length is less than 2 only then add it
+                            if (selectedNumbers.length != 2) {
+                              selectedNumbers += number.toString();
+                            }
+                          });
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                            color: const Color(0xFFD9D9D9),
+                          ),
+                          height: squareSize,
+                          width: squareSize,
+                          alignment: Alignment.center,
+                          child: Text(
+                            number.toString(),
+                            style: const TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                      );
+                    }).toList(),
                   ),
-                  height: squareSize,
-                  width: squareSize,
-                  alignment: Alignment.center,
-                  child: Text(number.toString()),
-                ),
-              );
-            }).toList(),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: selectedNumbers.isEmpty
+                          ? null
+                          : () {
+                              // removing the last character
+                              setState(() {
+                                selectedNumbers = selectedNumbers.substring(
+                                    0, selectedNumbers.length - 1);
+                              });
+                            },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFD9D9D9),
+                          border: Border.all(
+                              width: 1, color: Theme.of(context).primaryColor),
+                        ),
+                        height: squareSize,
+                        child: const Icon(
+                          Icons.keyboard_arrow_left,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: selectedNumbers.isEmpty
+                          ? null
+                          : () async {
+                              // setting the isSelected state to true
+                              setState(() {
+                                isSelected = true;
+                              });
+
+                              // calling the user defined function if provided
+                              if (widget.onSelected != null) {
+                                await widget
+                                    .onSelected!(int.parse(selectedNumbers));
+                              }
+
+                              // updated the selected numbers to empty
+                              setState(() {
+                                selectedNumbers = '';
+
+                                // setting the selected state to false
+                                isSelected = false;
+                              });
+                            },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFD9D9D9),
+                          border: Border.all(
+                              width: 1, color: Theme.of(context).primaryColor),
+                        ),
+                        height: squareSize,
+                        child: const Icon(
+                          Icons.done,
+                          size: 18,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ],

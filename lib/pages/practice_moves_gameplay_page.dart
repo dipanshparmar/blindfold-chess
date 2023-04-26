@@ -78,9 +78,6 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
   // to hold the result of the guess
   bool? result;
 
-  // variable to hold the attempts count
-  late int attempts;
-
   // to hold the coordinates to color green, red
   List<Coordinates> greens = [];
   List<Coordinates> reds = [];
@@ -137,6 +134,12 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
 
     // grabbing the question notation
     final String notation = getNotation(questionPiece, questionCoordinates);
+
+    String guessMovesCountQuestionText = possibleMoves.length == 1
+        ? 'Please name the 1 square $notation can move to'
+        : 'Please name all the ${possibleMoves.length} squares $notation can move to';
+
+    String guessMovesQuestionText = 'How many squares $notation can move to?';
 
     return Scaffold(
       appBar: AppBar(
@@ -234,11 +237,10 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                       ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Text(result != null &&
-                              result! &&
-                              possibleMoves.isNotEmpty
-                          ? 'Please name all the squares $notation can move to'
-                          : 'How many squares $notation can move to?'),
+                      child: Text(
+                          result != null && result! && possibleMoves.isNotEmpty
+                              ? guessMovesCountQuestionText
+                              : guessMovesQuestionText),
                     ),
                   ],
                 ),
@@ -248,9 +250,7 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
               ),
               result != null && result! && possibleMoves.isNotEmpty
                   ? CoordinatesInputButtons(
-                      toAvoid: greens + reds,
-                      attempts: attempts,
-                      showAttempts: true,
+                      toAvoid: greens,
                       onSelected: (coordinates) async {
                         // if present in answers then color it green, else red
                         bool isPresent = possibleMoves.any((element) =>
@@ -263,26 +263,86 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                           });
                         } else {
                           setState(() {
+                            // FIXME: WE MIGHT NOT WANT THIS ANYMORE AS WE ARE NOT GOING TO MARK REDS
                             reds.add(coordinates);
                           });
                         }
 
-                        // decrement the attempts
-                        setState(() {
-                          attempts--;
-                        });
+                        // if we got a red then get a new question
+                        if (reds.isNotEmpty) {
+                          // setting the question data for incorrect moves count guess
+                          questionsData[total] = {
+                            'Question': guessMovesQuestionText,
+                            'Answer': possibleMoves.length.toString(),
+                            'Your answer': possibleMoves.length.toString(),
+                            'Possible squares': possibleMoves,
+                            'Guessed correctly':
+                                greens.isNotEmpty ? greens : 'None',
+                            'Missed squares':
+                                getMissedMoves().length == possibleMoves.length
+                                    ? 'All'
+                                    : getMissedMoves(),
+                            'Result': getMissedMoves().isEmpty,
+                            'Board view': ChessBoard(
+                              width: deviceWidth - 42,
+                              viewOnly: true,
+                              greens: greens,
+                              reds: [],
+                              accents: getMissedMoves(),
+                              onlyPieceToShow: questionPiece,
+                              onlyPieceToShowCoordinates: questionCoordinates,
+                              showCoordinates:
+                                  consumerProvider.getActiveShowCoordinates() ==
+                                      ShowCoordinates.show,
+                              forWhite:
+                                  consumerProvider.getActivePieceColor() !=
+                                      PieceColor.black,
+                              showPieces: true,
+                            ),
+                          };
 
-                        // if attempts is 0 then generating a new question
-                        if (attempts == 0) {
-                          await Future.delayed(
-                            const Duration(seconds: 1),
-                          );
+                          await Future.delayed(const Duration(seconds: 1));
+
+                          // incrementing the total and getting the new question data
+                          setState(() {
+                            total++;
+                            getNewQuestionData();
+                          });
+
+                          return;
+                        }
+
+                        // if the length of greens matches the possible moves length then increment the correct count
+                        if (greens.length == possibleMoves.length) {
+                          questionsData[total] = {
+                            'Question': guessMovesQuestionText,
+                            'Answer': possibleMoves.length.toString(),
+                            'Your answer': possibleMoves.length.toString(),
+                            'Possible squares': possibleMoves,
+                            'Guessed correctly': 'All',
+                            'Result': true,
+                            'Board view': ChessBoard(
+                              width: deviceWidth - 42,
+                              viewOnly: true,
+                              greens: greens,
+                              reds: [],
+                              accents: getMissedMoves(),
+                              onlyPieceToShow: questionPiece,
+                              onlyPieceToShowCoordinates: questionCoordinates,
+                              showCoordinates:
+                                  consumerProvider.getActiveShowCoordinates() ==
+                                      ShowCoordinates.show,
+                              forWhite:
+                                  consumerProvider.getActivePieceColor() !=
+                                      PieceColor.black,
+                              showPieces: true,
+                            ),
+                          };
+
+                          await Future.delayed(const Duration(seconds: 1));
 
                           setState(() {
-                            // if the length of greens matches the possible moves length then increment the correct count
-                            if (greens.length == possibleMoves.length) {
-                              correct++;
-                            }
+                            correct++;
 
                             // incrementing the total
                             total++;
@@ -305,6 +365,30 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                           setState(() {
                             result = false;
                           });
+
+                          // setting the question data for incorrect moves count guess
+                          questionsData[total] = {
+                            'Question': guessMovesQuestionText,
+                            'Answer': possibleMoves.length.toString(),
+                            'Your answer': number.toString(),
+                            'Result': result,
+                            'Board view': ChessBoard(
+                              width: deviceWidth - 42,
+                              viewOnly: true,
+                              greens: possibleMoves,
+                              reds: [],
+                              accents: [],
+                              onlyPieceToShow: questionPiece,
+                              onlyPieceToShowCoordinates: questionCoordinates,
+                              showCoordinates:
+                                  consumerProvider.getActiveShowCoordinates() ==
+                                      ShowCoordinates.show,
+                              forWhite:
+                                  consumerProvider.getActivePieceColor() !=
+                                      PieceColor.black,
+                              showPieces: true,
+                            ),
+                          };
 
                           await Future.delayed(
                               const Duration(milliseconds: 250));
@@ -330,6 +414,30 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                           setState(() {
                             result = true;
                           });
+
+                          // setting the question data for correct moves count but the correct one is 0
+                          questionsData[total] = {
+                            'Question': guessMovesQuestionText,
+                            'Answer': possibleMoves.length.toString(),
+                            'Your answer': number.toString(),
+                            'Result': result,
+                            'Board view': ChessBoard(
+                              width: deviceWidth - 42,
+                              viewOnly: true,
+                              greens: [],
+                              reds: [],
+                              accents: [],
+                              onlyPieceToShow: questionPiece,
+                              onlyPieceToShowCoordinates: questionCoordinates,
+                              showCoordinates:
+                                  consumerProvider.getActiveShowCoordinates() ==
+                                      ShowCoordinates.show,
+                              forWhite:
+                                  consumerProvider.getActivePieceColor() !=
+                                      PieceColor.black,
+                              showPieces: true,
+                            ),
+                          };
 
                           await Future.delayed(
                               const Duration(milliseconds: 250));
@@ -362,6 +470,23 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
     );
   }
 
+  // function to get the missed moves
+  List<Coordinates> getMissedMoves() {
+    // list of accent coordinates
+    List<Coordinates> accents = [];
+
+    // going through all the possible moves
+    for (int i = 0; i < possibleMoves.length; i++) {
+      // getting the current possible move
+      final Coordinates currentPossibleMove = possibleMoves[i];
+
+      // if move not in green then add it to the accents
+      accents.add(currentPossibleMove);
+    }
+
+    return accents;
+  }
+
   // function to get the new question
   void getNewQuestionData() {
     // assigning active piece types
@@ -379,9 +504,6 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
     // resetting greens and reds
     greens = [];
     reds = [];
-
-    // setting the attempts to the length of the possible moves
-    attempts = possibleMoves.length;
 
     // setting the result to null
     result = null;

@@ -11,15 +11,9 @@ import '../models/models.dart';
 
 class CoordinatesInputButtons extends StatefulWidget {
   const CoordinatesInputButtons(
-      {super.key,
-      required this.onSelected,
-      this.attempts,
-      this.showAttempts = false,
-      this.toAvoid});
+      {super.key, required this.onSelected, this.toAvoid});
 
   final Function(Coordinates) onSelected;
-  final int? attempts;
-  final bool showAttempts;
   final List<Coordinates>? toAvoid;
 
   @override
@@ -37,36 +31,28 @@ class _CoordinatesInputButtonsState extends State<CoordinatesInputButtons> {
   File? answerFile;
   Rank? answerRank;
 
-  // function to get the answer text
-  String getAnswerText() {
-    String answer = '';
-
-    // if answer file is empty then append a '-'
+  // function to get the answer text for file
+  String getFileText() {
+    // if answer file is empty then return '-'
     if (answerFile == null) {
-      answer += '-';
+      return '-';
     } else {
-      // otherwise append the answer file text
-      answer += files[answerFile]!;
+      return files[answerFile]!;
     }
+  }
 
-    // if answer rank is empty then append a '-', otherwise the answer rank
+  // function to get the rank text
+  String getRankText() {
+    // if rank file is empty then return '-'
     if (answerRank == null) {
-      answer += '-';
+      return '-';
     } else {
-      answer += ranks[answerRank]!;
+      return ranks[answerRank]!;
     }
-
-    // returning the answer
-    return answer;
   }
 
   @override
   Widget build(BuildContext context) {
-    // if no show attempts but attempts has a value
-    if (!widget.showAttempts && widget.attempts != null) {
-      throw 'showAttempts is false while attempts value is given.';
-    }
-
     // grabbing the device width
     final double deviceWidth = MediaQuery.of(context).size.width;
 
@@ -80,11 +66,28 @@ class _CoordinatesInputButtonsState extends State<CoordinatesInputButtons> {
         Row(
           children: [
             Expanded(
-              child: Center(
-                child: Text(
-                  getAnswerText(),
-                  style: const TextStyle(fontSize: 40),
-                ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    getFileText(),
+                    style: TextStyle(
+                      fontSize: 40,
+                      color: getFileText() == '-'
+                          ? const Color(0xFFBCBCBF)
+                          : Theme.of(context).primaryColor,
+                    ),
+                  ),
+                  Text(
+                    getRankText(),
+                    style: TextStyle(
+                      fontSize: 40,
+                      color: getRankText() == '-'
+                          ? const Color(0xFFBCBCBF)
+                          : Theme.of(context).primaryColor,
+                    ),
+                  ),
+                ],
               ),
             ),
             IconButton(
@@ -109,23 +112,8 @@ class _CoordinatesInputButtonsState extends State<CoordinatesInputButtons> {
             )
           ],
         ),
-        if (widget.showAttempts)
-          const SizedBox(
-            height: 20,
-          ),
-        if (widget.showAttempts)
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Text(
-              widget.attempts != null && widget.attempts != 0
-                  ? 'Attempts left: ${widget.attempts.toString()}'
-                  : 'No more attempts!',
-              textAlign: TextAlign.start,
-            ),
-          ),
-        SizedBox(
-          height: widget.showAttempts ? 5 : 20,
+        const SizedBox(
+          height: 20,
         ),
         Container(
           decoration: BoxDecoration(
