@@ -483,8 +483,15 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
       // getting the current possible move
       final Coordinates currentPossibleMove = possibleMoves[i];
 
+      // if current move is not in greens then it is missed
+      bool isMissed = !greens.any((element) =>
+          element.getRank() == currentPossibleMove.getRank() &&
+          element.getFile() == currentPossibleMove.getFile());
+
       // if move not in green then add it to the accents
-      accents.add(currentPossibleMove);
+      if (isMissed) {
+        accents.add(currentPossibleMove);
+      }
     }
 
     return accents;
