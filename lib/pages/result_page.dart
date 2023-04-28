@@ -173,7 +173,7 @@ class _QuestionDetailsState extends State<QuestionDetails> {
       children: [
         Container(
           padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-          color: Theme.of(context).primaryColor.withOpacity(.1),
+          color: const Color(0xFFE9E9EA),
           child: Text(
             'Please choose any question number below to see the details about the question',
             style: Theme.of(context).textTheme.bodySmall!.copyWith(
@@ -183,7 +183,7 @@ class _QuestionDetailsState extends State<QuestionDetails> {
         ),
         StickyHeader(
           header: Container(
-            color: Theme.of(context).primaryColor.withOpacity(.1),
+            color: const Color(0xFFE9E9EA),
             padding: const EdgeInsets.only(bottom: 20, top: 20),
             child: SizedBox(
               height: 35,
