@@ -281,8 +281,11 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                             'Answer': possibleMoves.length.toString(),
                             'Your answer': possibleMoves.length.toString(),
                             'Possible squares': possibleMoves,
-                            'Guessed correctly':
-                                greens.isNotEmpty ? greens : 'None',
+                            'Guessed correctly': possibleMoves.length == 1
+                                ? 'No'
+                                : greens.isNotEmpty
+                                    ? greens
+                                    : 'None',
                             'Missed squares':
                                 getMissedMoves().length == possibleMoves.length
                                     ? 'All'
@@ -324,7 +327,8 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                             'Answer': possibleMoves.length.toString(),
                             'Your answer': possibleMoves.length.toString(),
                             'Possible squares': possibleMoves,
-                            'Guessed correctly': 'All',
+                            'Guessed correctly':
+                                possibleMoves.length == 1 ? 'Yes' : 'All',
                             'Result': true,
                             'Board view': ChessBoard(
                               width: deviceWidth - 42,
@@ -380,9 +384,9 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                             'Board view': ChessBoard(
                               width: deviceWidth - 42,
                               viewOnly: true,
-                              greens: possibleMoves,
+                              greens: [],
                               reds: [],
-                              accents: [],
+                              accents: possibleMoves,
                               onlyPieceToShow: questionPiece,
                               onlyPieceToShowCoordinates: questionCoordinates,
                               showCoordinates:
