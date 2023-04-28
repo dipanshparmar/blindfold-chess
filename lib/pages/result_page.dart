@@ -183,7 +183,7 @@ class _QuestionDetailsState extends State<QuestionDetails> {
         ),
         StickyHeader(
           header: Container(
-            color: const Color(0xFFE9E9EA),
+            color: Theme.of(context).primaryColor.withOpacity(.1),
             padding: const EdgeInsets.only(bottom: 20, top: 20),
             child: SizedBox(
               height: 35,
