@@ -82,6 +82,9 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
   List<Coordinates> greens = [];
   List<Coordinates> reds = [];
 
+  // duration for the pauses
+  final Duration duration = const Duration(milliseconds: 300);
+
   @override
   void initState() {
     super.initState();
@@ -303,7 +306,7 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                             ),
                           };
 
-                          await Future.delayed(const Duration(seconds: 1));
+                          await Future.delayed(duration);
 
                           // incrementing the total and getting the new question data
                           setState(() {
@@ -341,7 +344,7 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                             ),
                           };
 
-                          await Future.delayed(const Duration(seconds: 1));
+                          await Future.delayed(duration);
 
                           setState(() {
                             correct++;
@@ -392,8 +395,7 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                             ),
                           };
 
-                          await Future.delayed(
-                              const Duration(milliseconds: 250));
+                          await Future.delayed(duration);
 
                           setState(() {
                             // incrementing the total
@@ -441,8 +443,7 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                             ),
                           };
 
-                          await Future.delayed(
-                              const Duration(milliseconds: 250));
+                          await Future.delayed(duration);
 
                           setState(() {
                             // incrementing the correct count and total
