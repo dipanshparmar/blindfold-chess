@@ -58,7 +58,10 @@ class _MovesCountInputButtonsState extends State<MovesCountInputButtons> {
         ),
         Container(
           decoration: BoxDecoration(
-            border: Border.all(width: 1, color: Theme.of(context).primaryColor),
+            border: Border.all(
+              width: 1,
+              color: Theme.of(context).primaryColor,
+            ),
           ),
           child: Column(
             children: [
@@ -79,7 +82,7 @@ class _MovesCountInputButtonsState extends State<MovesCountInputButtons> {
                           width: 1,
                           color: Theme.of(context).primaryColor,
                         ),
-                        color: const Color(0xFFD9D9D9),
+                        color: Colors.transparent,
                       ),
                       height: squareSize,
                       width: squareSize,
@@ -113,7 +116,7 @@ class _MovesCountInputButtonsState extends State<MovesCountInputButtons> {
                               width: 1,
                               color: Theme.of(context).primaryColor,
                             ),
-                            color: const Color(0xFFD9D9D9),
+                            color: Colors.transparent,
                           ),
                           height: squareSize,
                           width: squareSize,
@@ -141,7 +144,7 @@ class _MovesCountInputButtonsState extends State<MovesCountInputButtons> {
                             },
                       child: Container(
                         decoration: BoxDecoration(
-                          color: const Color(0xFFD9D9D9),
+                          color: Colors.transparent,
                           border: Border.all(
                               width: 1, color: Theme.of(context).primaryColor),
                         ),
@@ -178,7 +181,7 @@ class _MovesCountInputButtonsState extends State<MovesCountInputButtons> {
                             },
                       child: Container(
                         decoration: BoxDecoration(
-                          color: const Color(0xFFD9D9D9),
+                          color: Colors.transparent,
                           border: Border.all(
                               width: 1, color: Theme.of(context).primaryColor),
                         ),

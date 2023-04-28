@@ -167,7 +167,7 @@ class _CoordinatesInputButtonsState extends State<CoordinatesInputButtons> {
                   height: squareSize,
                   width: squareSize,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFD9D9D9),
+                    color: Colors.transparent,
                     border: Border.all(
                       color: Theme.of(context).primaryColor,
                       width: 1,
@@ -237,7 +237,7 @@ class _CoordinatesInputButtonsState extends State<CoordinatesInputButtons> {
                   height: squareSize,
                   width: squareSize,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFD9D9D9),
+                    color: Colors.transparent,
                     border: Border.all(
                       color: Theme.of(context).primaryColor,
                       width: 1,
