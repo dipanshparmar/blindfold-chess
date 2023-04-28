@@ -65,7 +65,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor,
         borderRadius: isExpanded
-            ? BorderRadius.circular(5)
+            ? BorderRadius.circular(10)
             : BorderRadius.circular(
                 100,
               ),
@@ -83,8 +83,8 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
                 color: Theme.of(context).primaryColor,
                 borderRadius: isExpanded
                     ? const BorderRadius.only(
-                        topRight: Radius.circular(5),
-                        topLeft: Radius.circular(5),
+                        topRight: Radius.circular(10),
+                        topLeft: Radius.circular(10),
                       )
                     : BorderRadius.circular(100),
                 border: Border.all(
@@ -136,8 +136,8 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
                 color: Theme.of(context)
                     .primaryColor, // this is important so that GestureDetector takes in the padding in account
                 borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(5),
-                  bottomRight: Radius.circular(5),
+                  bottomLeft: Radius.circular(10),
+                  bottomRight: Radius.circular(10),
                 ),
               ),
               child: Column(
@@ -185,7 +185,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
                     }).toList(),
                   ),
                   const SizedBox(
-                    height: 15,
+                    height: 20,
                   ),
                   GestureDetector(
                     onTap: () {
