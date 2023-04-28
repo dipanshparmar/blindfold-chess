@@ -136,8 +136,8 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
     final String notation = getNotation(questionPiece, questionCoordinates);
 
     String guessMovesCountQuestionText = possibleMoves.length == 1
-        ? 'Please name the 1 square $notation can move to'
-        : 'Please name all the ${possibleMoves.length} squares $notation can move to';
+        ? 'Name the square $notation can move to'
+        : 'Name all the ${possibleMoves.length} squares $notation can move to';
 
     String guessMovesQuestionText = 'How many squares $notation can move to?';
 
@@ -238,9 +238,11 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       child: Text(
-                          result != null && result! && possibleMoves.isNotEmpty
-                              ? guessMovesCountQuestionText
-                              : guessMovesQuestionText),
+                        result != null && result! && possibleMoves.isNotEmpty
+                            ? guessMovesCountQuestionText
+                            : guessMovesQuestionText,
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ],
                 ),
