@@ -85,6 +85,9 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
   // duration for the pauses
   final Duration duration = const Duration(milliseconds: 300);
 
+  // to hold whether the coordinates is present in possible moves or not
+  bool? isPresent;
+
   @override
   void initState() {
     super.initState();
@@ -250,19 +253,58 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                   ],
                 ),
               ),
+              if (consumerProvider.getActiveShowBoard() == ShowBoard.hide &&
+                  possibleMoves.length == 1)
+                const SizedBox(
+                  height: 15,
+                ),
+              if (consumerProvider.getActiveShowBoard() == ShowBoard.hide)
+                // if there are no greens or only 1 possible move
+                if (greens.isEmpty || possibleMoves.length == 1)
+                  const Text('')
+                // otherwise show the greens
+                else
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Wrap(
+                      spacing: 10,
+                      runSpacing: 10,
+                      alignment: WrapAlignment.start,
+                      children: greens.asMap().keys.map((e) {
+                        // grabbing the value at current index
+                        final Coordinates value = greens[e];
+
+                        return Text(
+                          value.toString(),
+                          style: const TextStyle(
+                            color: Colors.green,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
               const SizedBox(
                 height: 15,
               ),
               result != null && result! && possibleMoves.isNotEmpty
                   ? CoordinatesInputButtons(
+                      afterSelectionColor: isPresent == null
+                          ? null
+                          : !isPresent!
+                              ? Colors.red
+                              : Colors.green,
                       toAvoid: greens,
                       onSelected: (coordinates) async {
                         // if present in answers then color it green, else red
-                        bool isPresent = possibleMoves.any((element) =>
-                            element.getFile() == coordinates.getFile() &&
-                            element.getRank() == coordinates.getRank());
+                        setState(() {
+                          isPresent = possibleMoves.any((element) =>
+                              element.getFile() == coordinates.getFile() &&
+                              element.getRank() == coordinates.getRank());
+                        });
 
-                        if (isPresent) {
+                        if (isPresent!) {
                           setState(() {
                             greens.add(coordinates);
                           });
@@ -315,6 +357,9 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                           setState(() {
                             total++;
                             getNewQuestionData();
+
+                            // resetting isPresent
+                            isPresent = null;
                           });
 
                           return;

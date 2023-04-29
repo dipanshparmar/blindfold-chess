@@ -10,11 +10,16 @@ import '../utils/enums/enums.dart';
 import '../models/models.dart';
 
 class CoordinatesInputButtons extends StatefulWidget {
-  const CoordinatesInputButtons(
-      {super.key, required this.onSelected, this.toAvoid});
+  const CoordinatesInputButtons({
+    super.key,
+    required this.onSelected,
+    this.toAvoid,
+    this.afterSelectionColor,
+  });
 
   final Function(Coordinates) onSelected;
   final List<Coordinates>? toAvoid;
+  final Color? afterSelectionColor;
 
   @override
   State<CoordinatesInputButtons> createState() =>
@@ -73,18 +78,30 @@ class _CoordinatesInputButtonsState extends State<CoordinatesInputButtons> {
                     getFileText(),
                     style: TextStyle(
                       fontSize: 40,
-                      color: getFileText() == '-'
-                          ? const Color(0xFFBCBCBF)
-                          : Theme.of(context).primaryColor,
+                      color: answerFile != null &&
+                              answerRank != null &&
+                              !isInToAvoid(
+                                  Coordinates(answerFile!, answerRank!))
+                          ? widget.afterSelectionColor ??
+                              Theme.of(context).primaryColor
+                          : getFileText() == '-'
+                              ? const Color(0xFFBCBCBF)
+                              : Theme.of(context).primaryColor,
                     ),
                   ),
                   Text(
                     getRankText(),
                     style: TextStyle(
                       fontSize: 40,
-                      color: getRankText() == '-'
-                          ? const Color(0xFFBCBCBF)
-                          : Theme.of(context).primaryColor,
+                      color: answerFile != null &&
+                              answerRank != null &&
+                              !isInToAvoid(
+                                  Coordinates(answerFile!, answerRank!))
+                          ? widget.afterSelectionColor ??
+                              Theme.of(context).primaryColor
+                          : getRankText() == '-'
+                              ? const Color(0xFFBCBCBF)
+                              : Theme.of(context).primaryColor,
                     ),
                   ),
                 ],
@@ -147,10 +164,9 @@ class _CoordinatesInputButtonsState extends State<CoordinatesInputButtons> {
                   // if both are already there then call the user defined function and reset
                   if (answerFile != null && answerRank != null) {
                     // if there are coordinates to avoid and if it is present in those coordinates then skip it
-                    if (widget.toAvoid != null &&
-                        isInToAvoid(
-                          Coordinates(answerFile!, answerRank!),
-                        )) {
+                    if (isInToAvoid(
+                      Coordinates(answerFile!, answerRank!),
+                    )) {
                       return;
                     }
 
@@ -217,10 +233,9 @@ class _CoordinatesInputButtonsState extends State<CoordinatesInputButtons> {
                   // if both are already there then call the user defined function and reset
                   if (answerFile != null && answerRank != null) {
                     // if there are coordinates to avoid and if it is present in those coordinates then skip it
-                    if (widget.toAvoid != null &&
-                        isInToAvoid(
-                          Coordinates(answerFile!, answerRank!),
-                        )) {
+                    if (isInToAvoid(
+                      Coordinates(answerFile!, answerRank!),
+                    )) {
                       return;
                     }
 
@@ -261,6 +276,11 @@ class _CoordinatesInputButtonsState extends State<CoordinatesInputButtons> {
 
   // function to check whether the coordinates is in the toAvoid or not
   bool isInToAvoid(Coordinates coordinates) {
+    // return false if array is null
+    if (widget.toAvoid == null) {
+      return false;
+    }
+
     // finding the coordinates in the toAvoid
     return widget.toAvoid!.any((element) =>
         element.getRank() == coordinates.getRank() &&
