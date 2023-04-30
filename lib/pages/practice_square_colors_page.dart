@@ -13,6 +13,9 @@ import '../providers/providers.dart';
 // helpers
 import '../helpers/helpers.dart';
 
+// pages
+import './pages.dart';
+
 class PracticeSquareColorsPage extends StatelessWidget {
   const PracticeSquareColorsPage({super.key});
 
@@ -95,20 +98,25 @@ class PracticeSquareColorsPage extends StatelessWidget {
               },
             ),
           ),
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
-              borderRadius: BorderRadius.circular(100),
-            ),
-            alignment: Alignment.center,
-            child: Text(
-              'How To Remember Square Colors?',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyMedium!
-                  .copyWith(color: Colors.white),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).pushNamed(LearnSquareColorsPage.routeName);
+            },
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                borderRadius: BorderRadius.circular(100),
+              ),
+              alignment: Alignment.center,
+              child: Text(
+                'How To Remember Square Colors?',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium!
+                    .copyWith(color: Colors.white),
+              ),
             ),
           ),
         ],

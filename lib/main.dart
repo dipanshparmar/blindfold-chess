@@ -122,6 +122,8 @@ class MyApp extends StatelessWidget {
               const PracticeSquareColorsGameplayPage(),
           PracticeMovesGameplayPage.routeName: (context) =>
               const PracticeMovesGameplayPage(),
+          LearnSquareColorsPage.routeName: (context) =>
+              const LearnSquareColorsPage(),
         },
       ),
     );

@@ -8,3 +8,4 @@ export './practice_coordinates_gameplay_page.dart';
 export './result_page.dart';
 export './practice_square_colors_gameplay_page.dart';
 export './practice_moves_gameplay_page.dart';
+export './learn_square_colors_page.dart';
