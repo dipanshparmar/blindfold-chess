@@ -658,29 +658,50 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
 
     // if piece type is a pawn then getting the new coordinates for it
     if (pieceType == PieceType.pawn) {
-      Coordinates? newCoordinates;
-
       // if we are playing white
       if (provider.getActivePieceColor() == PieceColor.white ||
           provider.getActivePieceColor() == null) {
-        // getting the new coordinates
-        newCoordinates = addToCoordinates(
-          coordinates: initialCoordinates,
-          toFile: 0,
-          toRank: 1,
-        );
-      } else {
-        // getting the new coordinates
-        newCoordinates = addToCoordinates(
-          coordinates: initialCoordinates,
-          toFile: 0,
-          toRank: -1,
-        );
-      }
+        // creating the increments map
+        final List<Map<String, int>> increments = [
+          {
+            'toFile': 0,
+            'toRank': 1,
+          },
+          {
+            'toFile': 0,
+            'toRank': 2,
+          }
+        ];
 
-      // otherwise add it to the list
-      if (newCoordinates != null) {
-        possibleCoordinates.add(newCoordinates);
+        // if rank is not 2 then remove the second map as a pawn can not move two steps from other ranks
+        if (initialCoordinates.getRank() != Rank.two) {
+          increments.removeAt(1);
+        }
+
+        // getting the new coordinates
+        possibleCoordinates =
+            getPossibleMovesFromMap(initialCoordinates, increments);
+      } else {
+        // creating the increments map
+        final List<Map<String, int>> increments = [
+          {
+            'toFile': 0,
+            'toRank': -1,
+          },
+          {
+            'toFile': 0,
+            'toRank': -2,
+          }
+        ];
+
+        // if rank is not 7 then remove the second map as a pawn can not move two steps from other ranks
+        if (initialCoordinates.getRank() != Rank.seven) {
+          increments.removeAt(1);
+        }
+
+        // getting the new coordinates
+        possibleCoordinates =
+            getPossibleMovesFromMap(initialCoordinates, increments);
       }
     } else if (pieceType == PieceType.knight) {
       // increments to do to get all the possible positions
