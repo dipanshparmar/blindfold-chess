@@ -260,8 +260,11 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                 ),
               if (consumerProvider.getActiveShowBoard() == ShowBoard.hide)
                 // if there are no greens or only 1 possible move
-                if (greens.isEmpty || possibleMoves.length == 1)
-                  const Text('')
+                if (greens.isEmpty)
+                  const Text(
+                    '',
+                    style: TextStyle(fontSize: 18),
+                  )
                 // otherwise show the greens
                 else
                   Container(
@@ -280,6 +283,7 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                           style: const TextStyle(
                             color: Colors.green,
                             fontWeight: FontWeight.w500,
+                            fontSize: 18,
                           ),
                         );
                       }).toList(),
@@ -292,9 +296,9 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                   ? CoordinatesInputButtons(
                       afterSelectionColor: isPresent == null
                           ? null
-                          : !isPresent!
-                              ? Colors.red
-                              : Colors.green,
+                          : isPresent!
+                              ? Colors.green
+                              : Colors.red,
                       toAvoid: greens,
                       onSelected: (coordinates) async {
                         // if present in answers then color it green, else red
@@ -310,7 +314,6 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                           });
                         } else {
                           setState(() {
-                            // FIXME: WE MIGHT NOT WANT THIS ANYMORE AS WE ARE NOT GOING TO MARK REDS
                             reds.add(coordinates);
                           });
                         }
@@ -332,12 +335,13 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                                 getMissedMoves().length == possibleMoves.length
                                     ? 'All'
                                     : getMissedMoves(),
+                            'Incorrect guess': reds.first.toString(),
                             'Result': getMissedMoves().isEmpty,
                             'Board view': ChessBoard(
                               width: deviceWidth - 42,
                               viewOnly: true,
                               greens: greens,
-                              reds: [],
+                              reds: reds,
                               accents: getMissedMoves(),
                               onlyPieceToShow: questionPiece,
                               onlyPieceToShowCoordinates: questionCoordinates,
@@ -351,15 +355,17 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                             ),
                           };
 
+                          // removing the missed squares key if the possible moves were only 1
+                          if (possibleMoves.length == 1) {
+                            questionsData[total]!.remove('Missed squares');
+                          }
+
                           await Future.delayed(duration);
 
                           // incrementing the total and getting the new question data
                           setState(() {
                             total++;
                             getNewQuestionData();
-
-                            // resetting isPresent
-                            isPresent = null;
                           });
 
                           return;
@@ -452,9 +458,6 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
 
                             // getting new question
                             getNewQuestionData();
-
-                            // setting the result to null
-                            result = null;
                           });
 
                           return;
@@ -501,9 +504,6 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
 
                             // getting new question
                             getNewQuestionData();
-
-                            // setting the result to null
-                            result = null;
                           });
 
                           return;
@@ -566,6 +566,9 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
 
     // setting the result to null
     result = null;
+
+    // setting the isPresent to null
+    isPresent = null;
   }
 
   // function to get a random pieces
