@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // helpers
 import '../helpers/helpers.dart';
@@ -135,8 +136,16 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                     SettingsItem(
                       leading: GestureDetector(
-                        onTap: () {
-                          // TODO
+                        onTap: () async {
+                          // launching the email client
+                          if (!await launchUrl(
+                            Uri.parse(
+                              // TODO: UPDATE THE SUBJECT WITH THE APP NAME
+                              'mailto:b1t.namaste@gmail.com?subject=<subject>&body=Please explain your issue in detail and please provide as much information as you can.\n\nStart by deleting this body text.',
+                            ),
+                          )) {
+                            print('couldn\'t launch the URL');
+                          }
                         },
                         child: Row(
                           children: const [
