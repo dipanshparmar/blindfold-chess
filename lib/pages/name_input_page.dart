@@ -72,7 +72,7 @@ class _NameInputPageState extends State<NameInputPage> {
                             SharedPreferencesHelper.getInstance();
 
                         // setting the name
-                        await prefs.setString('name', inputValue);
+                        await prefs.setString('name', inputValue.trim()); // setting the trimmed value as the name
 
                         // pushing the page
                         pushReplacementHomePage();
