@@ -18,7 +18,7 @@ class NameProvider with ChangeNotifier {
   // setter for the name
   Future<void> setName(String name) async {
     // setting the name
-    _prefs.setString('name', name);
+    await _prefs.setString('name', name);
 
     // updating the name in state
     _name = name;
