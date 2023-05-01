@@ -141,7 +141,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           if (!await launchUrl(
                             Uri.parse(
                               // TODO: UPDATE THE SUBJECT WITH THE APP NAME
-                              'mailto:b1t.namaste@gmail.com?subject=<subject>&body=Please explain your issue in detail and please provide as much information as you can.\n\nStart by deleting this body text.',
+                              'mailto:b1t.namaste@gmail.com?subject=<subject>&body=Please explain your issue in detail and share images or videos if necessary.\n\nStart by deleting this body text.',
                             ),
                           )) {
                             print('couldn\'t launch the URL');
