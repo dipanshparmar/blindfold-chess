@@ -20,10 +20,10 @@ class _CustomPageViewControllerState extends State<CustomPageViewController> {
 
   int _currentPageIndex = 0;
 
-  final List<Widget> _pages = const [
-    PracticeCoordinatesPage(),
+  final List<Widget> _pages = [
+    const PracticeCoordinatesPage(),
     PracticeSquareColorsPage(),
-    PracticeMovesPage(),
+    const PracticeMovesPage(),
   ];
 
   // page controller

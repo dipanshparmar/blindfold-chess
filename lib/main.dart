@@ -11,6 +11,9 @@ import 'pages/pages.dart';
 // providers
 import 'providers/providers.dart';
 
+// helpers
+import './helpers/helpers.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -33,8 +36,11 @@ void main() async {
     'Hola', // spanish
   ];
 
-  // getting the shared preferences
-  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  // initializing the shared preferences
+  await SharedPreferencesHelper.initialize();
+
+  // getting the instance
+  final SharedPreferences prefs = SharedPreferencesHelper.getInstance();
 
   // setting up a random greeting in the shared preferences
   await prefs.setString(
@@ -48,6 +54,13 @@ void main() async {
   // if the name is null then it is a first time load
   final bool isFirstTimeLoadInDevice =
       name == null; // if name is null then true, false otehrwise
+
+  // if this is the first time load then setting the default settings
+  if (isFirstTimeLoadInDevice) {
+    await prefs.setBool('showCorrectAnswers', true);
+    await prefs.setBool('darkMode', false);
+    await prefs.setBool('showLearnSquareColorsButton', true);
+  }
 
   runApp(
     MyApp(
@@ -87,6 +100,7 @@ class MyApp extends StatelessWidget {
           fontSize: 14,
         ), // styles for the text input
         titleSmall: TextStyle(fontSize: 12),
+        bodySmall: TextStyle(fontWeight: FontWeight.w600),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
@@ -145,6 +159,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => PracticeMovesConfigProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => SettingsProvider(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -154,9 +171,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
         // if it is the first time load in device then show the intro page, otherwise show the home page
-        home: isFirstTimeLoadInDevice
-            ? const IntroPage()
-            : const HomePage(),
+        home: isFirstTimeLoadInDevice ? const IntroPage() : const HomePage(),
         routes: {
           NameInputPage.routeName: (context) => const NameInputPage(),
           HomePage.routeName: (context) => const HomePage(),
@@ -169,6 +184,7 @@ class MyApp extends StatelessWidget {
               const PracticeMovesGameplayPage(),
           LearnSquareColorsPage.routeName: (context) =>
               const LearnSquareColorsPage(),
+          SettingsPage.routeName: (context) => const SettingsPage(),
         },
       ),
     );

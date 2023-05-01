@@ -1,0 +1,238 @@
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
+
+// helpers
+import '../helpers/helpers.dart';
+
+// providers
+import '../providers/providers.dart';
+
+class SettingsPage extends StatefulWidget {
+  const SettingsPage({super.key});
+
+  static const String routeName = '/settings-page';
+
+  @override
+  State<SettingsPage> createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<SettingsPage> {
+  // getting the instance
+  final SharedPreferences prefs = SharedPreferencesHelper.getInstance();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Settings'),
+      ),
+      body: Consumer<SettingsProvider>(
+          builder: (context, consumerProvider, child) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        'General',
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      SettingsItem(
+                        leading: const Text('Change name'),
+                        trailing: GestureDetector(
+                          onTap: () {
+                            // TODO
+                          },
+                          child: Text(
+                            'Dipansh',
+                            style: TextStyle(fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      SettingsItem(
+                        leading: const Text(
+                          'Show correct answers count while playing',
+                        ),
+                        trailing: CustomSwitch(
+                          value: consumerProvider.getShowCorrectAnswers(),
+                          onChanged: (value) async {
+                            // setting the data for showCorrectAnswers
+                            await consumerProvider.setShowCorrectAnswers(value);
+                          },
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        'User Interface',
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      SettingsItem(
+                        leading: const Text('Dark mode'),
+                        trailing: CustomSwitch(
+                          value: consumerProvider.getDarkMode(),
+                          onChanged: (value) async {
+                            await consumerProvider.setDarkMode(value);
+                          },
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        'Square Colors Practice',
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      SettingsItem(
+                        leading: const Text(
+                            'Show "How To Remember Square Colors?" button'),
+                        trailing: CustomSwitch(
+                          value:
+                              consumerProvider.getShowLearnSquareColorsButton(),
+                          onChanged: (value) async {
+                            await consumerProvider
+                                .setShowLearnSquareColorsButton(value);
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Support',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    SettingsItem(
+                      leading: GestureDetector(
+                        onTap: () {
+                          // TODO
+                        },
+                        child: Row(
+                          children: const [
+                            Text('Contact Us'),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Icon(
+                              Icons.north_east,
+                              color: Colors.grey,
+                              size: 15,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      }),
+    );
+  }
+}
+
+// TODO: EXTRACT THESE
+class CustomSwitch extends StatefulWidget {
+  const CustomSwitch({
+    super.key,
+    required this.value,
+    required this.onChanged,
+  });
+
+  final bool value;
+  final Function(bool) onChanged;
+
+  @override
+  State<CustomSwitch> createState() => _CustomSwitchState();
+}
+
+class _CustomSwitchState extends State<CustomSwitch> {
+  // storing the value
+  late bool value;
+
+  @override
+  void initState() {
+    super.initState();
+
+    value = widget.value;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Switch(
+      onChanged: (val) async {
+        // calling the user defined function
+        await widget.onChanged(val);
+
+        setState(() {
+          value = val;
+        });
+      },
+      value: value,
+    );
+  }
+}
+
+class SettingsItem extends StatelessWidget {
+  const SettingsItem({
+    super.key,
+    required this.leading,
+    this.trailing,
+  });
+
+  final Widget leading;
+  final Widget? trailing;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          flex: 6,
+          child: leading,
+        ),
+        Expanded(
+          flex: 3,
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: trailing ?? const SizedBox.shrink(),
+          ),
+        ),
+      ],
+    );
+  }
+}

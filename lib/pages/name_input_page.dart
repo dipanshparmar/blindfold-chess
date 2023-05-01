@@ -4,6 +4,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 // pages
 import './pages.dart';
 
+// helpers
+import '../helpers/helpers.dart';
+
 class NameInputPage extends StatefulWidget {
   const NameInputPage({super.key});
 
@@ -66,7 +69,7 @@ class _NameInputPageState extends State<NameInputPage> {
 
                         // getting the shared preferences
                         final SharedPreferences prefs =
-                            await SharedPreferences.getInstance();
+                            SharedPreferencesHelper.getInstance();
 
                         // setting the name
                         await prefs.setString('name', inputValue);

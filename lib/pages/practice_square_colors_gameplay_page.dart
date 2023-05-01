@@ -243,13 +243,15 @@ class _PracticeSquareColorsGameplayPageState
                         .bodyMedium!
                         .copyWith(fontWeight: FontWeight.w600),
                   ),
-                  Text(
-                    'Correct: $correct',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium!
-                        .copyWith(fontWeight: FontWeight.w600),
-                  ),
+                  if (Provider.of<SettingsProvider>(context)
+                      .getShowCorrectAnswers())
+                    Text(
+                      'Correct: $correct',
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium!
+                          .copyWith(fontWeight: FontWeight.w600),
+                    ),
                 ],
               ),
             ),

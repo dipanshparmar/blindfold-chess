@@ -4,6 +4,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 // widgets
 import '../controllers/custom_page_view_controller.dart';
 
+// pages
+import './pages.dart';
+
+// helpers
+import '../helpers/helpers.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -26,9 +32,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   // function to set up the greeting
-  void setUpGreeting() async {
-    // getting the shared preferences
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
+  void setUpGreeting() {
+    // getting the shared preferences instance
+    final prefs = SharedPreferencesHelper.getInstance();
 
     // setting the greeting
     setState(() {
@@ -46,7 +52,9 @@ class _HomePageState extends State<HomePage> {
         elevation: 0,
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushNamed(SettingsPage.routeName);
+            },
             icon: const Icon(Icons.settings),
             iconSize: 20,
           )

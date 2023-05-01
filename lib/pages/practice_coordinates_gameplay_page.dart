@@ -223,13 +223,15 @@ class _PracticeCoordinatesGameplayPageState
                           .bodyMedium!
                           .copyWith(fontWeight: FontWeight.w600),
                     ),
-                    Text(
-                      'Correct: $correct',
-                      textAlign: TextAlign.left,
-                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
-                    ),
+                    if (Provider.of<SettingsProvider>(context)
+                        .getShowCorrectAnswers())
+                      Text(
+                        'Correct: $correct',
+                        textAlign: TextAlign.left,
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                      ),
                   ],
                 ),
               ),

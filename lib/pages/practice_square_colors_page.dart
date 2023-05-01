@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // widgets
 import '../widgets/widgets.dart';
@@ -17,7 +18,10 @@ import '../helpers/helpers.dart';
 import './pages.dart';
 
 class PracticeSquareColorsPage extends StatelessWidget {
-  const PracticeSquareColorsPage({super.key});
+  PracticeSquareColorsPage({super.key});
+
+  // getting the prefs
+  final SharedPreferences prefs = SharedPreferencesHelper.getInstance();
 
   @override
   Widget build(BuildContext context) {
@@ -98,27 +102,30 @@ class PracticeSquareColorsPage extends StatelessWidget {
               },
             ),
           ),
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).pushNamed(LearnSquareColorsPage.routeName);
-            },
-            child: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-                borderRadius: BorderRadius.circular(100),
-              ),
-              alignment: Alignment.center,
-              child: Text(
-                'How To Remember Square Colors?',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium!
-                    .copyWith(color: Colors.white),
+          if (Provider.of<SettingsProvider>(context)
+              .getShowLearnSquareColorsButton())
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context)
+                    .pushNamed(LearnSquareColorsPage.routeName);
+              },
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  borderRadius: BorderRadius.circular(100),
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  'How To Remember Square Colors?',
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium!
+                      .copyWith(color: Colors.white),
+                ),
               ),
             ),
-          ),
         ],
       ),
     );
