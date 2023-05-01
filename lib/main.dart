@@ -42,11 +42,27 @@ void main() async {
     greetings[Random().nextInt(greetings.length)],
   );
 
-  runApp(const MyApp());
+  // grabbing the name
+  final String? name = prefs.getString('name');
+
+  // if the name is null then it is a first time load
+  final bool isFirstTimeLoadInDevice =
+      name == null; // if name is null then true, false otehrwise
+
+  runApp(
+    MyApp(
+      isFirstTimeLoadInDevice: isFirstTimeLoadInDevice,
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({
+    super.key,
+    required this.isFirstTimeLoadInDevice,
+  });
+
+  final bool isFirstTimeLoadInDevice;
 
   @override
   Widget build(BuildContext context) {
@@ -137,7 +153,10 @@ class MyApp extends StatelessWidget {
             secondary: const Color(0xFFFFD465),
           ),
         ),
-        home: const IntroPage(),
+        // if it is the first time load in device then show the intro page, otherwise show the home page
+        home: isFirstTimeLoadInDevice
+            ? const IntroPage()
+            : const HomePage(),
         routes: {
           NameInputPage.routeName: (context) => const NameInputPage(),
           HomePage.routeName: (context) => const HomePage(),
