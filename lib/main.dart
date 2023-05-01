@@ -80,10 +80,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = ThemeData(
-      primaryColor: const Color(0xFF212028),
+      primaryColor: const Color(0xFF3C454F),
       fontFamily: 'Poppins',
       appBarTheme: const AppBarTheme(
-        backgroundColor: Color(0xFF212028),
+        backgroundColor: Color(0xFF3C454F),
         titleTextStyle: TextStyle(
           color: Colors.white,
           fontSize: 16,
@@ -107,8 +107,8 @@ class MyApp extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(100),
           ),
-          backgroundColor: const Color(0xFFFFD465),
-          foregroundColor: const Color(0xFF212028),
+          backgroundColor: const Color(0xFFC3B091),
+          foregroundColor: Colors.black,
           textStyle: const TextStyle(
             fontWeight: FontWeight.w600,
           ),
@@ -121,14 +121,14 @@ class MyApp extends StatelessWidget {
           borderRadius: BorderRadius.circular(100),
           borderSide: const BorderSide(
             width: 2,
-            color: Color(0xFF212028),
+            color: Color(0xFF3C454F),
           ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(100),
           borderSide: const BorderSide(
             width: 2,
-            color: Color(0xFF212028),
+            color: Color(0xFF3C454F),
           ),
         ),
         hintStyle: const TextStyle(
@@ -142,9 +142,9 @@ class MyApp extends StatelessWidget {
         isDense: true,
       ),
       textSelectionTheme: const TextSelectionThemeData(
-        cursorColor: Color(0xFF212028),
-        selectionColor: Color(0xFFFFD465),
-        selectionHandleColor: Color(0xFF212028),
+        cursorColor: Color(0xFF3C454F),
+        selectionColor: Color(0xFFC3B091),
+        selectionHandleColor: Color(0xFF3C454F),
       ),
     );
 
@@ -170,7 +170,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: theme.copyWith(
           colorScheme: theme.colorScheme.copyWith(
-            secondary: const Color(0xFFFFD465),
+            secondary: const Color(0xFFC3B091),
           ),
         ),
         // if it is the first time load in device then show the intro page, otherwise show the home page
