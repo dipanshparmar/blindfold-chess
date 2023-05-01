@@ -40,6 +40,7 @@ dependencies:
   syncfusion_flutter_sliders: ^21.1.39
   syncfusion_flutter_core: ^21.1.39
   sticky_headers: ^0.3.0+2
+  shared_preferences: ^2.1.0
 
 dev_dependencies:
   flutter_test:

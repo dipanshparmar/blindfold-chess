@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // pages
 import 'pages/pages.dart';
@@ -15,6 +18,29 @@ void main() async {
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
+
+  // creating the greetings in different languages
+  const List<String> greetings = [
+    'Здравствуйте', // russian
+    'Hello', // english
+    '你好', // chinese
+    'नमस्ते', // hindi
+    'Bonjour', // french
+    'Guten Tag', // german
+    'Ciao', // italian
+    'Selamat pagi', // indonesian
+    'Merhaba', // turkish
+    'Hola', // spanish
+  ];
+
+  // getting the shared preferences
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  // setting up a random greeting in the shared preferences
+  await prefs.setString(
+    'greeting',
+    greetings[Random().nextInt(greetings.length)],
+  );
 
   runApp(const MyApp());
 }
