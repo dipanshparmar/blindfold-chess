@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
 // widgets
 import '../controllers/custom_page_view_controller.dart';
@@ -9,6 +9,9 @@ import './pages.dart';
 
 // helpers
 import '../helpers/helpers.dart';
+
+// providers
+import '../providers/providers.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -22,7 +25,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   // to hold the greeting
   String? greeting;
-  String? name;
 
   @override
   void initState() {
@@ -39,7 +41,6 @@ class _HomePageState extends State<HomePage> {
     // setting the greeting
     setState(() {
       greeting = prefs.getString('greeting');
-      name = prefs.getString('name');
     });
   }
 
@@ -48,7 +49,11 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title:
-            Text(greeting != null && name != null ? '$greeting, $name' : '...'),
+            Consumer<NameProvider>(builder: (context, consumerProvider, child) {
+          return Text(greeting != null
+              ? '$greeting, ${consumerProvider.getName()}'
+              : '...');
+        }),
         elevation: 0,
         actions: [
           IconButton(

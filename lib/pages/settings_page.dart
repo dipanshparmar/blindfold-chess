@@ -22,6 +22,17 @@ class _SettingsPageState extends State<SettingsPage> {
   // getting the instance
   final SharedPreferences prefs = SharedPreferencesHelper.getInstance();
 
+  // state to hold the new name
+  String newName = '';
+
+  // loading state
+  bool isLoading = false;
+
+  // method to pop the page
+  void goBack() {
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,12 +65,101 @@ class _SettingsPageState extends State<SettingsPage> {
                         leading: const Text('Change name'),
                         trailing: GestureDetector(
                           onTap: () {
-                            // TODO
+                            // showing the modal bottom sheet
+                            showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(10),
+                                  topRight: Radius.circular(10),
+                                ),
+                              ),
+                              builder: (context) {
+                                return StatefulBuilder(
+                                    builder: (context, setState) {
+                                  return Padding(
+                                    padding: EdgeInsets.only(
+                                        top: 20.0,
+                                        right: 20,
+                                        left: 20,
+                                        bottom: MediaQuery.of(context)
+                                                .viewInsets
+                                                .bottom +
+                                            20),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const Text('Please enter the new name'),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        TextField(
+                                          autofocus: true,
+                                          maxLength: 12,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              newName = value;
+                                            });
+                                          },
+                                          decoration: const InputDecoration(
+                                            helperText: 'Minimum 3 characters',
+                                            hintText: 'e.g. John',
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        ElevatedButton(
+                                          onPressed: newName.trim().length < 3
+                                              ? null
+                                              : () async {
+                                                  // setting is loading to true
+                                                  setState(() {
+                                                    isLoading = true;
+                                                  });
+
+                                                  // setting the name
+                                                  await Provider.of<
+                                                              NameProvider>(
+                                                          context,
+                                                          listen: false)
+                                                      .setName(newName.trim());
+
+                                                  // closing the sheet
+                                                  goBack();
+                                                },
+                                          child: isLoading
+                                              ? SizedBox(
+                                                  height: 16,
+                                                  width: 16,
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    color: Theme.of(context)
+                                                        .primaryColor,
+                                                    strokeWidth: 2,
+                                                  ),
+                                                )
+                                              : const Text('UPDATE'),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                });
+                              },
+                            );
                           },
-                          child: Text(
-                            'Dipansh',
-                            style: TextStyle(fontWeight: FontWeight.w600),
-                          ),
+                          child: Consumer<NameProvider>(
+                              builder: (context, nameProvider, child) {
+                            return Text(
+                              nameProvider.getName(),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w600,
+                              ),
+                            );
+                          }),
                         ),
                       ),
                       const SizedBox(
