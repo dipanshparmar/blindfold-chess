@@ -41,6 +41,7 @@ class _NameInputPageState extends State<NameInputPage> {
               TextField(
                 decoration: const InputDecoration(
                   hintText: 'What should we call you?',
+                  helperText: 'Minimum 3 characters',
                 ),
                 keyboardType: TextInputType.name,
                 textCapitalization: TextCapitalization.words,
@@ -55,7 +56,7 @@ class _NameInputPageState extends State<NameInputPage> {
                 height: 20,
               ),
               ElevatedButton(
-                onPressed: inputValue.length < 3
+                onPressed: inputValue.trim().length < 3
                     ? null
                     : () async {
                         // setting the state to true
