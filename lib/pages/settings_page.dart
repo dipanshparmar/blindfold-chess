@@ -9,6 +9,9 @@ import '../helpers/helpers.dart';
 // providers
 import '../providers/providers.dart';
 
+// widgets
+import '../widgets/widgets.dart';
+
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
 
@@ -269,79 +272,6 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
         );
       }),
-    );
-  }
-}
-
-// TODO: EXTRACT THESE
-class CustomSwitch extends StatefulWidget {
-  const CustomSwitch({
-    super.key,
-    required this.value,
-    required this.onChanged,
-  });
-
-  final bool value;
-  final Function(bool) onChanged;
-
-  @override
-  State<CustomSwitch> createState() => _CustomSwitchState();
-}
-
-class _CustomSwitchState extends State<CustomSwitch> {
-  // storing the value
-  late bool value;
-
-  @override
-  void initState() {
-    super.initState();
-
-    value = widget.value;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Switch(
-      onChanged: (val) async {
-        // calling the user defined function
-        await widget.onChanged(val);
-
-        setState(() {
-          value = val;
-        });
-      },
-      value: value,
-    );
-  }
-}
-
-class SettingsItem extends StatelessWidget {
-  const SettingsItem({
-    super.key,
-    required this.leading,
-    this.trailing,
-  });
-
-  final Widget leading;
-  final Widget? trailing;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          flex: 6,
-          child: leading,
-        ),
-        Expanded(
-          flex: 3,
-          child: Align(
-            alignment: Alignment.centerRight,
-            child: trailing ?? const SizedBox.shrink(),
-          ),
-        ),
-      ],
     );
   }
 }
