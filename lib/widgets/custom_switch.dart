@@ -27,17 +27,23 @@ class _CustomSwitchState extends State<CustomSwitch> {
 
   @override
   Widget build(BuildContext context) {
-    return Switch(
-      onChanged: (val) async {
-        // calling the user defined function
-        await widget.onChanged(val);
+    // https://stackoverflow.com/a/72514256/11283915
+    return SizedBox(
+      width: 50,
+      height: 22,
+      child: Switch(
+        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        activeColor: Theme.of(context).colorScheme.secondary,
+        onChanged: (val) async {
+          // calling the user defined function
+          await widget.onChanged(val);
 
-        setState(() {
-          value = val;
-        });
-      },
-      value: value,
+          setState(() {
+            value = val;
+          });
+        },
+        value: value,
+      ),
     );
   }
 }
-
