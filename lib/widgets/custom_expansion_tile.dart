@@ -227,7 +227,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
                         borderRadius: BorderRadius.circular(100),
                       ),
                       child: Text(
-                        'Select All',
+                        areAllSelected() ? 'Unselect All' : 'Select All',
                         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                             color: areAllSelected()
                                 ? Theme.of(context).primaryColor

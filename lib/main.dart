@@ -107,7 +107,7 @@ class MyApp extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(100),
           ),
-          backgroundColor: const Color(0xFFC3B091),
+          backgroundColor: const Color(0xFFFFD465),
           foregroundColor: Colors.black,
           textStyle: const TextStyle(
             fontWeight: FontWeight.w600,
@@ -143,7 +143,7 @@ class MyApp extends StatelessWidget {
       ),
       textSelectionTheme: const TextSelectionThemeData(
         cursorColor: Color(0xFF3C454F),
-        selectionColor: Color(0xFFC3B091),
+        selectionColor: Color(0xFFFFD465),
         selectionHandleColor: Color(0xFF3C454F),
       ),
     );
@@ -170,7 +170,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: theme.copyWith(
           colorScheme: theme.colorScheme.copyWith(
-            secondary: const Color(0xFFC3B091),
+            secondary: const Color(0xFFFFD465),
           ),
         ),
         // if it is the first time load in device then show the intro page, otherwise show the home page
