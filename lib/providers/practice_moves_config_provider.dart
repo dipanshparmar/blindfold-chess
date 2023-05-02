@@ -7,7 +7,7 @@ import '../utils/enums/enums.dart';
 import '../helpers/helpers.dart';
 
 class PracticeMovesConfigProvider with ChangeNotifier {
-  PieceColor? _activePieceColor;
+  PieceColor _activePieceColor = PieceColor.white;
   ShowCoordinates? _activeShowCoordinates;
   double _activeSeconds = -1;
   ShowBoard _activeShowBoard = ShowBoard.hide;
@@ -15,7 +15,7 @@ class PracticeMovesConfigProvider with ChangeNotifier {
       DataHelper.getPieceTypeKeyValuePairs().keys.toList();
 
   // getters
-  PieceColor? getActivePieceColor() {
+  PieceColor getActivePieceColor() {
     return _activePieceColor;
   }
 
@@ -36,7 +36,7 @@ class PracticeMovesConfigProvider with ChangeNotifier {
   }
 
   // setters
-  void setActivePieceColor(PieceColor? pieceColor) {
+  void setActivePieceColor(PieceColor pieceColor) {
     _activePieceColor = pieceColor;
 
     notifyListeners();
@@ -59,10 +59,8 @@ class PracticeMovesConfigProvider with ChangeNotifier {
 
     // if to show board, activate pices and coordinates
     if (showBoard == ShowBoard.show) {
-      _activePieceColor = PieceColor.white;
       _activeShowCoordinates = ShowCoordinates.hide;
     } else {
-      _activePieceColor = null;
       _activeShowCoordinates = null;
     }
 

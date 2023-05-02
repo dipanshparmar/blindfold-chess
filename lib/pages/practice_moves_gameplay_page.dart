@@ -184,6 +184,9 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
       ),
       body: Consumer<PracticeMovesConfigProvider>(
         builder: (context, consumerProvider, child) {
+          final bool isPlayingWhite =
+              consumerProvider.getActivePieceColor() == PieceColor.white;
+
           return Column(
             children: [
               const SizedBox(
@@ -210,6 +213,39 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                             .bodyMedium!
                             .copyWith(fontWeight: FontWeight.w600),
                       ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Row(
+                  children: [
+                    Container(
+                      height: 15,
+                      width: 15,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Theme.of(context).primaryColor,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(2),
+                        color: isPlayingWhite
+                            ? Colors.white
+                            : Theme.of(context).primaryColor,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 7,
+                    ),
+                    Text(
+                      '${isPlayingWhite ? 'White' : 'Black'} to move',
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                    ),
                   ],
                 ),
               ),

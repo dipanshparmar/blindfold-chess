@@ -40,23 +40,22 @@ class PracticeMovesPage extends StatelessWidget {
                   height: 15,
                 ),
                 SelectOne(
-                  keyValuePairs: DataHelper.getPieceColorKeyValuePairs(),
-                  activeValue: provider.getActivePieceColor(),
-                  onChange: (value) {
-                    provider.setActivePieceColor(value as PieceColor);
-                  },
-                  disabled: provider.getActivePieceColor() == null,
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                SelectOne(
                   keyValuePairs: DataHelper.getShowCoordinatesKeyValuePairs(),
                   activeValue: provider.getActiveShowCoordinates(),
                   onChange: (value) {
                     provider.setActiveShowCoordinates(value as ShowCoordinates);
                   },
                   disabled: provider.getActiveShowCoordinates() == null,
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                SelectOne(
+                  keyValuePairs: DataHelper.getPieceColorKeyValuePairs(),
+                  activeValue: provider.getActivePieceColor(),
+                  onChange: (value) {
+                    provider.setActivePieceColor(value as PieceColor);
+                  },
                 ),
                 const SizedBox(
                   height: 15,
