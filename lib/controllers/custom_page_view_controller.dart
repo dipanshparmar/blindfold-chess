@@ -128,7 +128,7 @@ class _CustomPageViewControllerState extends State<CustomPageViewController> {
               Navigator.of(context)
                   .pushNamed(_followUpPageRoutes[_currentPageIndex]);
             },
-            child: const Text('Start'),
+            child: const Text('START'),
           ),
         )
       ],
