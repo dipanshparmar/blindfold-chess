@@ -22,6 +22,9 @@ import '../providers/providers.dart';
 // widgets
 import '../widgets/widgets.dart';
 
+// constants
+import '../utils/constants/constants.dart';
+
 class PracticeSquareColorsGameplayPage extends StatefulWidget {
   const PracticeSquareColorsGameplayPage({super.key});
 
@@ -298,8 +301,8 @@ class _PracticeSquareColorsGameplayPageState
                                 ShowBoard.hide
                             ? result != null
                                 ? result!
-                                    ? Colors.green
-                                    : Colors.red
+                                    ? kPositiveColor
+                                    : kNegativeColor
                                 : null
                             : null),
                   ),
@@ -503,7 +506,7 @@ class _PracticeSquareColorsGameplayPageState
                           style: Theme.of(context)
                               .textTheme
                               .bodyMedium!
-                              .copyWith(color: Colors.white),
+                              .copyWith(color: kLightColor),
                         ),
                       ),
                     ),

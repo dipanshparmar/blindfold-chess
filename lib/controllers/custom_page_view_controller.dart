@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 // pages
 import '../pages/pages.dart';
 
+// constants
+import '../utils/constants/constants.dart';
+
 class CustomPageViewController extends StatefulWidget {
   const CustomPageViewController({super.key});
 
@@ -75,14 +78,14 @@ class _CustomPageViewControllerState extends State<CustomPageViewController> {
                       }
                     : null,
                 icon: const Icon(Icons.arrow_back_ios),
-                color: Colors.white,
+                color: kLightColor,
                 iconSize: 14,
-                disabledColor: Colors.grey,
+                disabledColor: kGrayColor,
               ),
               Text(
                 '${_currentPageIndex + 1}. ${_pageTitles[_currentPageIndex]}',
                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      color: Colors.white,
+                      color: kLightColor,
                       fontWeight: FontWeight.w500,
                     ),
                 textAlign: TextAlign.center,
@@ -102,9 +105,9 @@ class _CustomPageViewControllerState extends State<CustomPageViewController> {
                       }
                     : null,
                 icon: const Icon(Icons.arrow_forward_ios),
-                color: Colors.white,
+                color: kLightColor,
                 iconSize: 14,
-                disabledColor: Colors.grey,
+                disabledColor: kGrayColor,
               ),
             ],
           ),

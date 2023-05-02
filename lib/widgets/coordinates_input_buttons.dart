@@ -9,6 +9,9 @@ import '../utils/enums/enums.dart';
 // models
 import '../models/models.dart';
 
+// constants
+import '../utils/constants/constants.dart';
+
 class CoordinatesInputButtons extends StatefulWidget {
   const CoordinatesInputButtons({
     super.key,
@@ -85,7 +88,7 @@ class _CoordinatesInputButtonsState extends State<CoordinatesInputButtons> {
                           ? widget.afterSelectionColor ??
                               Theme.of(context).primaryColor
                           : getFileText() == '-'
-                              ? const Color(0xFFBCBCBF)
+                              ? kBoardDarkColor
                               : Theme.of(context).primaryColor,
                     ),
                   ),
@@ -100,7 +103,7 @@ class _CoordinatesInputButtonsState extends State<CoordinatesInputButtons> {
                           ? widget.afterSelectionColor ??
                               Theme.of(context).primaryColor
                           : getRankText() == '-'
-                              ? const Color(0xFFBCBCBF)
+                              ? kBoardDarkColor
                               : Theme.of(context).primaryColor,
                     ),
                   ),

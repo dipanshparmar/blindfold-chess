@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+// constants
+import '../utils/constants/constants.dart';
+
 class MovesCountInputButtons extends StatefulWidget {
   const MovesCountInputButtons(
       {super.key, this.onSelected, this.afterSelectionColor});
@@ -48,7 +51,7 @@ class _MovesCountInputButtonsState extends State<MovesCountInputButtons> {
           style: TextStyle(
               fontSize: 40,
               color: selectedNumbers.isEmpty
-                  ? const Color(0xFFBCBCBF)
+                  ? kBoardDarkColor
                   : isSelected
                       ? widget.afterSelectionColor
                       : null),

@@ -17,6 +17,9 @@ import '../helpers/helpers.dart';
 // pages
 import './pages.dart';
 
+// constants
+import '../utils/constants/constants.dart';
+
 class PracticeSquareColorsPage extends StatelessWidget {
   PracticeSquareColorsPage({super.key});
 
@@ -122,7 +125,7 @@ class PracticeSquareColorsPage extends StatelessWidget {
                   style: Theme.of(context)
                       .textTheme
                       .bodyMedium!
-                      .copyWith(color: Colors.white),
+                      .copyWith(color: kPositiveColor),
                 ),
               ),
             ),

@@ -22,6 +22,9 @@ import '../providers/providers.dart';
 // widgets
 import '../widgets/widgets.dart';
 
+// constants
+import '../utils/constants/constants.dart';
+
 class PracticeMovesGameplayPage extends StatefulWidget {
   const PracticeMovesGameplayPage({super.key});
 
@@ -233,7 +236,7 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                         ),
                         borderRadius: BorderRadius.circular(2),
                         color: isPlayingWhite
-                            ? Colors.white
+                            ? kGrayColor
                             : Theme.of(context).primaryColor,
                       ),
                     ),
@@ -319,7 +322,7 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                         return Text(
                           value.toString(),
                           style: const TextStyle(
-                            color: Colors.green,
+                            color: kPositiveColor,
                             fontWeight: FontWeight.w500,
                             fontSize: 18,
                           ),
@@ -335,8 +338,8 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                       afterSelectionColor: isPresent == null
                           ? null
                           : isPresent!
-                              ? Colors.green
-                              : Colors.red,
+                              ? kPositiveColor
+                              : kNegativeColor,
                       toAvoid: greens,
                       onSelected: (coordinates) async {
                         // if present in answers then color it green, else red
@@ -453,8 +456,8 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                   : MovesCountInputButtons(
                       afterSelectionColor: result != null
                           ? result!
-                              ? Colors.green
-                              : Colors.red
+                              ? kPositiveColor
+                              : kNegativeColor
                           : null,
                       onSelected: (number) async {
                         // if the user number doesn't match with the length then it's wrong, so wait for some time and then generate a new question

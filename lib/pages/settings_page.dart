@@ -12,6 +12,9 @@ import '../providers/providers.dart';
 // widgets
 import '../widgets/widgets.dart';
 
+// constants
+import '../utils/constants/constants.dart';
+
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
 
@@ -258,7 +261,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             ),
                             Icon(
                               Icons.north_east,
-                              color: Colors.grey,
+                              color: kGrayColor,
                               size: 15,
                             ),
                           ],

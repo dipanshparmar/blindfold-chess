@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+// constants
+import '../utils/constants/constants.dart';
+
 class CustomExpansionTile extends StatefulWidget {
   const CustomExpansionTile({
     super.key,
@@ -99,7 +102,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
                       getTitle(),
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            color: Colors.white,
+                            color: kLightColor,
                             fontWeight: isExpanded
                                 ? FontWeight.w500
                                 : FontWeight.normal,
@@ -113,14 +116,14 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
                     decoration: BoxDecoration(
                       color: isExpanded
                           ? Theme.of(context).primaryColor
-                          : Colors.white,
+                          : kLightColor,
                       shape: BoxShape.circle,
                     ),
                     child: Icon(
                       isExpanded
                           ? Icons.keyboard_arrow_up
                           : Icons.keyboard_arrow_down,
-                      color: isExpanded ? Colors.white : null,
+                      color: isExpanded ? kLightColor : null,
                     ),
                   )
                 ],
@@ -177,7 +180,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
                                 .copyWith(
                                   color: selectedValues.contains(key)
                                       ? Theme.of(context).colorScheme.secondary
-                                      : Colors.white,
+                                      : kLightColor,
                                 ),
                           ),
                         ),
@@ -231,7 +234,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
                         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                             color: areAllSelected()
                                 ? Theme.of(context).primaryColor
-                                : Colors.white),
+                                : kLightColor),
                       ),
                     ),
                   )

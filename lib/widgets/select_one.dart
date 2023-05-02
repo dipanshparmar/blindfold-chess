@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+// constants
+import '../utils/constants/constants.dart';
+
 class SelectOne extends StatefulWidget {
   const SelectOne({
     super.key,
@@ -67,7 +70,7 @@ class _SelectOneState extends State<SelectOne> {
                     padding: const EdgeInsets.all(6),
                     decoration: BoxDecoration(
                       color:
-                          !widget.disabled && isSelected ? Colors.white : null,
+                          !widget.disabled && isSelected ? kLightColor : null,
                       borderRadius: BorderRadius.circular(100),
                     ),
                     child: Text(
@@ -77,8 +80,8 @@ class _SelectOneState extends State<SelectOne> {
                                 ? FontWeight.w600
                                 : null,
                             color: !widget.disabled && isSelected
-                                ? Colors.black
-                                : Colors.white,
+                                ? kDarkColor
+                                : kLightColor,
                           ),
                     ),
                   ),

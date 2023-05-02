@@ -7,6 +7,9 @@ import '../widgets/widgets.dart';
 // models
 import '../models/models.dart';
 
+// constants
+import '../utils/constants/constants.dart';
+
 class ResultPage extends StatelessWidget {
   const ResultPage({super.key});
 
@@ -167,13 +170,16 @@ class _QuestionDetailsState extends State<QuestionDetails> {
   // active key
   int activeKey = 0;
 
+  // background color
+  final Color bgColor = const Color(0xFFE9E9EA);
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Container(
           padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-          color: const Color(0xFFE9E9EA),
+          color: bgColor,
           child: Text(
             'Please choose any question number below to see the details about the question',
             style: Theme.of(context).textTheme.bodySmall!.copyWith(
@@ -183,7 +189,7 @@ class _QuestionDetailsState extends State<QuestionDetails> {
         ),
         StickyHeader(
           header: Container(
-            color: const Color(0xFFE9E9EA),
+            color: bgColor,
             padding: const EdgeInsets.only(bottom: 20, top: 20),
             child: SizedBox(
               height: 35,
@@ -219,7 +225,7 @@ class _QuestionDetailsState extends State<QuestionDetails> {
                                     color: Theme.of(context).primaryColor,
                                     width: 2),
                                 borderRadius: BorderRadius.circular(5),
-                                color: isActive ? Colors.black : Colors.white,
+                                color: isActive ? kDarkColor : kLightColor,
                               ),
                               child: Text(
                                 (key + 1).toString(),
@@ -228,8 +234,8 @@ class _QuestionDetailsState extends State<QuestionDetails> {
                                     .bodyMedium!
                                     .copyWith(
                                       color: isActive
-                                          ? Colors.white
-                                          : Colors.black,
+                                          ? kLightColor
+                                          : kDarkColor,
                                     ),
                               ),
                             ),
@@ -241,8 +247,8 @@ class _QuestionDetailsState extends State<QuestionDetails> {
                                 width: 5,
                                 decoration: BoxDecoration(
                                   color: widget.data[key]!['Result']
-                                      ? Colors.green
-                                      : Colors.red,
+                                      ? kPositiveColor
+                                      : kNegativeColor,
                                   shape: BoxShape.circle,
                                 ),
                               ),

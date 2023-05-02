@@ -10,6 +10,9 @@ import '../utils/enums/enums.dart';
 // models
 import '../models/models.dart';
 
+// constants
+import '../utils/constants/constants.dart';
+
 class ChessBoard extends StatefulWidget {
   const ChessBoard({
     super.key,
@@ -96,10 +99,10 @@ class _ChessBoardState extends State<ChessBoard> {
     // if both are of different type then return light color, else dark color
     if ((!isFileEven(file) && isRankEven(rank)) ||
         (isFileEven(file) && !isRankEven(rank))) {
-      return Colors.white;
+      return kLightColor;
     }
 
-    return const Color(0xFFBCBCBF);
+    return kBoardDarkColor;
   }
 
   // function to get the result
@@ -123,15 +126,15 @@ class _ChessBoardState extends State<ChessBoard> {
               widget.questionCoordinates!.getRank() &&
           clickCoordinates!.getFile() ==
               widget.questionCoordinates!.getFile()) {
-        return Colors.green;
+        return kPositiveColor;
       }
 
-      return Colors.red;
+      return kNegativeColor;
       // this will help to color the correct coordinate if incorrect coordinate was clicked
     } else if (currentCoordinates.getRank() ==
             widget.questionCoordinates!.getRank() &&
         currentCoordinates.getFile() == widget.questionCoordinates!.getFile()) {
-      return Colors.green;
+      return kPositiveColor;
     } else {
       return getSquareColor(
           currentCoordinates.getFile(), currentCoordinates.getRank());
@@ -144,16 +147,16 @@ class _ChessBoardState extends State<ChessBoard> {
     if (widget.greens!.any((element) =>
         element.getFile() == coords.getFile() &&
         element.getRank() == coords.getRank())) {
-      return Colors.green;
+      return kPositiveColor;
     } else if (widget.reds!.any((element) =>
         element.getFile() == coords.getFile() &&
         element.getRank() == coords.getRank())) {
       // if any of the reds contain it then return red
-      return Colors.red;
+      return kNegativeColor;
     } else if (widget.accents!.any((element) =>
         element.getFile() == coords.getFile() &&
         element.getRank() == coords.getRank())) {
-      // if any of the reds contain it then return red
+      // if any of the accents contain it then return the secondary color
       return Theme.of(context).colorScheme.secondary;
     } else {
       return getSquareColor(coords.getFile(), coords.getRank());
@@ -357,7 +360,7 @@ class _ChessBoardState extends State<ChessBoard> {
                                   ? getSquareColor(file, rank)
                                   : getResultColor(Coordinates(file, rank),
                                       clickCoordinates!)
-                          : Colors.white,
+                          : kLightColor,
                     ),
                     child: Stack(
                       children: [

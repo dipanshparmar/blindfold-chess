@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
+// constants
+import '../utils/constants/constants.dart';
+
 class CustomTimeSlider extends StatefulWidget {
   const CustomTimeSlider({
     super.key,
@@ -78,7 +81,7 @@ class _CustomTimeSliderState extends State<CustomTimeSlider> {
           activeTrackHeight: 37,
           inactiveTrackHeight: 37,
           thumbRadius: 18.5,
-          thumbColor: Colors.white,
+          thumbColor: kLightColor,
           activeTrackColor: Theme.of(context).primaryColor,
           inactiveTrackColor: Theme.of(context).primaryColor,
           thumbStrokeWidth: 2,
