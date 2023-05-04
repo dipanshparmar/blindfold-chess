@@ -228,7 +228,7 @@ class _PracticeSquareColorsGameplayPageState
                   : null,
             )
         ],
-        title: const Text('Practice Coordinates'),
+        title: const Text('Practice Square Colors'),
       ),
       body: Consumer<PracticeSquareColorsConfigProvider>(
           builder: (context, consumerProvider, child) {

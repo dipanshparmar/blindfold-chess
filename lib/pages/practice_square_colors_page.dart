@@ -125,7 +125,7 @@ class PracticeSquareColorsPage extends StatelessWidget {
                   style: Theme.of(context)
                       .textTheme
                       .bodyMedium!
-                      .copyWith(color: kPositiveColor),
+                      .copyWith(color: kLightColor),
                 ),
               ),
             ),
