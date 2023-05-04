@@ -6,3 +6,4 @@ export './coordinates_input_buttons.dart';
 export './moves_count_input_buttons.dart';
 export './custom_switch.dart';
 export './settings_item.dart';
+export './custom_alert_dialog.dart';
