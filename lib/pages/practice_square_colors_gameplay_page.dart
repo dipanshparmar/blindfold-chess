@@ -219,10 +219,13 @@ class _PracticeSquareColorsGameplayPageState
             IconButton(
               icon: const Icon(Icons.check),
               iconSize: 20,
-              onPressed: () {
-                // pushing up the page
-                pushFollowUpPage();
-              },
+              disabledColor: kGrayColor,
+              onPressed: total > 0
+                  ? () {
+                      // pushing up the page
+                      pushFollowUpPage();
+                    }
+                  : null,
             )
         ],
         title: const Text('Practice Coordinates'),

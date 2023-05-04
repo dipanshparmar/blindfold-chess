@@ -22,6 +22,9 @@ import '../providers/providers.dart';
 // pages
 import './pages.dart';
 
+// constants
+import '../utils/constants/constants.dart';
+
 class PracticeCoordinatesGameplayPage extends StatefulWidget {
   const PracticeCoordinatesGameplayPage({super.key});
 
@@ -196,10 +199,13 @@ class _PracticeCoordinatesGameplayPageState
             IconButton(
               icon: const Icon(Icons.check),
               iconSize: 20,
-              onPressed: () {
-                // pushing up the page
-                pushFollowUpPage();
-              },
+              disabledColor: kGrayColor,
+              onPressed: total > 0
+                  ? () {
+                      // pushing up the page
+                      pushFollowUpPage();
+                    }
+                  : null,
             )
         ],
         title: const Text('Practice Coordinates'),
