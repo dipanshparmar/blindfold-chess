@@ -184,6 +184,11 @@ class _PracticeSquareColorsGameplayPageState
   // what user actuall chose
   late SquareColor userChose;
 
+  // method to pop the page
+  void popPage() {
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     // getting the device width
@@ -192,334 +197,360 @@ class _PracticeSquareColorsGameplayPageState
     // getting the board width
     final double boardWidth = deviceWidth - 8;
 
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios,
-            size: 16,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
+    return WillPopScope(
+      onWillPop: () async {
+        return await showDialog(
+          context: context,
+          builder: (context) {
+            return const CustomAlertDialog();
           },
-        ),
-        actions: [
-          if (time != -1)
-            Container(
-              padding: const EdgeInsets.only(right: 20),
-              alignment: Alignment.center,
-              child: Text(
-                '${time.toInt()}s',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-              ),
-            )
-          else
-            IconButton(
-              icon: const Icon(Icons.check),
-              iconSize: 20,
-              disabledColor: kGrayColor,
-              onPressed: total > 0
-                  ? () {
-                      // pushing up the page
-                      pushFollowUpPage();
-                    }
-                  : null,
-            )
-        ],
-        title: const Text('Practice Square Colors'),
-      ),
-      body: Consumer<PracticeSquareColorsConfigProvider>(
-          builder: (context, consumerProvider, child) {
-        return Column(
-          children: [
-            const SizedBox(
-              height: 20,
+        );
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              size: 16,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Total: $total',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium!
-                        .copyWith(fontWeight: FontWeight.w600),
+            onPressed: () async {
+              // showing the confirmation dialog
+              bool pop = await showDialog(
+                context: context,
+                builder: (context) {
+                  return const CustomAlertDialog();
+                },
+              );
+
+              if (pop) {
+                popPage();
+              }
+            },
+          ),
+          actions: [
+            if (time != -1)
+              Container(
+                padding: const EdgeInsets.only(right: 20),
+                alignment: Alignment.center,
+                child: Text(
+                  '${time.toInt()}s',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.secondary,
                   ),
-                  if (Provider.of<SettingsProvider>(context)
-                      .getShowCorrectAnswers())
+                ),
+              )
+            else
+              IconButton(
+                icon: const Icon(Icons.check),
+                iconSize: 20,
+                disabledColor: kGrayColor,
+                onPressed: total > 0
+                    ? () {
+                        // pushing up the page
+                        pushFollowUpPage();
+                      }
+                    : null,
+              )
+          ],
+          title: const Text('Practice Square Colors'),
+        ),
+        body: Consumer<PracticeSquareColorsConfigProvider>(
+            builder: (context, consumerProvider, child) {
+          return Column(
+            children: [
+              const SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
                     Text(
-                      'Correct: $correct',
+                      'Total: $total',
                       style: Theme.of(context)
                           .textTheme
                           .bodyMedium!
                           .copyWith(fontWeight: FontWeight.w600),
                     ),
-                ],
+                    if (Provider.of<SettingsProvider>(context)
+                        .getShowCorrectAnswers())
+                      Text(
+                        'Correct: $correct',
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium!
+                            .copyWith(fontWeight: FontWeight.w600),
+                      ),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  if (consumerProvider.getActiveShowBoard() == ShowBoard.show)
-                    ChessBoard(
-                      width: boardWidth - 8,
-                      questionCoordinates: question,
-                      viewOnly: true,
-                      accents: [question],
-                      reds: result == null
-                          ? []
-                          : result!
-                              ? []
-                              : [question],
-                      greens: result == null
-                          ? []
-                          : result!
-                              ? [question]
-                              : [],
-                      showNativeBoardColors: result != null,
-                      showCoordinates:
-                          consumerProvider.getActiveShowCoordinates() != null
-                              ? consumerProvider.getActiveShowCoordinates() ==
-                                  ShowCoordinates.show
-                              : false,
-                      bordersOnly: true,
+              const SizedBox(
+                height: 15,
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (consumerProvider.getActiveShowBoard() == ShowBoard.show)
+                      ChessBoard(
+                        width: boardWidth - 8,
+                        questionCoordinates: question,
+                        viewOnly: true,
+                        accents: [question],
+                        reds: result == null
+                            ? []
+                            : result!
+                                ? []
+                                : [question],
+                        greens: result == null
+                            ? []
+                            : result!
+                                ? [question]
+                                : [],
+                        showNativeBoardColors: result != null,
+                        showCoordinates:
+                            consumerProvider.getActiveShowCoordinates() != null
+                                ? consumerProvider.getActiveShowCoordinates() ==
+                                    ShowCoordinates.show
+                                : false,
+                        bordersOnly: true,
+                      ),
+                    if (consumerProvider.getActiveShowBoard() == ShowBoard.show)
+                      const SizedBox(
+                        height: 15,
+                      ),
+                    Text(
+                      getCoordinatesAsText(question),
+                      style: TextStyle(
+                          fontSize: 40,
+                          color: consumerProvider.getActiveShowBoard() ==
+                                  ShowBoard.hide
+                              ? result != null
+                                  ? result!
+                                      ? kPositiveColor
+                                      : kNegativeColor
+                                  : null
+                              : null),
                     ),
-                  if (consumerProvider.getActiveShowBoard() == ShowBoard.show)
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () async {
+                          // if result is not null then do nothing
+                          if (result != null) {
+                            return;
+                          }
+
+                          // if square is light then increment the total and the corrent
+                          setState(() {
+                            // updating userChose
+                            userChose = SquareColor.light;
+
+                            if (isLight(Coordinates(
+                                question.getFile(), question.getRank()))) {
+                              correct++;
+
+                              // also setting the result
+                              result = true;
+                            } else {
+                              result = false;
+                            }
+                          });
+
+                          // delaying
+                          await Future.delayed(
+                              const Duration(milliseconds: 500));
+
+                          // getting the question and the user chose text
+                          final String questionText =
+                              getCoordinatesAsText(question);
+
+                          final bool isLightSquare = isLight(Coordinates(
+                              question.getFile(), question.getRank()));
+
+                          // updating the questions data
+                          questionsData[total] = {
+                            'Square': questionText,
+                            'Correct answer': isLightSquare ? 'Light' : 'Dark',
+                            'You chose': userChose == SquareColor.light
+                                ? 'Light'
+                                : 'Dark',
+                            'Result': result,
+                            'Board view': ChessBoard(
+                              width: deviceWidth - 42,
+                              questionCoordinates: question,
+                              viewOnly: true,
+                              accents: [question],
+                              reds: result == null
+                                  ? []
+                                  : result!
+                                      ? []
+                                      : [question],
+                              greens: result == null
+                                  ? []
+                                  : result!
+                                      ? [question]
+                                      : [],
+                              showNativeBoardColors: result != null,
+                              showCoordinates:
+                                  consumerProvider.getActiveShowCoordinates() !=
+                                          null
+                                      ? consumerProvider
+                                              .getActiveShowCoordinates() ==
+                                          ShowCoordinates.show
+                                      : false,
+                              bordersOnly: true,
+                            ),
+                          };
+
+                          setState(() {
+                            // updating the total
+                            total++;
+
+                            // getting the new question
+                            question = getQuestionCoordinates();
+
+                            // resetting result
+                            result = null;
+                          });
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(20),
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Theme.of(context).primaryColor,
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Text(
+                            'LIGHT',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        ),
+                      ),
+                    ),
                     const SizedBox(
-                      height: 15,
+                      width: 15,
                     ),
-                  Text(
-                    getCoordinatesAsText(question),
-                    style: TextStyle(
-                        fontSize: 40,
-                        color: consumerProvider.getActiveShowBoard() ==
-                                ShowBoard.hide
-                            ? result != null
-                                ? result!
-                                    ? kPositiveColor
-                                    : kNegativeColor
-                                : null
-                            : null),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () async {
-                        // if result is not null then do nothing
-                        if (result != null) {
-                          return;
-                        }
-
-                        // if square is light then increment the total and the corrent
-                        setState(() {
-                          // updating userChose
-                          userChose = SquareColor.light;
-
-                          if (isLight(Coordinates(
-                              question.getFile(), question.getRank()))) {
-                            correct++;
-
-                            // also setting the result
-                            result = true;
-                          } else {
-                            result = false;
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () async {
+                          // if result is not null then do nothing
+                          if (result != null) {
+                            return;
                           }
-                        });
 
-                        // delaying
-                        await Future.delayed(const Duration(milliseconds: 500));
+                          // if is dark then increment the correct count
+                          setState(() {
+                            // updating user chose
+                            userChose = SquareColor.dark;
 
-                        // getting the question and the user chose text
-                        final String questionText =
-                            getCoordinatesAsText(question);
+                            if (!isLight(Coordinates(
+                                question.getFile(), question.getRank()))) {
+                              correct++;
 
-                        final bool isLightSquare = isLight(Coordinates(
-                            question.getFile(), question.getRank()));
+                              // setting up the result
+                              result = true;
+                            } else {
+                              result = false;
+                            }
+                          });
 
-                        // updating the questions data
-                        questionsData[total] = {
-                          'Square': questionText,
-                          'Correct answer': isLightSquare ? 'Light' : 'Dark',
-                          'You chose':
-                              userChose == SquareColor.light ? 'Light' : 'Dark',
-                          'Result': result,
-                          'Board view': ChessBoard(
-                            width: deviceWidth - 42,
-                            questionCoordinates: question,
-                            viewOnly: true,
-                            accents: [question],
-                            reds: result == null
-                                ? []
-                                : result!
-                                    ? []
-                                    : [question],
-                            greens: result == null
-                                ? []
-                                : result!
-                                    ? [question]
-                                    : [],
-                            showNativeBoardColors: result != null,
-                            showCoordinates: consumerProvider
-                                        .getActiveShowCoordinates() !=
-                                    null
-                                ? consumerProvider.getActiveShowCoordinates() ==
-                                    ShowCoordinates.show
-                                : false,
-                            bordersOnly: true,
-                          ),
-                        };
+                          // delaying
+                          await Future.delayed(
+                              const Duration(milliseconds: 500));
 
-                        setState(() {
-                          // updating the total
-                          total++;
+                          // getting the question and the user chose text
+                          final String questionText =
+                              getCoordinatesAsText(question);
 
-                          // getting the new question
-                          question = getQuestionCoordinates();
+                          final bool isLightSquare = isLight(Coordinates(
+                              question.getFile(), question.getRank()));
 
-                          // resetting result
-                          result = null;
-                        });
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(20),
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          border: Border.all(
+                          // updating the questions data
+                          questionsData[total] = {
+                            'Square': questionText,
+                            'Correct answer': isLightSquare ? 'Light' : 'Dark',
+                            'You chose': userChose == SquareColor.light
+                                ? 'Light'
+                                : 'Dark',
+                            'Result': result,
+                            'Board view': ChessBoard(
+                              width: deviceWidth - 42,
+                              questionCoordinates: question,
+                              viewOnly: true,
+                              accents: const [],
+                              reds: result == null
+                                  ? []
+                                  : result!
+                                      ? []
+                                      : [question],
+                              greens: result == null
+                                  ? []
+                                  : result!
+                                      ? [question]
+                                      : [],
+                              showCoordinates:
+                                  consumerProvider.getActiveShowCoordinates() !=
+                                          null
+                                      ? consumerProvider
+                                              .getActiveShowCoordinates() ==
+                                          ShowCoordinates.show
+                                      : false,
+                              bordersOnly: true,
+                            ),
+                          };
+
+                          setState(() {
+                            total++;
+
+                            // getting the new question
+                            question = getQuestionCoordinates();
+
+                            // resetting result
+                            result = null;
+                          });
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(20),
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Theme.of(context).primaryColor,
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(5),
                             color: Theme.of(context).primaryColor,
-                            width: 2,
                           ),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Text(
-                          'LIGHT',
-                          style: Theme.of(context).textTheme.bodyMedium,
+                          child: Text(
+                            'DARK',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(color: kLightColor),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () async {
-                        // if result is not null then do nothing
-                        if (result != null) {
-                          return;
-                        }
-
-                        // if is dark then increment the correct count
-                        setState(() {
-                          // updating user chose
-                          userChose = SquareColor.dark;
-
-                          if (!isLight(Coordinates(
-                              question.getFile(), question.getRank()))) {
-                            correct++;
-
-                            // setting up the result
-                            result = true;
-                          } else {
-                            result = false;
-                          }
-                        });
-
-                        // delaying
-                        await Future.delayed(const Duration(milliseconds: 500));
-
-                        // getting the question and the user chose text
-                        final String questionText =
-                            getCoordinatesAsText(question);
-
-                        final bool isLightSquare = isLight(Coordinates(
-                            question.getFile(), question.getRank()));
-
-                        // updating the questions data
-                        questionsData[total] = {
-                          'Square': questionText,
-                          'Correct answer': isLightSquare ? 'Light' : 'Dark',
-                          'You chose':
-                              userChose == SquareColor.light ? 'Light' : 'Dark',
-                          'Result': result,
-                          'Board view': ChessBoard(
-                            width: deviceWidth - 42,
-                            questionCoordinates: question,
-                            viewOnly: true,
-                            accents: const [],
-                            reds: result == null
-                                ? []
-                                : result!
-                                    ? []
-                                    : [question],
-                            greens: result == null
-                                ? []
-                                : result!
-                                    ? [question]
-                                    : [],
-                            showCoordinates: consumerProvider
-                                        .getActiveShowCoordinates() !=
-                                    null
-                                ? consumerProvider.getActiveShowCoordinates() ==
-                                    ShowCoordinates.show
-                                : false,
-                            bordersOnly: true,
-                          ),
-                        };
-
-                        setState(() {
-                          total++;
-
-                          // getting the new question
-                          question = getQuestionCoordinates();
-
-                          // resetting result
-                          result = null;
-                        });
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(20),
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Theme.of(context).primaryColor,
-                            width: 2,
-                          ),
-                          borderRadius: BorderRadius.circular(5),
-                          color: Theme.of(context).primaryColor,
-                        ),
-                        child: Text(
-                          'DARK',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium!
-                              .copyWith(color: kLightColor),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
-        );
-      }),
+            ],
+          );
+        }),
+      ),
     );
   }
 }

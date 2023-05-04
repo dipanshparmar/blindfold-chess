@@ -167,260 +167,288 @@ class _PracticeCoordinatesGameplayPageState
   // user choice for name square
   Coordinates? userChoice;
 
+  // method to pop the page
+  void popPage() {
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     // getting the device width
     final double deviceWidth = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios,
-            size: 16,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
+    return WillPopScope(
+      onWillPop: () async {
+        return await showDialog(
+          context: context,
+          builder: (context) {
+            return const CustomAlertDialog();
           },
+        );
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              size: 16,
+            ),
+            onPressed: () async {
+              // showing the confirmation dialog
+              bool pop = await showDialog(
+                context: context,
+                builder: (context) {
+                  return const CustomAlertDialog();
+                },
+              );
+
+              if (pop) {
+                popPage();
+              }
+            },
+          ),
+          actions: [
+            if (time != -1)
+              Container(
+                padding: const EdgeInsets.only(right: 20),
+                alignment: Alignment.center,
+                child: Text(
+                  '${time.toInt()}s',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                ),
+              )
+            else
+              IconButton(
+                icon: const Icon(Icons.check),
+                iconSize: 20,
+                disabledColor: kGrayColor,
+                onPressed: total > 0
+                    ? () {
+                        // pushing up the page
+                        pushFollowUpPage();
+                      }
+                    : null,
+              )
+          ],
+          title: const Text('Practice Coordinates'),
         ),
-        actions: [
-          if (time != -1)
-            Container(
-              padding: const EdgeInsets.only(right: 20),
-              alignment: Alignment.center,
-              child: Text(
-                '${time.toInt()}s',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary,
+        body: Consumer<PracticeCoordinatesConfigProvider>(
+          builder: (context, consumerProvider, child) {
+            return Column(
+              children: [
+                const SizedBox(
+                  height: 20,
                 ),
-              ),
-            )
-          else
-            IconButton(
-              icon: const Icon(Icons.check),
-              iconSize: 20,
-              disabledColor: kGrayColor,
-              onPressed: total > 0
-                  ? () {
-                      // pushing up the page
-                      pushFollowUpPage();
-                    }
-                  : null,
-            )
-        ],
-        title: const Text('Practice Coordinates'),
-      ),
-      body: Consumer<PracticeCoordinatesConfigProvider>(
-        builder: (context, consumerProvider, child) {
-          return Column(
-            children: [
-              const SizedBox(
-                height: 20,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Total: $total',
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyMedium!
-                          .copyWith(fontWeight: FontWeight.w600),
-                    ),
-                    if (Provider.of<SettingsProvider>(context)
-                        .getShowCorrectAnswers())
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
                       Text(
-                        'Correct: $correct',
-                        textAlign: TextAlign.left,
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                              fontWeight: FontWeight.w600,
-                            ),
+                        'Total: $total',
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium!
+                            .copyWith(fontWeight: FontWeight.w600),
                       ),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ChessBoard(
-                      viewOnly:
-                          consumerProvider.getActivePracticeCoordinatesType() ==
-                              PracticeCoordinatesType.nameSquare,
-                      greens: userChoice != null
-                          ? userChoice!.getFile() == question.getFile() &&
-                                  userChoice!.getRank() == question.getRank()
-                              ? [question]
-                              : []
-                          : [],
-                      reds: result == null
-                          ? []
-                          : !result!
-                              ? userChoice != null
-                                  ? [userChoice!]
-                                  : []
-                              : [],
-                      accents: [question],
-                      showCoordinates:
-                          consumerProvider.getActiveShowCoordinates() ==
-                              ShowCoordinates.show,
-                      width: deviceWidth - 8,
-                      questionCoordinates: question,
-                      showPieces: consumerProvider.getActiveShowPieces() ==
-                          ShowPieces.show,
-                      forWhite: consumerProvider.getActivePieceColor() ==
-                          PieceColor.white,
-                      onTap: (result, userChose) async {
-                        // if we are doing name square then we don't want to execute anything below
-                        if (consumerProvider
-                                .getActivePracticeCoordinatesType() ==
-                            PracticeCoordinatesType.nameSquare) {
-                          return;
-                        }
-
-                        // delay duration
-                        const Duration duration = Duration(milliseconds: 300);
-
-                        // waiting for duration time
-                        await Future.delayed(duration);
-
-                        // grabbing the question coordinates text and the user answered coordinates text
-                        final String questionText =
-                            getCoordinatesAsText(question);
-                        final String userChoseText =
-                            getCoordinatesAsText(userChose);
-
-                        // updating the questions data
-                        questionsData[total] = {
-                          'Square to choose': questionText,
-                          'You chose': userChoseText,
-                          'Result': result,
-                          'Board view': ChessBoard(
-                            greens: result ? [userChose] : [question],
-                            reds: result ? [] : [userChose],
-                            accents: const [],
-                            viewOnly: true,
-                            showPieces:
-                                consumerProvider.getActiveShowPieces() ==
-                                    ShowPieces.show,
-                            showCoordinates:
-                                consumerProvider.getActiveShowCoordinates() ==
-                                    ShowCoordinates.show,
-                            forWhite: consumerProvider.getActivePieceColor() ==
-                                PieceColor.white,
-                            width: deviceWidth -
-                                42, // because on the next page we are going to have padding of 20 each side horizontally and the board itself is going to have borders of width 1 both side
-                          ),
-                        };
-
-                        setState(() {
-                          // incrementing the total
-                          total++;
-
-                          // if result is positive then increment the correct answers count
-                          if (result) {
-                            correct++;
-                          }
-
-                          // generating a new question
-                          question = getQuestionCoordinates();
-                        });
-                      },
-                    ),
-                    if (provider.getActivePracticeCoordinatesType() ==
-                        PracticeCoordinatesType.findSquare)
-                      const SizedBox(
-                        height: 15,
-                      ),
-                    if (provider.getActivePracticeCoordinatesType() ==
-                        PracticeCoordinatesType.findSquare)
-                      Text(
-                        getCoordinatesAsText(question),
-                        style: const TextStyle(
-                          fontSize: 40,
+                      if (Provider.of<SettingsProvider>(context)
+                          .getShowCorrectAnswers())
+                        Text(
+                          'Correct: $correct',
+                          textAlign: TextAlign.left,
+                          style:
+                              Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                  ),
                         ),
-                      ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              if (provider.getActivePracticeCoordinatesType() ==
-                  PracticeCoordinatesType.nameSquare)
-                CoordinatesInputButtons(
-                  onSelected: (Coordinates userChose) async {
-                    // delay duration
-                    const Duration duration = Duration(milliseconds: 300);
-
-                    setState(() {
-                      // calculating the result
-                      result = userChose.getFile() == question.getFile() &&
-                          userChose.getRank() == question.getRank();
-
-                      // setting the user choice
-                      userChoice = userChose;
-                    });
-
-                    // waiting for duration time
-                    await Future.delayed(duration);
-
-                    // grabbing the question coordinates text and the user answered coordinates text
-                    final String questionText = getCoordinatesAsText(question);
-                    final String userChoseText =
-                        getCoordinatesAsText(userChose);
-
-                    // updating the questions data
-                    questionsData[total] = {
-                      'Square to choose': questionText,
-                      'You chose': userChoseText,
-                      'Result': result,
-                      'Board view': ChessBoard(
-                        greens: userChoice!.getFile() == question.getFile() &&
-                                userChoice!.getRank() == question.getRank()
-                            ? [question]
+                const SizedBox(
+                  height: 15,
+                ),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ChessBoard(
+                        viewOnly: consumerProvider
+                                .getActivePracticeCoordinatesType() ==
+                            PracticeCoordinatesType.nameSquare,
+                        greens: userChoice != null
+                            ? userChoice!.getFile() == question.getFile() &&
+                                    userChoice!.getRank() == question.getRank()
+                                ? [question]
+                                : []
                             : [],
                         reds: result == null
                             ? []
                             : !result!
-                                ? [userChoice!]
+                                ? userChoice != null
+                                    ? [userChoice!]
+                                    : []
                                 : [],
                         accents: [question],
-                        viewOnly: true,
-                        showPieces: consumerProvider.getActiveShowPieces() ==
-                            ShowPieces.show,
                         showCoordinates:
                             consumerProvider.getActiveShowCoordinates() ==
                                 ShowCoordinates.show,
+                        width: deviceWidth - 8,
+                        questionCoordinates: question,
+                        showPieces: consumerProvider.getActiveShowPieces() ==
+                            ShowPieces.show,
                         forWhite: consumerProvider.getActivePieceColor() ==
                             PieceColor.white,
-                        width: deviceWidth -
-                            42, // because on the next page we are going to have padding of 20 each side horizontally and the board itself is going to have borders of width 1 both side
+                        onTap: (result, userChose) async {
+                          // if we are doing name square then we don't want to execute anything below
+                          if (consumerProvider
+                                  .getActivePracticeCoordinatesType() ==
+                              PracticeCoordinatesType.nameSquare) {
+                            return;
+                          }
+
+                          // delay duration
+                          const Duration duration = Duration(milliseconds: 300);
+
+                          // waiting for duration time
+                          await Future.delayed(duration);
+
+                          // grabbing the question coordinates text and the user answered coordinates text
+                          final String questionText =
+                              getCoordinatesAsText(question);
+                          final String userChoseText =
+                              getCoordinatesAsText(userChose);
+
+                          // updating the questions data
+                          questionsData[total] = {
+                            'Square to choose': questionText,
+                            'You chose': userChoseText,
+                            'Result': result,
+                            'Board view': ChessBoard(
+                              greens: result ? [userChose] : [question],
+                              reds: result ? [] : [userChose],
+                              accents: const [],
+                              viewOnly: true,
+                              showPieces:
+                                  consumerProvider.getActiveShowPieces() ==
+                                      ShowPieces.show,
+                              showCoordinates:
+                                  consumerProvider.getActiveShowCoordinates() ==
+                                      ShowCoordinates.show,
+                              forWhite:
+                                  consumerProvider.getActivePieceColor() ==
+                                      PieceColor.white,
+                              width: deviceWidth -
+                                  42, // because on the next page we are going to have padding of 20 each side horizontally and the board itself is going to have borders of width 1 both side
+                            ),
+                          };
+
+                          setState(() {
+                            // incrementing the total
+                            total++;
+
+                            // if result is positive then increment the correct answers count
+                            if (result) {
+                              correct++;
+                            }
+
+                            // generating a new question
+                            question = getQuestionCoordinates();
+                          });
+                        },
                       ),
-                    };
-
-                    setState(() {
-                      // incrementing the total
-                      total++;
-
-                      // if result is positive then increment the correct answers count
-                      if (result!) {
-                        correct++;
-                      }
-
-                      // resetting result
-                      result = null;
-
-                      // generating a new question
-                      question = getQuestionCoordinates();
-                    });
-                  },
+                      if (provider.getActivePracticeCoordinatesType() ==
+                          PracticeCoordinatesType.findSquare)
+                        const SizedBox(
+                          height: 15,
+                        ),
+                      if (provider.getActivePracticeCoordinatesType() ==
+                          PracticeCoordinatesType.findSquare)
+                        Text(
+                          getCoordinatesAsText(question),
+                          style: const TextStyle(
+                            fontSize: 40,
+                          ),
+                        ),
+                    ],
+                  ),
                 ),
-            ],
-          );
-        },
+                if (provider.getActivePracticeCoordinatesType() ==
+                    PracticeCoordinatesType.nameSquare)
+                  CoordinatesInputButtons(
+                    onSelected: (Coordinates userChose) async {
+                      // delay duration
+                      const Duration duration = Duration(milliseconds: 300);
+
+                      setState(() {
+                        // calculating the result
+                        result = userChose.getFile() == question.getFile() &&
+                            userChose.getRank() == question.getRank();
+
+                        // setting the user choice
+                        userChoice = userChose;
+                      });
+
+                      // waiting for duration time
+                      await Future.delayed(duration);
+
+                      // grabbing the question coordinates text and the user answered coordinates text
+                      final String questionText =
+                          getCoordinatesAsText(question);
+                      final String userChoseText =
+                          getCoordinatesAsText(userChose);
+
+                      // updating the questions data
+                      questionsData[total] = {
+                        'Square to choose': questionText,
+                        'You chose': userChoseText,
+                        'Result': result,
+                        'Board view': ChessBoard(
+                          greens: userChoice!.getFile() == question.getFile() &&
+                                  userChoice!.getRank() == question.getRank()
+                              ? [question]
+                              : [],
+                          reds: result == null
+                              ? []
+                              : !result!
+                                  ? [userChoice!]
+                                  : [],
+                          accents: [question],
+                          viewOnly: true,
+                          showPieces: consumerProvider.getActiveShowPieces() ==
+                              ShowPieces.show,
+                          showCoordinates:
+                              consumerProvider.getActiveShowCoordinates() ==
+                                  ShowCoordinates.show,
+                          forWhite: consumerProvider.getActivePieceColor() ==
+                              PieceColor.white,
+                          width: deviceWidth -
+                              42, // because on the next page we are going to have padding of 20 each side horizontally and the board itself is going to have borders of width 1 both side
+                        ),
+                      };
+
+                      setState(() {
+                        // incrementing the total
+                        total++;
+
+                        // if result is positive then increment the correct answers count
+                        if (result!) {
+                          correct++;
+                        }
+
+                        // resetting result
+                        result = null;
+
+                        // generating a new question
+                        question = getQuestionCoordinates();
+                      });
+                    },
+                  ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
