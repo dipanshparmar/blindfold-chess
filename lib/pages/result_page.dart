@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sticky_headers/sticky_headers.dart';
+import 'package:sliver_tools/sliver_tools.dart';
 
 // widgets
 import '../widgets/widgets.dart';
@@ -38,11 +38,11 @@ class ResultPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            child: SingleChildScrollView(
+            child: CustomScrollView(
               physics: const BouncingScrollPhysics(),
-              child: Column(
-                children: [
-                  Container(
+              slivers: [
+                SliverToBoxAdapter(
+                  child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     width: double.infinity,
                     child: Column(
@@ -130,12 +130,12 @@ class ResultPage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  if (data['questionsData'].isNotEmpty)
-                    QuestionDetails(
-                      data: data['questionsData'],
-                    ),
-                ],
-              ),
+                ),
+                if (data['questionsData'].isNotEmpty)
+                  QuestionDetails(
+                    data: data['questionsData'],
+                  ),
+              ],
             ),
           ),
           Padding(
@@ -175,7 +175,9 @@ class _QuestionDetailsState extends State<QuestionDetails> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    // MultiSliver supports both sliver widgets and box widgets
+    // https://github.com/Kavantix/sliver_tools/pull/26
+    return MultiSliver(
       children: [
         Container(
           padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
@@ -187,8 +189,8 @@ class _QuestionDetailsState extends State<QuestionDetails> {
                 ),
           ),
         ),
-        StickyHeader(
-          header: Container(
+        SliverPinnedHeader(
+          child: Container(
             color: bgColor,
             padding: const EdgeInsets.only(bottom: 20, top: 20),
             child: SizedBox(
@@ -233,9 +235,8 @@ class _QuestionDetailsState extends State<QuestionDetails> {
                                     .textTheme
                                     .bodyMedium!
                                     .copyWith(
-                                      color: isActive
-                                          ? kLightColor
-                                          : kDarkColor,
+                                      color:
+                                          isActive ? kLightColor : kDarkColor,
                                     ),
                               ),
                             ),
@@ -265,54 +266,54 @@ class _QuestionDetailsState extends State<QuestionDetails> {
               ),
             ),
           ),
-          content: Column(children: [
-            const SizedBox(
-              height: 15,
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              width: double.infinity,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-
-                // mapping through current questions' data
-                children: widget.data[activeKey]!.keys.map((key) {
-                  // getting the value
-                  final dynamic value = widget.data[activeKey]![key];
-
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        key,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodySmall!
-                            .copyWith(fontWeight: FontWeight.w500),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      value is List<Coordinates>
-                          ? Text(value.join(', '))
-                          : value is ChessBoard
-                              ? value
-                              : value is bool
-                                  ? Text(value ? 'Positive' : 'Negative')
-                                  : Text(value),
-                      const SizedBox(
-                        height: 15,
-                      )
-                    ],
-                  );
-                }).toList(),
-              ),
-            ),
-            const SizedBox(
-              height: 5, // this will add to the bottom sizedbox of 15 above
-            ),
-          ]),
         ),
+        Column(children: [
+          const SizedBox(
+            height: 15,
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            width: double.infinity,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+
+              // mapping through current questions' data
+              children: widget.data[activeKey]!.keys.map((key) {
+                // getting the value
+                final dynamic value = widget.data[activeKey]![key];
+
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      key,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodySmall!
+                          .copyWith(fontWeight: FontWeight.w500),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    value is List<Coordinates>
+                        ? Text(value.join(', '))
+                        : value is ChessBoard
+                            ? value
+                            : value is bool
+                                ? Text(value ? 'Positive' : 'Negative')
+                                : Text(value),
+                    const SizedBox(
+                      height: 15,
+                    )
+                  ],
+                );
+              }).toList(),
+            ),
+          ),
+          const SizedBox(
+            height: 5, // this will add to the bottom sizedbox of 15 above
+          ),
+        ]),
       ],
     );
   }
