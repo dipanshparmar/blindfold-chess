@@ -189,9 +189,11 @@ class _MovesCountInputButtonsState extends State<MovesCountInputButtons> {
                               width: 1, color: Theme.of(context).primaryColor),
                         ),
                         height: squareSize,
-                        child: const Icon(
+                        child: Icon(
                           Icons.done,
                           size: 18,
+                          color:
+                              selectedNumbers.isEmpty ? kGrayColor : kDarkColor,
                         ),
                       ),
                     ),
