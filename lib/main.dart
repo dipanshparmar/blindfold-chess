@@ -29,7 +29,7 @@ void main() async {
   const List<String> greetings = [
     'Здравствуйте', // russian
     'Hello', // english
-    '你好', // chinese
+    'Szia', // hungarian
     'नमस्ते', // hindi
     'Bonjour', // french
     'Guten Tag', // german
