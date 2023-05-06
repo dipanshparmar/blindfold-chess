@@ -333,7 +333,7 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                   if (greens.isEmpty)
                     const Text(
                       '',
-                      style: TextStyle(fontSize: 18),
+                      style: TextStyle(fontSize: kLargeSize),
                     )
                   // otherwise show the greens
                   else
@@ -353,7 +353,7 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                             style: const TextStyle(
                               color: kPositiveColor,
                               fontWeight: FontWeight.w500,
-                              fontSize: 18,
+                              fontSize: kLargeSize,
                             ),
                           );
                         }).toList(),

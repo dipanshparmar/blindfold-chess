@@ -49,7 +49,7 @@ class _MovesCountInputButtonsState extends State<MovesCountInputButtons> {
         Text(
           selectedNumbers.isEmpty ? '00' : selectedNumbers,
           style: TextStyle(
-              fontSize: 40,
+              fontSize: kExtraLargeSize,
               color: selectedNumbers.isEmpty
                   ? kBoardDarkColor
                   : isSelected
@@ -93,7 +93,7 @@ class _MovesCountInputButtonsState extends State<MovesCountInputButtons> {
                       child: Text(
                         number.toString(),
                         style: const TextStyle(
-                          fontSize: 18,
+                          fontSize: kLargeSize,
                         ),
                       ),
                     ),
@@ -127,7 +127,7 @@ class _MovesCountInputButtonsState extends State<MovesCountInputButtons> {
                           child: Text(
                             number.toString(),
                             style: const TextStyle(
-                              fontSize: 18,
+                              fontSize: kLargeSize,
                             ),
                           ),
                         ),

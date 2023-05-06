@@ -4,6 +4,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 // pages
 import './pages.dart';
 
+// constants
+import '../utils/constants/constants.dart';
+
 class IntroPage extends StatelessWidget {
   const IntroPage({super.key});
 
@@ -33,7 +36,7 @@ class IntroPage extends StatelessWidget {
                     'Improve Your Board Vision',
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
-                      fontSize: 18,
+                      fontSize: kLargeSize,
                     ),
                   ),
                   const SizedBox(

@@ -368,7 +368,7 @@ class _PracticeCoordinatesGameplayPageState
                         Text(
                           getCoordinatesAsText(question),
                           style: const TextStyle(
-                            fontSize: 40,
+                            fontSize: kExtraLargeSize,
                           ),
                         ),
                     ],

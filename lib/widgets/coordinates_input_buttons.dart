@@ -80,7 +80,7 @@ class _CoordinatesInputButtonsState extends State<CoordinatesInputButtons> {
                   Text(
                     getFileText(),
                     style: TextStyle(
-                      fontSize: 40,
+                      fontSize: kExtraLargeSize,
                       color: answerFile != null &&
                               answerRank != null &&
                               !isInToAvoid(
@@ -95,7 +95,7 @@ class _CoordinatesInputButtonsState extends State<CoordinatesInputButtons> {
                   Text(
                     getRankText(),
                     style: TextStyle(
-                      fontSize: 40,
+                      fontSize: kExtraLargeSize,
                       color: answerFile != null &&
                               answerRank != null &&
                               !isInToAvoid(
@@ -196,7 +196,7 @@ class _CoordinatesInputButtonsState extends State<CoordinatesInputButtons> {
                   child: Text(
                     keyValue,
                     style: const TextStyle(
-                      fontSize: 18,
+                      fontSize: kLargeSize,
                     ),
                   ),
                 ),
@@ -265,7 +265,7 @@ class _CoordinatesInputButtonsState extends State<CoordinatesInputButtons> {
                   child: Text(
                     keyValue,
                     style: const TextStyle(
-                      fontSize: 18,
+                      fontSize: kLargeSize,
                     ),
                   ),
                 ),

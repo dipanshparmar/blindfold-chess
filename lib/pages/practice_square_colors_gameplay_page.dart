@@ -323,7 +323,7 @@ class _PracticeSquareColorsGameplayPageState
                     Text(
                       getCoordinatesAsText(question),
                       style: TextStyle(
-                          fontSize: 40,
+                          fontSize: kExtraLargeSize,
                           color: consumerProvider.getActiveShowBoard() ==
                                   ShowBoard.hide
                               ? result != null

@@ -370,7 +370,7 @@ class _ChessBoardState extends State<ChessBoard> {
                                 bottom: 0,
                                 child: Text(
                                   _files[file]!,
-                                  style: const TextStyle(fontSize: 10),
+                                  style: const TextStyle(fontSize: kExtraSmallSize),
                                 ),
                               )
                             : const SizedBox.shrink(),
@@ -380,7 +380,7 @@ class _ChessBoardState extends State<ChessBoard> {
                                 top: 0,
                                 child: Text(
                                   _ranks[rank]!,
-                                  style: const TextStyle(fontSize: 10),
+                                  style: const TextStyle(fontSize: kExtraSmallSize),
                                 ),
                               )
                             : const SizedBox.shrink(),

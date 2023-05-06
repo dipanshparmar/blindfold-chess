@@ -89,20 +89,20 @@ class MyApp extends StatelessWidget {
         backgroundColor: kPrimaryColor,
         titleTextStyle: TextStyle(
           color: kLightColor,
-          fontSize: 16,
+          fontSize: kMediumLargeSize,
           fontFamily: 'Poppins',
         ),
         centerTitle: true,
       ),
       textTheme: const TextTheme(
         bodyMedium: TextStyle(
-          fontSize: 14,
+          fontSize: kMediumSize,
         ),
         titleMedium: TextStyle(
           fontWeight: FontWeight.w600,
-          fontSize: 14,
+          fontSize: kMediumSize,
         ), // styles for the text input
-        titleSmall: TextStyle(fontSize: 12),
+        titleSmall: TextStyle(fontSize: kSmallSize),
         bodySmall: TextStyle(fontWeight: FontWeight.w600),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -136,7 +136,7 @@ class MyApp extends StatelessWidget {
         ),
         hintStyle: const TextStyle(
           fontWeight: FontWeight.w600,
-          fontSize: 14,
+          fontSize: kMediumSize,
         ),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 20,
