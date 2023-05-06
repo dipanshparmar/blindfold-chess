@@ -28,10 +28,7 @@ class CustomAlertDialog extends StatelessWidget {
               color: Theme.of(context).colorScheme.secondary,
               borderRadius: BorderRadius.circular(5),
             ),
-            child: Text(
-              'NO',
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
+            child: const Text('NO'),
           ),
         ),
         GestureDetector(
@@ -44,7 +41,7 @@ class CustomAlertDialog extends StatelessWidget {
               horizontal: 15,
               vertical: 7.5,
             ),
-            child: Text('YES'),
+            child: const Text('YES'),
           ),
         ),
       ],

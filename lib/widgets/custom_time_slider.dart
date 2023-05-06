@@ -111,7 +111,7 @@ class _CustomTimeSliderState extends State<CustomTimeSlider> {
                 : Text(
                     '${_value.toInt()}s',
                     style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w500,
                           color: Theme.of(context).primaryColor,
                         ),
                   ),

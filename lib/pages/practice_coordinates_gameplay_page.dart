@@ -251,7 +251,7 @@ class _PracticeCoordinatesGameplayPageState
                         style: Theme.of(context)
                             .textTheme
                             .bodyMedium!
-                            .copyWith(fontWeight: FontWeight.w600),
+                            .copyWith(fontWeight: FontWeight.w500),
                       ),
                       if (Provider.of<SettingsProvider>(context)
                           .getShowCorrectAnswers())
@@ -260,7 +260,7 @@ class _PracticeCoordinatesGameplayPageState
                           textAlign: TextAlign.left,
                           style:
                               Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                    fontWeight: FontWeight.w600,
+                                    fontWeight: FontWeight.w500,
                                   ),
                         ),
                     ],

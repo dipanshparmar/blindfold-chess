@@ -77,7 +77,7 @@ class _SelectOneState extends State<SelectOne> {
                       widget.keyValuePairs[key]!,
                       style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                             fontWeight: !widget.disabled && isSelected
-                                ? FontWeight.w600
+                                ? FontWeight.w500
                                 : null,
                             color: !widget.disabled && isSelected
                                 ? kDarkColor

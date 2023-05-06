@@ -271,7 +271,7 @@ class _PracticeSquareColorsGameplayPageState
                       style: Theme.of(context)
                           .textTheme
                           .bodyMedium!
-                          .copyWith(fontWeight: FontWeight.w600),
+                          .copyWith(fontWeight: FontWeight.w500),
                     ),
                     if (Provider.of<SettingsProvider>(context)
                         .getShowCorrectAnswers())
@@ -280,7 +280,7 @@ class _PracticeSquareColorsGameplayPageState
                         style: Theme.of(context)
                             .textTheme
                             .bodyMedium!
-                            .copyWith(fontWeight: FontWeight.w600),
+                            .copyWith(fontWeight: FontWeight.w500),
                       ),
                   ],
                 ),

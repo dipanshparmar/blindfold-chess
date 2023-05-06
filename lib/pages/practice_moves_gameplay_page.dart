@@ -232,7 +232,7 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                         style: Theme.of(context)
                             .textTheme
                             .bodyMedium!
-                            .copyWith(fontWeight: FontWeight.w600),
+                            .copyWith(fontWeight: FontWeight.w500),
                       ),
                       if (Provider.of<SettingsProvider>(context)
                           .getShowCorrectAnswers())
@@ -241,7 +241,7 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                           style: Theme.of(context)
                               .textTheme
                               .bodyMedium!
-                              .copyWith(fontWeight: FontWeight.w600),
+                              .copyWith(fontWeight: FontWeight.w500),
                         ),
                     ],
                   ),
@@ -273,7 +273,7 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                       Text(
                         '${isPlayingWhite ? 'White' : 'Black'} to move',
                         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.w500,
                             ),
                       ),
                     ],
