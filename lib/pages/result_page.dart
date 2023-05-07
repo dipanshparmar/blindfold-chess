@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 // widgets
@@ -9,6 +10,9 @@ import '../models/models.dart';
 
 // constants
 import '../utils/constants/constants.dart';
+
+// providers
+import '../providers/providers.dart';
 
 class ResultPage extends StatelessWidget {
   const ResultPage({super.key});
@@ -170,11 +174,16 @@ class _QuestionDetailsState extends State<QuestionDetails> {
   // active key
   int activeKey = 0;
 
-  // background color
-  final Color bgColor = const Color(0xFFE9E9EA);
-
   @override
   Widget build(BuildContext context) {
+    // grabbing the provider
+    final ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
+
+    // background color
+    final Color bgColor = themeProvider.isDark()
+        ? const Color(0xFF585858)
+        : const Color(0xFFE9E9EA);
+
     // MultiSliver supports both sliver widgets and box widgets
     // https://github.com/Kavantix/sliver_tools/pull/26
     return MultiSliver(
@@ -224,10 +233,23 @@ class _QuestionDetailsState extends State<QuestionDetails> {
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
                                 border: Border.all(
-                                    color: Theme.of(context).primaryColor,
+                                    color: isActive
+                                        ? themeProvider.isDark()
+                                            ? kLightColorDarkTheme
+                                            : Theme.of(context).primaryColor
+                                        : themeProvider.isDark()
+                                            ? kLightColorDarkTheme
+                                            : Theme.of(context).primaryColor,
                                     width: 2),
                                 borderRadius: BorderRadius.circular(5),
-                                color: isActive ? kDarkColor : kLightColor,
+                                color: isActive
+                                    ? themeProvider.isDark()
+                                        ? kLightColorDarkTheme
+                                        : Theme.of(context).primaryColor
+                                    : themeProvider.isDark()
+                                        ? Theme.of(context)
+                                            .scaffoldBackgroundColor
+                                        : kLightColor,
                               ),
                               child: Text(
                                 (key + 1).toString(),
@@ -235,8 +257,13 @@ class _QuestionDetailsState extends State<QuestionDetails> {
                                     .textTheme
                                     .bodyMedium!
                                     .copyWith(
-                                      color:
-                                          isActive ? kLightColor : kDarkColor,
+                                      color: isActive
+                                          ? themeProvider.isDark()
+                                              ? kDarkColorDarkTheme
+                                              : kLightColor
+                                          : themeProvider.isDark()
+                                              ? kLightColorDarkTheme
+                                              : kDarkColor,
                                     ),
                               ),
                             ),

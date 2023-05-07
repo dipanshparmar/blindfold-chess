@@ -13,6 +13,9 @@ import '../helpers/helpers.dart';
 // providers
 import '../providers/providers.dart';
 
+// constants
+import '../utils/constants/constants.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -56,12 +59,31 @@ class _HomePageState extends State<HomePage> {
         }),
         elevation: 0,
         actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).pushNamed(SettingsPage.routeName);
+          Consumer<ThemeProvider>(
+            builder: (context, themeProvider, child) {
+              return IconButton(
+                onPressed: () {
+                  Navigator.of(context).pushNamed(SettingsPage.routeName);
+                },
+                icon: const Icon(Icons.settings),
+                iconSize: 20,
+                color:
+                    themeProvider.isDark() ? kLightColorDarkTheme : kLightColor,
+              );
             },
-            icon: const Icon(Icons.settings),
-            iconSize: 20,
+          ),
+          // TODO: REMOVE THIS
+          Consumer<ThemeProvider>(
+            builder: (context, themeProvider, child) {
+              return Switch(
+                value: themeProvider.isDark(),
+                onChanged: (value) {
+                  setState(() {
+                    themeProvider.toggle();
+                  });
+                },
+              );
+            },
           )
         ],
         centerTitle: false,

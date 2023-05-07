@@ -8,3 +8,9 @@ const kBoardDarkColor = Color(0xFFBCBCBF);
 const kGrayColor = Colors.grey;
 const kPositiveColor = Colors.green;
 const kNegativeColor = Colors.red;
+
+// dark theme colors
+const kPrimaryColorDarkTheme = Color(0xFF3B3B3B);
+const kScaffoldBackgrondColorDarkTheme = Color(0xFF444444);
+const kDarkColorDarkTheme = Color(0xFF444444);
+const kLightColorDarkTheme = Color(0xFFEEEEEE);

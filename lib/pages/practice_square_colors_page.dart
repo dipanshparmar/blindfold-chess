@@ -107,28 +107,30 @@ class PracticeSquareColorsPage extends StatelessWidget {
           ),
           if (Provider.of<SettingsProvider>(context)
               .getShowLearnSquareColorsButton())
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context)
-                    .pushNamed(LearnSquareColorsPage.routeName);
-              },
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  borderRadius: BorderRadius.circular(100),
+            Consumer<ThemeProvider>(builder: (context, themeProvider, child) {
+              return GestureDetector(
+                onTap: () {
+                  Navigator.of(context)
+                      .pushNamed(LearnSquareColorsPage.routeName);
+                },
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  alignment: Alignment.center,
+                  child: Text(
+                    'How To Remember Square Colors?',
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        color: themeProvider.isDark()
+                            ? kLightColorDarkTheme
+                            : kLightColor),
+                  ),
                 ),
-                alignment: Alignment.center,
-                child: Text(
-                  'How To Remember Square Colors?',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium!
-                      .copyWith(color: kLightColor),
-                ),
-              ),
-            ),
+              );
+            }),
         ],
       ),
     );

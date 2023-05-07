@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 // constants
 import '../utils/constants/constants.dart';
+
+// providers
+import '../providers/providers.dart';
 
 class MovesCountInputButtons extends StatefulWidget {
   const MovesCountInputButtons(
@@ -44,17 +48,28 @@ class _MovesCountInputButtonsState extends State<MovesCountInputButtons> {
     // calculating the squares size
     final double squareSize = (deviceWidth - 2) / 8;
 
+    // grabbing the theme provider
+    final ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
+
+    // border color
+    final Color borderColor = themeProvider.isDark()
+        ? kLightColor.withOpacity(.2)
+        : Theme.of(context).primaryColor;
+
     return Column(
       children: [
         Text(
           selectedNumbers.isEmpty ? '00' : selectedNumbers,
           style: TextStyle(
-              fontSize: kExtraLargeSize,
-              color: selectedNumbers.isEmpty
-                  ? kBoardDarkColor
-                  : isSelected
-                      ? widget.afterSelectionColor
-                      : null),
+            fontSize: kExtraLargeSize,
+            color: selectedNumbers.isEmpty
+                ? kBoardDarkColor
+                : isSelected
+                    ? widget.afterSelectionColor
+                    : themeProvider.isDark()
+                        ? kLightColorDarkTheme
+                        : kDarkColor,
+          ),
         ),
         const SizedBox(
           height: 20,
@@ -63,7 +78,7 @@ class _MovesCountInputButtonsState extends State<MovesCountInputButtons> {
           decoration: BoxDecoration(
             border: Border.all(
               width: 1,
-              color: Theme.of(context).primaryColor,
+              color: borderColor,
             ),
           ),
           child: Column(
@@ -83,7 +98,7 @@ class _MovesCountInputButtonsState extends State<MovesCountInputButtons> {
                       decoration: BoxDecoration(
                         border: Border.all(
                           width: 1,
-                          color: Theme.of(context).primaryColor,
+                          color: borderColor,
                         ),
                         color: Colors.transparent,
                       ),
@@ -117,7 +132,7 @@ class _MovesCountInputButtonsState extends State<MovesCountInputButtons> {
                           decoration: BoxDecoration(
                             border: Border.all(
                               width: 1,
-                              color: Theme.of(context).primaryColor,
+                              color: borderColor,
                             ),
                             color: Colors.transparent,
                           ),
@@ -149,7 +164,9 @@ class _MovesCountInputButtonsState extends State<MovesCountInputButtons> {
                         decoration: BoxDecoration(
                           color: Colors.transparent,
                           border: Border.all(
-                              width: 1, color: Theme.of(context).primaryColor),
+                            width: 1,
+                            color: borderColor,
+                          ),
                         ),
                         height: squareSize,
                         child: const Icon(
@@ -186,14 +203,19 @@ class _MovesCountInputButtonsState extends State<MovesCountInputButtons> {
                         decoration: BoxDecoration(
                           color: Colors.transparent,
                           border: Border.all(
-                              width: 1, color: Theme.of(context).primaryColor),
+                            width: 1,
+                            color: borderColor,
+                          ),
                         ),
                         height: squareSize,
                         child: Icon(
                           Icons.done,
                           size: 18,
-                          color:
-                              selectedNumbers.isEmpty ? kGrayColor : kDarkColor,
+                          color: selectedNumbers.isEmpty
+                              ? kGrayColor
+                              : themeProvider.isDark()
+                                  ? kLightColorDarkTheme
+                                  : kDarkColor,
                         ),
                       ),
                     ),

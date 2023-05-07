@@ -180,11 +180,12 @@ class _PracticeCoordinatesGameplayPageState
     return WillPopScope(
       onWillPop: () async {
         return await showDialog(
-          context: context,
-          builder: (context) {
-            return const CustomAlertDialog();
-          },
-        );
+              context: context,
+              builder: (context) {
+                return const CustomAlertDialog();
+              },
+            ) ??
+            false;
       },
       child: Scaffold(
         appBar: AppBar(
@@ -196,11 +197,12 @@ class _PracticeCoordinatesGameplayPageState
             onPressed: () async {
               // showing the confirmation dialog
               bool pop = await showDialog(
-                context: context,
-                builder: (context) {
-                  return const CustomAlertDialog();
-                },
-              );
+                    context: context,
+                    builder: (context) {
+                      return const CustomAlertDialog();
+                    },
+                  ) ??
+                  false;
 
               if (pop) {
                 popPage();
@@ -243,27 +245,41 @@ class _PracticeCoordinatesGameplayPageState
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Total: $total',
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium!
-                            .copyWith(fontWeight: FontWeight.w500),
-                      ),
-                      if (Provider.of<SettingsProvider>(context)
-                          .getShowCorrectAnswers())
-                        Text(
-                          'Correct: $correct',
-                          textAlign: TextAlign.left,
-                          style:
-                              Theme.of(context).textTheme.bodyMedium!.copyWith(
+                  child: Consumer<ThemeProvider>(
+                    builder: (context, themeProvider, child) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Total: $total',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(
+                                  fontWeight: FontWeight.w500,
+                                  color: themeProvider.isDark()
+                                      ? kLightColorDarkTheme
+                                      : kDarkColor,
+                                ),
+                          ),
+                          if (Provider.of<SettingsProvider>(context)
+                              .getShowCorrectAnswers())
+                            Text(
+                              'Correct: $correct',
+                              textAlign: TextAlign.left,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium!
+                                  .copyWith(
                                     fontWeight: FontWeight.w500,
+                                    color: themeProvider.isDark()
+                                        ? kLightColorDarkTheme
+                                        : kDarkColor,
                                   ),
-                        ),
-                    ],
+                            ),
+                        ],
+                      );
+                    },
                   ),
                 ),
                 const SizedBox(
@@ -294,7 +310,7 @@ class _PracticeCoordinatesGameplayPageState
                         showCoordinates:
                             consumerProvider.getActiveShowCoordinates() ==
                                 ShowCoordinates.show,
-                        width: deviceWidth - 8,
+                        width: deviceWidth - 42,
                         questionCoordinates: question,
                         showPieces: consumerProvider.getActiveShowPieces() ==
                             ShowPieces.show,
@@ -365,11 +381,18 @@ class _PracticeCoordinatesGameplayPageState
                         ),
                       if (provider.getActivePracticeCoordinatesType() ==
                           PracticeCoordinatesType.findSquare)
-                        Text(
-                          getCoordinatesAsText(question),
-                          style: const TextStyle(
-                            fontSize: kExtraLargeSize,
-                          ),
+                        Consumer<ThemeProvider>(
+                          builder: (context, themeProvider, child) {
+                            return Text(
+                              getCoordinatesAsText(question),
+                              style: TextStyle(
+                                fontSize: kExtraLargeSize,
+                                color: themeProvider.isDark()
+                                    ? kLightColorDarkTheme
+                                    : kDarkColor,
+                              ),
+                            );
+                          },
                         ),
                     ],
                   ),

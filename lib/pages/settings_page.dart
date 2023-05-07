@@ -41,6 +41,13 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
+    // grabbing the theme provider
+    final ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
+
+    // calculating the text color
+    final Color textColor =
+        themeProvider.isDark() ? kLightColorDarkTheme : kDarkColor;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Settings'),
@@ -68,7 +75,10 @@ class _SettingsPageState extends State<SettingsPage> {
                         height: 10,
                       ),
                       SettingsItem(
-                        leading: const Text('Change name'),
+                        leading: Text(
+                          'Change name',
+                          style: TextStyle(color: textColor),
+                        ),
                         trailing: GestureDetector(
                           onTap: () {
                             // showing the modal bottom sheet
@@ -161,8 +171,9 @@ class _SettingsPageState extends State<SettingsPage> {
                               builder: (context, nameProvider, child) {
                             return Text(
                               nameProvider.getName(),
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w600,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                color: textColor,
                               ),
                             );
                           }),
@@ -172,8 +183,9 @@ class _SettingsPageState extends State<SettingsPage> {
                         height: 10,
                       ),
                       SettingsItem(
-                        leading: const Text(
+                        leading: Text(
                           'Show correct answers count while playing',
+                          style: TextStyle(color: textColor),
                         ),
                         trailing: CustomSwitch(
                           value: consumerProvider.getShowCorrectAnswers(),
@@ -194,7 +206,10 @@ class _SettingsPageState extends State<SettingsPage> {
                         height: 10,
                       ),
                       SettingsItem(
-                        leading: const Text('Dark mode'),
+                        leading: Text(
+                          'Dark mode',
+                          style: TextStyle(color: textColor),
+                        ),
                         trailing: CustomSwitch(
                           value: consumerProvider.getDarkMode(),
                           onChanged: (value) async {
@@ -213,8 +228,10 @@ class _SettingsPageState extends State<SettingsPage> {
                         height: 10,
                       ),
                       SettingsItem(
-                        leading: const Text(
-                            'Show "How To Remember Square Colors?" button'),
+                        leading: Text(
+                          'Show "How To Remember Square Colors?" button',
+                          style: TextStyle(color: textColor),
+                        ),
                         trailing: CustomSwitch(
                           value:
                               consumerProvider.getShowLearnSquareColorsButton(),
@@ -254,12 +271,15 @@ class _SettingsPageState extends State<SettingsPage> {
                           }
                         },
                         child: Row(
-                          children: const [
-                            Text('Contact Us'),
-                            SizedBox(
+                          children: [
+                            Text(
+                              'Contact Us',
+                              style: TextStyle(color: textColor),
+                            ),
+                            const SizedBox(
                               width: 10,
                             ),
-                            Icon(
+                            const Icon(
                               Icons.north_east,
                               color: kGrayColor,
                               size: 15,

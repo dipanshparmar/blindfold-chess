@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 // helpers
 import '../helpers/helpers.dart';
@@ -11,6 +12,9 @@ import '../models/models.dart';
 
 // constants
 import '../utils/constants/constants.dart';
+
+// providers
+import '../providers/providers.dart';
 
 class CoordinatesInputButtons extends StatefulWidget {
   const CoordinatesInputButtons({
@@ -67,6 +71,14 @@ class _CoordinatesInputButtonsState extends State<CoordinatesInputButtons> {
     // calculating the squares size
     final double squareSize = (deviceWidth - 2) / 8;
 
+    // getting the theme provider
+    final ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
+
+    // calculating the border color
+    final Color borderColor = themeProvider.isDark()
+        ? kLightColor.withOpacity(.2)
+        : Theme.of(context).primaryColor;
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -89,7 +101,9 @@ class _CoordinatesInputButtonsState extends State<CoordinatesInputButtons> {
                               Theme.of(context).primaryColor
                           : getFileText() == '-'
                               ? kBoardDarkColor
-                              : Theme.of(context).primaryColor,
+                              : themeProvider.isDark()
+                                  ? kLightColorDarkTheme
+                                  : Theme.of(context).primaryColor,
                     ),
                   ),
                   Text(
@@ -104,7 +118,9 @@ class _CoordinatesInputButtonsState extends State<CoordinatesInputButtons> {
                               Theme.of(context).primaryColor
                           : getRankText() == '-'
                               ? kBoardDarkColor
-                              : Theme.of(context).primaryColor,
+                              : themeProvider.isDark()
+                                  ? kLightColorDarkTheme
+                                  : Theme.of(context).primaryColor,
                     ),
                   ),
                 ],
@@ -139,15 +155,15 @@ class _CoordinatesInputButtonsState extends State<CoordinatesInputButtons> {
           decoration: BoxDecoration(
             border: Border(
               right: BorderSide(
-                color: Theme.of(context).primaryColor,
+                color: borderColor,
                 width: 1,
               ),
               top: BorderSide(
-                color: Theme.of(context).primaryColor,
+                color: borderColor,
                 width: 1,
               ),
               left: BorderSide(
-                color: Theme.of(context).primaryColor,
+                color: borderColor,
                 width: 1,
               ),
             ),
@@ -188,7 +204,7 @@ class _CoordinatesInputButtonsState extends State<CoordinatesInputButtons> {
                   decoration: BoxDecoration(
                     color: Colors.transparent,
                     border: Border.all(
-                      color: Theme.of(context).primaryColor,
+                      color: borderColor,
                       width: 1,
                     ),
                   ),
@@ -208,15 +224,15 @@ class _CoordinatesInputButtonsState extends State<CoordinatesInputButtons> {
           decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(
-                color: Theme.of(context).primaryColor,
+                color: borderColor,
                 width: 1,
               ),
               right: BorderSide(
-                color: Theme.of(context).primaryColor,
+                color: borderColor,
                 width: 1,
               ),
               left: BorderSide(
-                color: Theme.of(context).primaryColor,
+                color: borderColor,
                 width: 1,
               ),
             ),
@@ -257,7 +273,7 @@ class _CoordinatesInputButtonsState extends State<CoordinatesInputButtons> {
                   decoration: BoxDecoration(
                     color: Colors.transparent,
                     border: Border.all(
-                      color: Theme.of(context).primaryColor,
+                      color: borderColor,
                       width: 1,
                     ),
                   ),

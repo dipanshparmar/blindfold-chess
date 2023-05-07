@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 // constants
 import '../utils/constants/constants.dart';
+
+// providers
+import '../providers/providers.dart';
 
 class SelectOne extends StatefulWidget {
   const SelectOne({
@@ -38,58 +42,78 @@ class _SelectOneState extends State<SelectOne> {
 
     return AbsorbPointer(
       absorbing: widget.disabled,
-      child: Opacity(
-        opacity: widget.disabled ? .8 : 1,
-        child: Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).primaryColor,
-            borderRadius: BorderRadius.circular(100),
-            border: Border.all(
-              color: Theme.of(context).primaryColor,
-              width: 2,
-            ),
-          ),
-          child: Row(
-              children: widget.keyValuePairs.keys.map(
-            (key) {
-              // whether the item is selected or not
-              final bool isSelected = key == widget.activeValue;
-
-              return Expanded(
-                child: GestureDetector(
-                  onTap: () {
-                    if (widget.disabled) {
-                      return;
-                    }
-
-                    // calling the onChange function by passing the current element's key
-                    widget.onChange(key);
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.all(6),
-                    decoration: BoxDecoration(
-                      color:
-                          !widget.disabled && isSelected ? kLightColor : null,
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                    child: Text(
-                      widget.keyValuePairs[key]!,
-                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            fontWeight: !widget.disabled && isSelected
-                                ? FontWeight.w500
-                                : null,
-                            color: !widget.disabled && isSelected
-                                ? kDarkColor
-                                : kLightColor,
-                          ),
-                    ),
-                  ),
+      child: Consumer<ThemeProvider>(
+        builder: (context, themeProvider, child) {
+          return Opacity(
+            opacity: widget.disabled
+                ? themeProvider.isDark()
+                    ? .5
+                    : .8
+                : 1,
+            child: Container(
+              decoration: BoxDecoration(
+                color: themeProvider.isDark()
+                    ? kLightColorDarkTheme
+                    : Theme.of(context).primaryColor,
+                borderRadius: BorderRadius.circular(100),
+                border: Border.all(
+                  color: themeProvider.isDark()
+                      ? kLightColorDarkTheme
+                      : Theme.of(context).primaryColor,
+                  width: 2,
                 ),
-              );
-            },
-          ).toList()),
-        ),
+              ),
+              child: Row(
+                  children: widget.keyValuePairs.keys.map(
+                (key) {
+                  // whether the item is selected or not
+                  final bool isSelected = key == widget.activeValue;
+
+                  return Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        if (widget.disabled) {
+                          return;
+                        }
+
+                        // calling the onChange function by passing the current element's key
+                        widget.onChange(key);
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: !widget.disabled && isSelected
+                              ? themeProvider.isDark()
+                                  ? kDarkColorDarkTheme
+                                  : kLightColor
+                              : null,
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                        child: Text(
+                          widget.keyValuePairs[key]!,
+                          style:
+                              Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                    fontWeight: !widget.disabled && isSelected
+                                        ? FontWeight.w500
+                                        : null,
+                                    color: !widget.disabled && isSelected
+                                        ? themeProvider.isDark()
+                                            ? kLightColorDarkTheme
+                                            : kDarkColor
+                                        : themeProvider.isDark()
+                                            ? kDarkColorDarkTheme
+                                            : kLightColor,
+                                  ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ).toList()),
+            ),
+          );
+        },
       ),
     );
   }

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 // constants
 import '../utils/constants/constants.dart';
+
+// providers
+import '../providers/providers.dart';
 
 class CustomTimeSlider extends StatefulWidget {
   const CustomTimeSlider({
@@ -71,53 +75,71 @@ class _CustomTimeSliderState extends State<CustomTimeSlider> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
-        borderRadius: BorderRadius.circular(100),
-      ),
-      child: SfSliderTheme(
-        data: SfSliderThemeData(
-          activeTrackHeight: 37,
-          inactiveTrackHeight: 37,
-          thumbRadius: 18.5,
-          thumbColor: kLightColor,
-          activeTrackColor: Theme.of(context).primaryColor,
-          inactiveTrackColor: Theme.of(context).primaryColor,
-          thumbStrokeWidth: 2,
-          thumbStrokeColor: Theme.of(context).primaryColor,
-          overlayRadius: 0,
-        ),
-        child: SfSlider(
-          value: _value,
-          min: widget.min,
-          max: maxRepresentingInfinity,
-          onChanged: (value) {
-            // send -1 if infinity is true and value is max, value otherwise
-            widget.onChanged(value == maxRepresentingInfinity ? -1 : value);
-
-            setState(() {
-              _value = value;
-            });
-          },
-          stepSize: widget.stepSize,
-          thumbIcon: Center(
-            child: _value == maxRepresentingInfinity
-                ? const Icon(
-                    Icons.all_inclusive,
-                    size: 20,
-                    weight: 600,
-                  )
-                : Text(
-                    '${_value.toInt()}s',
-                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                          fontWeight: FontWeight.w500,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                  ),
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) {
+        return Container(
+          decoration: BoxDecoration(
+            color: themeProvider.isDark()
+                ? kLightColorDarkTheme
+                : Theme.of(context).primaryColor,
+            borderRadius: BorderRadius.circular(100),
           ),
-        ),
-      ),
+          child: SfSliderTheme(
+            data: SfSliderThemeData(
+              activeTrackHeight: 37,
+              inactiveTrackHeight: 37,
+              thumbRadius: 18.5,
+              thumbColor:
+                  themeProvider.isDark() ? kDarkColorDarkTheme : kLightColor,
+              activeTrackColor: themeProvider.isDark()
+                  ? kLightColorDarkTheme
+                  : Theme.of(context).primaryColor,
+              inactiveTrackColor: themeProvider.isDark()
+                  ? kLightColorDarkTheme
+                  : Theme.of(context).primaryColor,
+              thumbStrokeWidth: 2,
+              thumbStrokeColor: themeProvider.isDark()
+                  ? kLightColorDarkTheme
+                  : Theme.of(context).primaryColor,
+              overlayRadius: 0,
+            ),
+            child: SfSlider(
+              value: _value,
+              min: widget.min,
+              max: maxRepresentingInfinity,
+              onChanged: (value) {
+                // send -1 if infinity is true and value is max, value otherwise
+                widget.onChanged(value == maxRepresentingInfinity ? -1 : value);
+
+                setState(() {
+                  _value = value;
+                });
+              },
+              stepSize: widget.stepSize,
+              thumbIcon: Center(
+                child: _value == maxRepresentingInfinity
+                    ? Icon(
+                        Icons.all_inclusive,
+                        size: 20,
+                        weight: 600,
+                        color: themeProvider.isDark()
+                            ? kLightColorDarkTheme
+                            : kDarkColor,
+                      )
+                    : Text(
+                        '${_value.toInt()}s',
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                              fontWeight: FontWeight.w500,
+                              color: themeProvider.isDark()
+                                  ? kLightColorDarkTheme
+                                  : Theme.of(context).primaryColor,
+                            ),
+                      ),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

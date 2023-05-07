@@ -158,11 +158,12 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
     return WillPopScope(
       onWillPop: () async {
         return await showDialog(
-          context: context,
-          builder: (context) {
-            return const CustomAlertDialog();
-          },
-        );
+              context: context,
+              builder: (context) {
+                return const CustomAlertDialog();
+              },
+            ) ??
+            false;
       },
       child: Scaffold(
         appBar: AppBar(
@@ -175,11 +176,12 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
             onPressed: () async {
               // showing the confirmation dialog
               bool pop = await showDialog(
-                context: context,
-                builder: (context) {
-                  return const CustomAlertDialog();
-                },
-              );
+                    context: context,
+                    builder: (context) {
+                      return const CustomAlertDialog();
+                    },
+                  ) ??
+                  false;
 
               if (pop) {
                 popPage();
@@ -217,6 +219,10 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
             final bool isPlayingWhite =
                 consumerProvider.getActivePieceColor() == PieceColor.white;
 
+            // getting the theme provider
+            final ThemeProvider themeProvider =
+                Provider.of<ThemeProvider>(context);
+
             return Column(
               children: [
                 const SizedBox(
@@ -229,19 +235,24 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                     children: [
                       Text(
                         'Total: $total',
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium!
-                            .copyWith(fontWeight: FontWeight.w500),
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                              fontWeight: FontWeight.w500,
+                              color: themeProvider.isDark()
+                                  ? kLightColorDarkTheme
+                                  : kDarkColor,
+                            ),
                       ),
                       if (Provider.of<SettingsProvider>(context)
                           .getShowCorrectAnswers())
                         Text(
                           'Correct: $correct',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium!
-                              .copyWith(fontWeight: FontWeight.w500),
+                          style:
+                              Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                    color: themeProvider.isDark()
+                                        ? kLightColorDarkTheme
+                                        : kDarkColor,
+                                  ),
                         ),
                     ],
                   ),
@@ -261,9 +272,11 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                             color: Theme.of(context).primaryColor,
                             width: 1,
                           ),
-                          borderRadius: BorderRadius.circular(2),
+                          borderRadius: BorderRadius.circular(3),
                           color: isPlayingWhite
-                              ? kLightColor
+                              ? themeProvider.isDark()
+                                  ? kLightColorDarkTheme
+                                  : kLightColor
                               : Theme.of(context).primaryColor,
                         ),
                       ),
@@ -274,6 +287,9 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                         '${isPlayingWhite ? 'White' : 'Black'} to move',
                         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                               fontWeight: FontWeight.w500,
+                              color: themeProvider.isDark()
+                                  ? kLightColorDarkTheme
+                                  : kDarkColor,
                             ),
                       ),
                     ],
@@ -318,6 +334,12 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                               ? guessMovesCountQuestionText
                               : guessMovesQuestionText,
                           textAlign: TextAlign.center,
+                          style:
+                              Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                    color: themeProvider.isDark()
+                                        ? kLightColorDarkTheme
+                                        : kLightColor,
+                                  ),
                         ),
                       ),
                     ],

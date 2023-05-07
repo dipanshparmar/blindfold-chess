@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 // helpers
 import '../helpers/helpers.dart';
@@ -12,6 +13,9 @@ import '../models/models.dart';
 
 // constants
 import '../utils/constants/constants.dart';
+
+// providers
+import '../providers/providers.dart';
 
 class ChessBoard extends StatefulWidget {
   const ChessBoard({
@@ -293,6 +297,9 @@ class _ChessBoardState extends State<ChessBoard> {
         ? _files.keys.toList()
         : _files.keys.toList().reversed.toList();
 
+    // grabbing the theme providers
+    final ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
+
     return AbsorbPointer(
       absorbing: widget.viewOnly,
       child: Container(
@@ -370,7 +377,12 @@ class _ChessBoardState extends State<ChessBoard> {
                                 bottom: 0,
                                 child: Text(
                                   _files[file]!,
-                                  style: const TextStyle(fontSize: kExtraSmallSize),
+                                  style: TextStyle(
+                                    fontSize: kExtraSmallSize,
+                                    color: themeProvider.isDark()
+                                        ? kDarkColorDarkTheme
+                                        : kDarkColor,
+                                  ),
                                 ),
                               )
                             : const SizedBox.shrink(),
@@ -380,7 +392,11 @@ class _ChessBoardState extends State<ChessBoard> {
                                 top: 0,
                                 child: Text(
                                   _ranks[rank]!,
-                                  style: const TextStyle(fontSize: kExtraSmallSize),
+                                  style: TextStyle(
+                                      fontSize: kExtraSmallSize,
+                                      color: themeProvider.isDark()
+                                          ? kDarkColorDarkTheme
+                                          : kDarkColor),
                                 ),
                               )
                             : const SizedBox.shrink(),

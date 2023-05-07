@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 // pages
 import '../pages/pages.dart';
 
 // constants
 import '../utils/constants/constants.dart';
+
+// providers
+import '../providers/providers.dart';
 
 class CustomPageViewController extends StatefulWidget {
   const CustomPageViewController({super.key});
@@ -57,61 +61,69 @@ class _CustomPageViewControllerState extends State<CustomPageViewController> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          height: 70,
-          color: Theme.of(context).primaryColor,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton(
-                onPressed: _currentPageIndex > 0
-                    ? () {
-                        setState(() {
-                          _currentPageIndex -= 1;
-                        });
+        Consumer<ThemeProvider>(builder: (context, themeProvider, child) {
+          return Container(
+            height: 70,
+            color: Theme.of(context).primaryColor,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                  onPressed: _currentPageIndex > 0
+                      ? () {
+                          setState(() {
+                            _currentPageIndex -= 1;
+                          });
 
-                        _pageController.animateToPage(
-                          _currentPageIndex,
-                          duration: const Duration(milliseconds: 250),
-                          curve: Curves.decelerate,
-                        );
-                      }
-                    : null,
-                icon: const Icon(Icons.arrow_back_ios),
-                color: kLightColor,
-                iconSize: 14,
-                disabledColor: kGrayColor,
-              ),
-              Text(
-                '${_currentPageIndex + 1}. ${_pageTitles[_currentPageIndex]}',
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      color: kLightColor,
-                      fontWeight: FontWeight.w500,
-                    ),
-                textAlign: TextAlign.center,
-              ),
-              IconButton(
-                onPressed: _currentPageIndex < _pages.length - 1
-                    ? () {
-                        setState(() {
-                          _currentPageIndex += 1;
-                        });
+                          _pageController.animateToPage(
+                            _currentPageIndex,
+                            duration: const Duration(milliseconds: 250),
+                            curve: Curves.decelerate,
+                          );
+                        }
+                      : null,
+                  icon: const Icon(Icons.arrow_back_ios),
+                  color: themeProvider.isDark()
+                      ? kLightColorDarkTheme
+                      : kLightColor,
+                  iconSize: 14,
+                  disabledColor: kGrayColor,
+                ),
+                Text(
+                  '${_currentPageIndex + 1}. ${_pageTitles[_currentPageIndex]}',
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        color: themeProvider.isDark()
+                            ? kLightColorDarkTheme
+                            : kLightColor,
+                        fontWeight: FontWeight.w500,
+                      ),
+                  textAlign: TextAlign.center,
+                ),
+                IconButton(
+                  onPressed: _currentPageIndex < _pages.length - 1
+                      ? () {
+                          setState(() {
+                            _currentPageIndex += 1;
+                          });
 
-                        _pageController.animateToPage(
-                          _currentPageIndex,
-                          duration: const Duration(milliseconds: 250),
-                          curve: Curves.decelerate,
-                        );
-                      }
-                    : null,
-                icon: const Icon(Icons.arrow_forward_ios),
-                color: kLightColor,
-                iconSize: 14,
-                disabledColor: kGrayColor,
-              ),
-            ],
-          ),
-        ),
+                          _pageController.animateToPage(
+                            _currentPageIndex,
+                            duration: const Duration(milliseconds: 250),
+                            curve: Curves.decelerate,
+                          );
+                        }
+                      : null,
+                  icon: const Icon(Icons.arrow_forward_ios),
+                  color: themeProvider.isDark()
+                      ? kLightColorDarkTheme
+                      : kLightColor,
+                  iconSize: 14,
+                  disabledColor: kGrayColor,
+                ),
+              ],
+            ),
+          );
+        }),
         Expanded(
           child: PageView(
             controller: _pageController,
