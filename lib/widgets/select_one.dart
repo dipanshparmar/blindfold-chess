@@ -52,9 +52,7 @@ class _SelectOneState extends State<SelectOne> {
                 : 1,
             child: Container(
               decoration: BoxDecoration(
-                color: themeProvider.isDark()
-                    ? kLightColorDarkTheme
-                    : Theme.of(context).primaryColor,
+                color: Theme.of(context).primaryColor,
                 borderRadius: BorderRadius.circular(100),
                 border: Border.all(
                   color: themeProvider.isDark()
@@ -81,11 +79,14 @@ class _SelectOneState extends State<SelectOne> {
                       },
                       child: Container(
                         alignment: Alignment.center,
-                        padding: const EdgeInsets.all(6),
+                        padding: EdgeInsets.all(themeProvider.isDark() ? 4 : 6),
+                        margin: themeProvider.isDark()
+                            ? const EdgeInsets.all(2)
+                            : null,
                         decoration: BoxDecoration(
                           color: !widget.disabled && isSelected
                               ? themeProvider.isDark()
-                                  ? kDarkColorDarkTheme
+                                  ? kLightColorDarkTheme
                                   : kLightColor
                               : null,
                           borderRadius: BorderRadius.circular(100),
@@ -99,10 +100,10 @@ class _SelectOneState extends State<SelectOne> {
                                         : null,
                                     color: !widget.disabled && isSelected
                                         ? themeProvider.isDark()
-                                            ? kLightColorDarkTheme
+                                            ? kDarkColorDarkTheme
                                             : kDarkColor
                                         : themeProvider.isDark()
-                                            ? kDarkColorDarkTheme
+                                            ? kLightColorDarkTheme
                                             : kLightColor,
                                   ),
                         ),

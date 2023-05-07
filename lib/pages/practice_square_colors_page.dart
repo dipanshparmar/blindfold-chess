@@ -115,8 +115,14 @@ class PracticeSquareColorsPage extends StatelessWidget {
                 },
                 child: Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
+                    border: Border.all(
+                      width: 2,
+                      color: themeProvider.isDark()
+                          ? kLightColorDarkTheme
+                          : Theme.of(context).primaryColor,
+                    ),
                     color: Theme.of(context).primaryColor,
                     borderRadius: BorderRadius.circular(100),
                   ),

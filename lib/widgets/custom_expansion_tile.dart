@@ -121,12 +121,16 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
                       ),
                     ),
                     Container(
-                      padding: const EdgeInsets.all(4.5),
+                      padding:
+                          EdgeInsets.all(themeProvider.isDark() ? 2.5 : 4.5),
+                      margin: themeProvider.isDark()
+                          ? const EdgeInsets.all(2)
+                          : null,
                       decoration: BoxDecoration(
                         color: isExpanded
                             ? Theme.of(context).primaryColor
                             : themeProvider.isDark()
-                                ? null
+                                ? kLightColorDarkTheme
                                 : kLightColor,
                         shape: BoxShape.circle,
                       ),
@@ -139,8 +143,8 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
                                 ? kLightColorDarkTheme
                                 : kLightColor
                             : themeProvider.isDark()
-                                ? kLightColorDarkTheme
-                                : null,
+                                ? kDarkColorDarkTheme
+                                : kDarkColor,
                       ),
                     )
                   ],
