@@ -79,28 +79,22 @@ class _CustomTimeSliderState extends State<CustomTimeSlider> {
       builder: (context, themeProvider, child) {
         return Container(
           decoration: BoxDecoration(
-            color: themeProvider.isDark()
-                ? kLightColorDarkTheme
-                : Theme.of(context).primaryColor,
-            borderRadius: BorderRadius.circular(100),
-          ),
+              color: Theme.of(context).primaryColor,
+              borderRadius: BorderRadius.circular(100),
+              border: themeProvider.isDark()
+                  ? Border.all(width: 2, color: kLightColorDarkTheme)
+                  : null),
           child: SfSliderTheme(
             data: SfSliderThemeData(
-              activeTrackHeight: 37,
-              inactiveTrackHeight: 37,
-              thumbRadius: 18.5,
+              activeTrackHeight: themeProvider.isDark() ? 33 : 37,
+              inactiveTrackHeight: themeProvider.isDark() ? 33 : 37,
+              thumbRadius: themeProvider.isDark() ? 16.5 : 18.5,
               thumbColor:
-                  themeProvider.isDark() ? kDarkColorDarkTheme : kLightColor,
-              activeTrackColor: themeProvider.isDark()
-                  ? kLightColorDarkTheme
-                  : Theme.of(context).primaryColor,
-              inactiveTrackColor: themeProvider.isDark()
-                  ? kLightColorDarkTheme
-                  : Theme.of(context).primaryColor,
+                  themeProvider.isDark() ? kLightColorDarkTheme : kLightColor,
+              activeTrackColor: Theme.of(context).primaryColor,
+              inactiveTrackColor: Theme.of(context).primaryColor,
               thumbStrokeWidth: 2,
-              thumbStrokeColor: themeProvider.isDark()
-                  ? kLightColorDarkTheme
-                  : Theme.of(context).primaryColor,
+              thumbStrokeColor: Theme.of(context).primaryColor,
               overlayRadius: 0,
             ),
             child: SfSlider(
@@ -123,7 +117,7 @@ class _CustomTimeSliderState extends State<CustomTimeSlider> {
                         size: 20,
                         weight: 600,
                         color: themeProvider.isDark()
-                            ? kLightColorDarkTheme
+                            ? kDarkColorDarkTheme
                             : kDarkColor,
                       )
                     : Text(
@@ -131,7 +125,7 @@ class _CustomTimeSliderState extends State<CustomTimeSlider> {
                         style: Theme.of(context).textTheme.bodySmall!.copyWith(
                               fontWeight: FontWeight.w500,
                               color: themeProvider.isDark()
-                                  ? kLightColorDarkTheme
+                                  ? kDarkColorDarkTheme
                                   : Theme.of(context).primaryColor,
                             ),
                       ),
