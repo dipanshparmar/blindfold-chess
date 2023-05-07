@@ -115,7 +115,7 @@ class PracticeSquareColorsPage extends StatelessWidget {
                 },
                 child: Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(6),
                   decoration: BoxDecoration(
                     border: Border.all(
                       width: 2,
