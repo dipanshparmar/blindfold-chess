@@ -267,53 +267,55 @@ class _QuestionDetailsState extends State<QuestionDetails> {
             ),
           ),
         ),
-        Column(children: [
-          const SizedBox(
-            height: 15,
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            width: double.infinity,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-
-              // mapping through current questions' data
-              children: widget.data[activeKey]!.keys.map((key) {
-                // getting the value
-                final dynamic value = widget.data[activeKey]![key];
-
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      key,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodySmall!
-                          .copyWith(fontWeight: FontWeight.w500),
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    value is List<Coordinates>
-                        ? Text(value.join(', '))
-                        : value is ChessBoard
-                            ? value
-                            : value is bool
-                                ? Text(value ? 'Positive' : 'Negative')
-                                : Text(value),
-                    const SizedBox(
-                      height: 15,
-                    )
-                  ],
-                );
-              }).toList(),
+        Column(
+          children: [
+            const SizedBox(
+              height: 15,
             ),
-          ),
-          const SizedBox(
-            height: 5, // this will add to the bottom sizedbox of 15 above
-          ),
-        ]),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              width: double.infinity,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+
+                // mapping through current questions' data
+                children: widget.data[activeKey]!.keys.map((key) {
+                  // getting the value
+                  final dynamic value = widget.data[activeKey]![key];
+
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        key,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodySmall!
+                            .copyWith(fontWeight: FontWeight.w500),
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      value is List<Coordinates>
+                          ? Text(value.join(', '))
+                          : value is ChessBoard
+                              ? value
+                              : value is bool
+                                  ? Text(value ? 'Positive' : 'Negative')
+                                  : Text(value),
+                      const SizedBox(
+                        height: 15,
+                      )
+                    ],
+                  );
+                }).toList(),
+              ),
+            ),
+            const SizedBox(
+              height: 5, // this will add to the bottom sizedbox of 15 above
+            ),
+          ],
+        ),
       ],
     );
   }
