@@ -99,14 +99,14 @@ class _ChessBoardState extends State<ChessBoard> {
   }
 
   // function to get the color for a square
-  Color getSquareColor(File file, Rank rank) {
+  Color getSquareColor(File file, Rank rank, bool isDark) {
     // if both are of different type then return light color, else dark color
     if ((!isFileEven(file) && isRankEven(rank)) ||
         (isFileEven(file) && !isRankEven(rank))) {
-      return kLightColor;
+      return isDark ? kLightColorDarkTheme : kLightColor;
     }
 
-    return kBoardDarkColor;
+    return isDark ? kBoardDarkColorDarkTheme : kBoardDarkColor;
   }
 
   // function to get the result
@@ -123,7 +123,8 @@ class _ChessBoardState extends State<ChessBoard> {
   Color getResultColor(
       // this will help to color the clicked coordinate
       Coordinates currentCoordinates,
-      Coordinates clickedCoordinates) {
+      Coordinates clickedCoordinates,
+      bool isDark) {
     if (currentCoordinates.getRank() == clickCoordinates!.getRank() &&
         currentCoordinates.getFile() == clickedCoordinates.getFile()) {
       if (clickCoordinates!.getRank() ==
@@ -141,12 +142,12 @@ class _ChessBoardState extends State<ChessBoard> {
       return kPositiveColor;
     } else {
       return getSquareColor(
-          currentCoordinates.getFile(), currentCoordinates.getRank());
+          currentCoordinates.getFile(), currentCoordinates.getRank(), isDark);
     }
   }
 
   // function to get the color for view only mode
-  Color getViewOnlyColor(Coordinates coords) {
+  Color getViewOnlyColor(Coordinates coords, bool isDark) {
     // if greens have it
     if (widget.greens!.any((element) =>
         element.getFile() == coords.getFile() &&
@@ -163,7 +164,7 @@ class _ChessBoardState extends State<ChessBoard> {
       // if any of the accents contain it then return the secondary color
       return Theme.of(context).colorScheme.secondary;
     } else {
-      return getSquareColor(coords.getFile(), coords.getRank());
+      return getSquareColor(coords.getFile(), coords.getRank(), isDark);
     }
   }
 
@@ -297,7 +298,7 @@ class _ChessBoardState extends State<ChessBoard> {
         ? _files.keys.toList()
         : _files.keys.toList().reversed.toList();
 
-    // grabbing the theme providers
+    // themeprovider
     final ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
 
     return AbsorbPointer(
@@ -354,19 +355,23 @@ class _ChessBoardState extends State<ChessBoard> {
                                       Coordinates(file, rank),
                                     ) &&
                                     widget.bordersOnly
-                                ? getViewOnlyColor(Coordinates(file, rank))
+                                ? getViewOnlyColor(Coordinates(file, rank),
+                                    themeProvider.isDark())
                                 : Theme.of(context).primaryColor
                             : Theme.of(context).primaryColor,
                       ),
                       color: widget.showNativeBoardColors
                           ? widget.viewOnly
                               ? widget.bordersOnly
-                                  ? getSquareColor(file, rank)
-                                  : getViewOnlyColor(Coordinates(file, rank))
+                                  ? getSquareColor(
+                                      file, rank, themeProvider.isDark())
+                                  : getViewOnlyColor(Coordinates(file, rank),
+                                      themeProvider.isDark())
                               : clickCoordinates == null
-                                  ? getSquareColor(file, rank)
+                                  ? getSquareColor(
+                                      file, rank, themeProvider.isDark())
                                   : getResultColor(Coordinates(file, rank),
-                                      clickCoordinates!)
+                                      clickCoordinates!, themeProvider.isDark())
                           : kLightColor,
                     ),
                     child: Stack(
