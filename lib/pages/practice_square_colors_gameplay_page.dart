@@ -184,6 +184,9 @@ class _PracticeSquareColorsGameplayPageState
   // what user actuall chose
   late SquareColor userChose;
 
+  // delay duration
+  final Duration duration = const Duration(milliseconds: 300);
+
   // method to pop the page
   void popPage() {
     Navigator.of(context).pop();
@@ -392,8 +395,7 @@ class _PracticeSquareColorsGameplayPageState
                               });
 
                               // delaying
-                              await Future.delayed(
-                                  const Duration(milliseconds: 500));
+                              await Future.delayed(duration);
 
                               // getting the question and the user chose text
                               final String questionText =
@@ -506,8 +508,7 @@ class _PracticeSquareColorsGameplayPageState
                               });
 
                               // delaying
-                              await Future.delayed(
-                                  const Duration(milliseconds: 500));
+                              await Future.delayed(duration);
 
                               // getting the question and the user chose text
                               final String questionText =
