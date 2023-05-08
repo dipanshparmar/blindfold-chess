@@ -265,11 +265,13 @@ class _SettingsPageState extends State<SettingsPage> {
                       leading: GestureDetector(
                         onTap: () async {
                           // launching the email client
-                          if (!await launchUrl(
+                          bool isLaunched = await launchUrl(
                             Uri.parse(
-                              'mailto:b1t.namaste@gmail.com',
+                              'hibb1t.namaste@gmail.com',
                             ),
-                          )) {
+                          ).onError((error, stackTrace) => false);
+
+                          if (!isLaunched) {
                             showSnackBar(
                               const Text('Couldn\'t launch the URL.'),
                             );
@@ -310,9 +312,13 @@ class _SettingsPageState extends State<SettingsPage> {
 
   // method to show the snack bar
   void showSnackBar(Widget content) {
+    // if there is already a snack bar then remove that
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: content,
+        duration: const Duration(seconds: 1),
       ),
     );
   }
