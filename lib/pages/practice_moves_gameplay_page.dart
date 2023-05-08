@@ -338,7 +338,7 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                               Theme.of(context).textTheme.bodyMedium!.copyWith(
                                     color: themeProvider.isDark()
                                         ? kLightColorDarkTheme
-                                        : kLightColor,
+                                        : kDarkColor,
                                   ),
                         ),
                       ),
