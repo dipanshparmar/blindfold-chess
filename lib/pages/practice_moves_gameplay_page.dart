@@ -310,7 +310,7 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                           viewOnly: true,
                           reds: reds,
                           greens: greens,
-                          accents: [],
+                          accents: const [],
                           showCoordinates:
                               consumerProvider.getActiveShowCoordinates() ==
                                   ShowCoordinates.show,
@@ -477,7 +477,7 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                                 width: deviceWidth - 42,
                                 viewOnly: true,
                                 greens: greens,
-                                reds: [],
+                                reds: const [],
                                 accents: getMissedMoves(),
                                 onlyPieceToShow: questionPiece,
                                 onlyPieceToShowCoordinates: questionCoordinates,
@@ -527,8 +527,8 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                               'Board view': ChessBoard(
                                 width: deviceWidth - 42,
                                 viewOnly: true,
-                                greens: [],
-                                reds: [],
+                                greens: const [],
+                                reds: const [],
                                 accents: possibleMoves,
                                 onlyPieceToShow: questionPiece,
                                 onlyPieceToShowCoordinates: questionCoordinates,
@@ -572,9 +572,9 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                               'Board view': ChessBoard(
                                 width: deviceWidth - 42,
                                 viewOnly: true,
-                                greens: [],
-                                reds: [],
-                                accents: [],
+                                greens: const [],
+                                reds: const [],
+                                accents: const [],
                                 onlyPieceToShow: questionPiece,
                                 onlyPieceToShowCoordinates: questionCoordinates,
                                 showCoordinates: consumerProvider
@@ -752,8 +752,7 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
     // if piece type is a pawn then getting the new coordinates for it
     if (pieceType == PieceType.pawn) {
       // if we are playing white
-      if (provider.getActivePieceColor() == PieceColor.white ||
-          provider.getActivePieceColor() == null) {
+      if (provider.getActivePieceColor() == PieceColor.white) {
         // creating the increments map
         final List<Map<String, int>> increments = [
           {

@@ -252,18 +252,15 @@ class _ChessBoardState extends State<ChessBoard> {
     if (widget.greens!.any((element) =>
         element.getFile() == coords.getFile() &&
         element.getRank() == coords.getRank())) {
-      print('${coords.getFile()} ${coords.getRank()}');
       return true;
     } else if (widget.reds!.any((element) =>
         element.getFile() == coords.getFile() &&
         element.getRank() == coords.getRank())) {
-      print('${coords.getFile()} ${coords.getRank()}');
 
       return true;
     } else if (widget.accents!.any((element) =>
         element.getFile() == coords.getFile() &&
         element.getRank() == coords.getRank())) {
-      print('${coords.getFile()} ${coords.getRank()}');
 
       return true;
     } else {

@@ -267,11 +267,12 @@ class _SettingsPageState extends State<SettingsPage> {
                           // launching the email client
                           if (!await launchUrl(
                             Uri.parse(
-                              // TODO: UPDATE THE SUBJECT WITH THE APP NAME
-                              'mailto:b1t.namaste@gmail.com?subject=<subject>&body=Please explain your issue in detail and share images or videos if necessary.\n\nStart by deleting this body text.',
+                              'mailto:b1t.namaste@gmail.com',
                             ),
                           )) {
-                            print('couldn\'t launch the URL');
+                            showSnackBar(
+                              const Text('Couldn\'t launch the URL.'),
+                            );
                           }
                         },
                         child: Row(
@@ -305,5 +306,14 @@ class _SettingsPageState extends State<SettingsPage> {
   // method to toggle the theme
   void toggleTheme() {
     Provider.of<ThemeProvider>(context, listen: false).toggle();
+  }
+
+  // method to show the snack bar
+  void showSnackBar(Widget content) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: content,
+      ),
+    );
   }
 }
