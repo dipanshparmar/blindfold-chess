@@ -267,7 +267,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           // launching the email client
                           bool isLaunched = await launchUrl(
                             Uri.parse(
-                              'hibb1t.namaste@gmail.com',
+                              'mailto:b1t.namaste@gmail.com',
                             ),
                           ).onError((error, stackTrace) => false);
 
