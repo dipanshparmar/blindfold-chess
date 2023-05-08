@@ -10,7 +10,7 @@ const kPositiveColor = Colors.green;
 const kNegativeColor = Colors.red;
 
 // dark theme colors
-const kPrimaryColorDarkTheme = Color(0xFF3B3B3B);
-const kScaffoldBackgrondColorDarkTheme = Color(0xFF444444);
+const kPrimaryColorDarkTheme = Color(0xFF333333);
+const kScaffoldBackgrondColorDarkTheme = Color(0xFF3B3B3B);
 const kDarkColorDarkTheme = Color(0xFF444444);
 const kLightColorDarkTheme = Color(0xFFEEEEEE);
