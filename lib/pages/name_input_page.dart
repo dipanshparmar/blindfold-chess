@@ -74,9 +74,6 @@ class _NameInputPageState extends State<NameInputPage> {
                         // setting the name
                         await prefs.setString('name', inputValue.trim()); // setting the trimmed value as the name
 
-                        // closing the keyboard if not already closed
-                        FocusManager.instance.primaryFocus?.unfocus();
-
                         // pushing the page
                         pushReplacementHomePage();
                       },
