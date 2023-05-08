@@ -72,19 +72,6 @@ class _HomePageState extends State<HomePage> {
               );
             },
           ),
-          // TODO: REMOVE THIS
-          Consumer<ThemeProvider>(
-            builder: (context, themeProvider, child) {
-              return Switch(
-                value: themeProvider.isDark(),
-                onChanged: (value) {
-                  setState(() {
-                    themeProvider.toggle();
-                  });
-                },
-              );
-            },
-          )
         ],
         centerTitle: false,
       ),

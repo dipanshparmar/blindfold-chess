@@ -372,7 +372,9 @@ class _ChessBoardState extends State<ChessBoard> {
                                       file, rank, themeProvider.isDark())
                                   : getResultColor(Coordinates(file, rank),
                                       clickCoordinates!, themeProvider.isDark())
-                          : kLightColor,
+                          : themeProvider.isDark()
+                              ? kBoardDarkColorDarkTheme
+                              : kBoardDarkColor,
                     ),
                     child: Stack(
                       children: [

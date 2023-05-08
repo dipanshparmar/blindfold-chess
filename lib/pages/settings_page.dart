@@ -213,6 +213,11 @@ class _SettingsPageState extends State<SettingsPage> {
                         trailing: CustomSwitch(
                           value: consumerProvider.getDarkMode(),
                           onChanged: (value) async {
+                            // toggling up the dark mode on the theme provider so that the theme actually gets updated because this is where we are getting the theme mode and the actual respective themes
+                            Provider.of<ThemeProvider>(context, listen: false)
+                                .toggle();
+
+                            // setting the dark mode on the settings provider to update it in the state and the shared preferences
                             await consumerProvider.setDarkMode(value);
                           },
                         ),

@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+// helpers
+import '../helpers/helpers.dart';
 
 // constants
 import '../utils/constants/constants.dart';
 
+// getting the prefs
+final SharedPreferences _prefs = SharedPreferencesHelper.getInstance();
+
 class ThemeProvider with ChangeNotifier {
   // theme mode
-  ThemeMode _themeMode = ThemeMode.dark; // TODO: UPDATE
+  ThemeMode _themeMode = _prefs.getBool('darkMode')! ? ThemeMode.dark : ThemeMode.light;
 
   // light theme
   final ThemeData _lightTheme = _themeLight;
