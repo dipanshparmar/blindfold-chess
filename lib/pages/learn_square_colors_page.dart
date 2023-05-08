@@ -141,14 +141,15 @@ class LearnSquareColorsPage extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            SizedBox(
+            Container(
               width: double.infinity,
+              alignment: Alignment.center,
               child: ChessBoard(
                 width: deviceWidth - 42,
                 viewOnly: true,
-                greens: [],
-                reds: [],
-                accents: [],
+                greens: const [],
+                reds: const [],
+                accents: const [],
                 showCoordinates: true,
               ),
             ),

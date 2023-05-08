@@ -348,10 +348,10 @@ class _PracticeSquareColorsGameplayPageState
                                           : kNegativeColor
                                       : themeProvider.isDark()
                                           ? kLightColorDarkTheme
-                                          : kLightColor
+                                          : kDarkColor
                                   : themeProvider.isDark()
                                       ? kLightColorDarkTheme
-                                      : kLightColor),
+                                      : kDarkColor),
                         );
                       },
                     )
