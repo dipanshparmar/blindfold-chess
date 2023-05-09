@@ -72,7 +72,7 @@ class LearnSquareColorsPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Text(
-                'Even numbers and even letters (such as a2, c4, e6, g8) are black squares, and odd numbers and odd letters (such as b1, d3, f5, h7) are also black squares.',
+                'Even numbers and even letters (such as b2, d4, f6, h8) are black squares, and odd numbers and odd letters (such as a1, c3, e5, g7) are also black squares.',
                 style: TextStyle(color: textColor),
               ),
             ),
