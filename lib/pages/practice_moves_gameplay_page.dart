@@ -155,6 +155,8 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
 
     String guessMovesQuestionText = 'How many squares $notation can move to?';
 
+    final ThemeProvider themeProvider = Provider.of < ThemeProvider>(context);
+
     return WillPopScope(
       onWillPop: () async {
         return await showDialog(
@@ -169,9 +171,11 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
         appBar: AppBar(
           title: const Text('Practice Moves'),
           leading: IconButton(
-            icon: const Icon(
+            icon: Icon(
               Icons.arrow_back_ios,
               size: 16,
+              color:
+                  themeProvider.isDark() ? kLightColorDarkTheme : kLightColor,
             ),
             onPressed: () async {
               // showing the confirmation dialog

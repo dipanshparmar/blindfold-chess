@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
 // pages
 import './pages.dart';
 
 // helpers
 import '../helpers/helpers.dart';
+
+// providers
+import '../providers/providers.dart';
+
+// constants
+import '../utils/constants/constants.dart';
 
 class NameInputPage extends StatefulWidget {
   const NameInputPage({super.key});
@@ -25,7 +32,29 @@ class _NameInputPageState extends State<NameInputPage> {
 
   @override
   Widget build(BuildContext context) {
+    // if it was pushed from settings
+    bool pushedFromSettings =
+        ModalRoute.of(context)!.settings.arguments as bool;
+
     return Scaffold(
+      appBar: pushedFromSettings
+          ? AppBar(
+              elevation: 0,
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              leading: IconButton(
+                icon: Icon(
+                  Icons.arrow_back_ios,
+                  size: 16,
+                  color: Provider.of<ThemeProvider>(context).isDark()
+                      ? kLightColorDarkTheme
+                      : kDarkColor,
+                ),
+                onPressed: () async {
+                  Navigator.of(context).pop();
+                },
+              ), // pushing the page
+            )
+          : null,
       body: SafeArea(
         child: Container(
           padding: const EdgeInsets.all(20),
@@ -34,16 +63,20 @@ class _NameInputPageState extends State<NameInputPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'You can update it any time in settings',
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
+              pushedFromSettings
+                  ? const SizedBox.shrink()
+                  : Text(
+                      'You can update it any time in settings',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
               const SizedBox(
                 height: 10,
               ),
               TextField(
-                decoration: const InputDecoration(
-                  hintText: 'What should we call you?',
+                decoration: InputDecoration(
+                  hintText: pushedFromSettings
+                      ? 'Please enter the new name'
+                      : 'What should we call you?',
                   helperText: 'Minimum 3 characters',
                 ),
                 keyboardType: TextInputType.name,
@@ -54,6 +87,7 @@ class _NameInputPageState extends State<NameInputPage> {
                   });
                 },
                 maxLength: 12,
+                autofocus: true,
               ),
               const SizedBox(
                 height: 20,
@@ -71,11 +105,26 @@ class _NameInputPageState extends State<NameInputPage> {
                         final SharedPreferences prefs =
                             SharedPreferencesHelper.getInstance();
 
-                        // setting the name
-                        await prefs.setString('name', inputValue.trim()); // setting the trimmed value as the name
+                        // if pushed from the settings then update the name in the state
+                        if (pushedFromSettings) {
+                          await Provider.of<NameProvider>(context,
+                                  listen: false)
+                              .setName(inputValue.trim());
+                        }
 
-                        // pushing the page
-                        pushReplacementHomePage();
+                        // setting the name
+                        await prefs.setString(
+                            'name',
+                            inputValue
+                                .trim()); // setting the trimmed value as the name
+
+                        // if from settings then pop the page
+                        if (pushedFromSettings) {
+                          popPage();
+                        } else {
+                          // pushing the page
+                          pushReplacementHomePage();
+                        }
                       },
                 child: isLoading
                     ? SizedBox(
@@ -86,7 +135,7 @@ class _NameInputPageState extends State<NameInputPage> {
                           strokeWidth: 2,
                         ),
                       )
-                    : const Text('GREAT'),
+                    : Text(pushedFromSettings ? 'UPDATE' : 'GREAT'),
               )
             ],
           ),
@@ -98,5 +147,10 @@ class _NameInputPageState extends State<NameInputPage> {
   // method to push the home page
   void pushReplacementHomePage() {
     Navigator.of(context).pushReplacementNamed(HomePage.routeName);
+  }
+
+  // method to pop the page
+  void popPage() {
+    Navigator.of(context).pop();
   }
 }

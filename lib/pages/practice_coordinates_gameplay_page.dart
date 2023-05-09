@@ -177,6 +177,8 @@ class _PracticeCoordinatesGameplayPageState
     // getting the device width
     final double deviceWidth = MediaQuery.of(context).size.width;
 
+    final ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
+
     return WillPopScope(
       onWillPop: () async {
         return await showDialog(
@@ -190,9 +192,11 @@ class _PracticeCoordinatesGameplayPageState
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
-            icon: const Icon(
+            icon: Icon(
               Icons.arrow_back_ios,
               size: 16,
+              color:
+                  themeProvider.isDark() ? kLightColorDarkTheme : kLightColor,
             ),
             onPressed: () async {
               // showing the confirmation dialog

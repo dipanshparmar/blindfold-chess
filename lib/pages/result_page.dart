@@ -25,12 +25,15 @@ class ResultPage extends StatelessWidget {
     final data =
         ModalRoute.of(context)!.settings.arguments! as Map<String, dynamic>;
 
+    final ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_ios,
             size: 16,
+            color: themeProvider.isDark() ? kLightColorDarkTheme : kLightColor,
           ),
           onPressed: () {
             Navigator.of(context).pop();

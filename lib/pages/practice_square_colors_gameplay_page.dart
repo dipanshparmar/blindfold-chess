@@ -200,6 +200,8 @@ class _PracticeSquareColorsGameplayPageState
     // getting the board width
     final double boardWidth = deviceWidth - 42;
 
+    final ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
+
     return WillPopScope(
       onWillPop: () async {
         return await showDialog(
@@ -213,9 +215,11 @@ class _PracticeSquareColorsGameplayPageState
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
-            icon: const Icon(
+            icon: Icon(
               Icons.arrow_back_ios,
               size: 16,
+              color:
+                  themeProvider.isDark() ? kLightColorDarkTheme : kLightColor,
             ),
             onPressed: () async {
               // showing the confirmation dialog

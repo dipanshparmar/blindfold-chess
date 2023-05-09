@@ -53,6 +53,7 @@ class IntroPage extends StatelessWidget {
                     onPressed: () {
                       Navigator.of(context).pushReplacementNamed(
                         NameInputPage.routeName,
+                        arguments: false,
                       );
                     },
                     child: const Text('GET STARTED'),

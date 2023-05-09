@@ -12,7 +12,8 @@ final SharedPreferences _prefs = SharedPreferencesHelper.getInstance();
 
 class ThemeProvider with ChangeNotifier {
   // theme mode
-  ThemeMode _themeMode = _prefs.getBool('darkMode')! ? ThemeMode.dark : ThemeMode.light;
+  ThemeMode _themeMode =
+      _prefs.getBool('darkMode')! ? ThemeMode.dark : ThemeMode.light;
 
   // light theme
   final ThemeData _lightTheme = _themeLight;
@@ -168,14 +169,14 @@ final ThemeData _themeDark = ThemeData(
       borderRadius: BorderRadius.circular(100),
       borderSide: const BorderSide(
         width: 2,
-        color: kPrimaryColor,
+        color: kLightColorDarkTheme,
       ),
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(100),
       borderSide: const BorderSide(
         width: 2,
-        color: kPrimaryColor,
+        color: kLightColorDarkTheme,
       ),
     ),
     hintStyle: const TextStyle(
