@@ -39,15 +39,13 @@ class _NameInputPageState extends State<NameInputPage> {
     return Scaffold(
       appBar: pushedFromSettings
           ? AppBar(
-              elevation: 0,
-              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               leading: IconButton(
                 icon: Icon(
                   Icons.arrow_back_ios,
                   size: 16,
                   color: Provider.of<ThemeProvider>(context).isDark()
                       ? kLightColorDarkTheme
-                      : kDarkColor,
+                      : kLightColor,
                 ),
                 onPressed: () async {
                   Navigator.of(context).pop();
@@ -66,7 +64,7 @@ class _NameInputPageState extends State<NameInputPage> {
               pushedFromSettings
                   ? const SizedBox.shrink()
                   : Text(
-                      'You can update it any time in settings',
+                      'You can update your name any time in settings',
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
               const SizedBox(
