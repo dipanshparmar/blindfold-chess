@@ -102,7 +102,7 @@ class LearnSquareColorsPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Text(
-                'For example, a2, b1, c2, d3, e4, f7, g5, h3 are all white squares.',
+                'For example, a2, b1, c2, d3, e4, f7, g6, h3 are all white squares.',
                 style: TextStyle(fontStyle: FontStyle.italic, color: textColor),
               ),
             ),
