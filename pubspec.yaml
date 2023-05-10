@@ -117,7 +117,9 @@ flutter_launcher_icons:
 # flutter native splash
 flutter_native_splash:
   color: "#36454F"
-  image: "assets/images/logo/logo_foreground.png"
+  # http://labs.rampinteractive.co.uk/android_dp_px_calculator/
+  # https://developer.android.com/develop/ui/views/launch/splash-screen#:~:text=isn't%20set.-,Splash%20screen%20dimensions,circle%20160%20dp%20in%20diameter.
+  image: "assets/images/splash/splash_icon_android12.png"
   ios: false
   web: false
 
