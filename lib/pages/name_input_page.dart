@@ -94,35 +94,7 @@ class _NameInputPageState extends State<NameInputPage> {
                 onPressed: inputValue.trim().length < 3
                     ? null
                     : () async {
-                        // setting the state to true
-                        setState(() {
-                          isLoading = true;
-                        });
-
-                        // getting the shared preferences
-                        final SharedPreferences prefs =
-                            SharedPreferencesHelper.getInstance();
-
-                        // if pushed from the settings then update the name in the state
-                        if (pushedFromSettings) {
-                          await Provider.of<NameProvider>(context,
-                                  listen: false)
-                              .setName(inputValue.trim());
-                        }
-
-                        // setting the name
-                        await prefs.setString(
-                            'name',
-                            inputValue
-                                .trim()); // setting the trimmed value as the name
-
-                        // if from settings then pop the page
-                        if (pushedFromSettings) {
-                          popPage();
-                        } else {
-                          // pushing the page
-                          pushReplacementHomePage();
-                        }
+                        await handleClick(pushedFromSettings);
                       },
                 child: isLoading
                     ? SizedBox(
@@ -150,5 +122,35 @@ class _NameInputPageState extends State<NameInputPage> {
   // method to pop the page
   void popPage() {
     Navigator.of(context).pop();
+  }
+
+  // method to handle the click
+  Future<void> handleClick(bool pushedFromSettings) async {
+    // setting the state to true
+    setState(() {
+      isLoading = true;
+    });
+
+    // getting the shared preferences
+    final SharedPreferences prefs = SharedPreferencesHelper.getInstance();
+
+    // if pushed from the settings then update the name in the state
+    if (pushedFromSettings) {
+      await Provider.of<NameProvider>(context, listen: false)
+          .setName(inputValue.trim());
+    }
+
+    // setting the name
+    await prefs.setString(
+        'name', inputValue.trim()); // setting the trimmed value as the name
+
+    // if from settings then pop the page
+    if (pushedFromSettings) {
+      popPage();
+    } else {
+      // pushing the page
+      pushReplacementHomePage();
+    }
+    ;
   }
 }

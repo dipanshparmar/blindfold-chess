@@ -534,7 +534,6 @@ class _PracticeSquareColorsGameplayPageState
                                   width: deviceWidth - 42,
                                   questionCoordinates: question,
                                   viewOnly: true,
-                                  accents: const [],
                                   reds: result == null
                                       ? []
                                       : result!

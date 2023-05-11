@@ -314,7 +314,6 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                           viewOnly: true,
                           reds: reds,
                           greens: greens,
-                          accents: const [],
                           showCoordinates:
                               consumerProvider.getActiveShowCoordinates() ==
                                   ShowCoordinates.show,
@@ -481,7 +480,6 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                                 width: deviceWidth - 42,
                                 viewOnly: true,
                                 greens: greens,
-                                reds: const [],
                                 accents: getMissedMoves(),
                                 onlyPieceToShow: questionPiece,
                                 onlyPieceToShowCoordinates: questionCoordinates,
@@ -531,8 +529,6 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                               'Board view': ChessBoard(
                                 width: deviceWidth - 42,
                                 viewOnly: true,
-                                greens: const [],
-                                reds: const [],
                                 accents: possibleMoves,
                                 onlyPieceToShow: questionPiece,
                                 onlyPieceToShowCoordinates: questionCoordinates,
@@ -576,9 +572,6 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                               'Board view': ChessBoard(
                                 width: deviceWidth - 42,
                                 viewOnly: true,
-                                greens: const [],
-                                reds: const [],
-                                accents: const [],
                                 onlyPieceToShow: questionPiece,
                                 onlyPieceToShowCoordinates: questionCoordinates,
                                 showCoordinates: consumerProvider

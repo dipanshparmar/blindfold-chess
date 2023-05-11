@@ -148,9 +148,6 @@ class LearnSquareColorsPage extends StatelessWidget {
               child: ChessBoard(
                 width: deviceWidth - 42,
                 viewOnly: true,
-                greens: const [],
-                reds: const [],
-                accents: const [],
                 showCoordinates: true,
               ),
             ),
