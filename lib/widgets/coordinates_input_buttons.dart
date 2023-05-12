@@ -43,26 +43,6 @@ class _CoordinatesInputButtonsState extends State<CoordinatesInputButtons> {
   File? answerFile;
   Rank? answerRank;
 
-  // function to get the answer text for file
-  String getFileText() {
-    // if answer file is empty then return '-'
-    if (answerFile == null) {
-      return '-';
-    } else {
-      return files[answerFile]!;
-    }
-  }
-
-  // function to get the rank text
-  String getRankText() {
-    // if rank file is empty then return '-'
-    if (answerRank == null) {
-      return '-';
-    } else {
-      return ranks[answerRank]!;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     // grabbing the device width
@@ -93,34 +73,20 @@ class _CoordinatesInputButtonsState extends State<CoordinatesInputButtons> {
                     getFileText(),
                     style: TextStyle(
                       fontSize: kExtraLargeSize,
-                      color: answerFile != null &&
-                              answerRank != null &&
-                              !isInToAvoid(
-                                  Coordinates(answerFile!, answerRank!))
-                          ? widget.afterSelectionColor ??
-                              Theme.of(context).primaryColor
-                          : getFileText() == '-'
-                              ? kBoardDarkColor
-                              : themeProvider.isDark()
-                                  ? kLightColorDarkTheme
-                                  : Theme.of(context).primaryColor,
+                      color: getTextColor(
+                        getFileText(),
+                        themeProvider.isDark(),
+                      ),
                     ),
                   ),
                   Text(
                     getRankText(),
                     style: TextStyle(
                       fontSize: kExtraLargeSize,
-                      color: answerFile != null &&
-                              answerRank != null &&
-                              !isInToAvoid(
-                                  Coordinates(answerFile!, answerRank!))
-                          ? widget.afterSelectionColor ??
-                              Theme.of(context).primaryColor
-                          : getRankText() == '-'
-                              ? kBoardDarkColor
-                              : themeProvider.isDark()
-                                  ? kLightColorDarkTheme
-                                  : Theme.of(context).primaryColor,
+                      color: getTextColor(
+                        getRankText(),
+                        themeProvider.isDark(),
+                      ),
                     ),
                   ),
                 ],
@@ -175,28 +141,7 @@ class _CoordinatesInputButtonsState extends State<CoordinatesInputButtons> {
 
               return GestureDetector(
                 onTap: () async {
-                  // updating the file
-                  setState(() {
-                    answerFile = key;
-                  });
-
-                  // if both are already there then call the user defined function and reset
-                  if (answerFile != null && answerRank != null) {
-                    // if there are coordinates to avoid and if it is present in those coordinates then skip it
-                    if (isInToAvoid(
-                      Coordinates(answerFile!, answerRank!),
-                    )) {
-                      return;
-                    }
-
-                    await widget
-                        .onSelected(Coordinates(answerFile!, answerRank!));
-
-                    setState(() {
-                      answerFile = null;
-                      answerRank = null;
-                    });
-                  }
+                  await handleFileTap(key);
                 },
                 child: Container(
                   height: squareSize,
@@ -244,28 +189,7 @@ class _CoordinatesInputButtonsState extends State<CoordinatesInputButtons> {
 
               return GestureDetector(
                 onTap: () async {
-                  setState(() {
-                    // setting up the rank
-                    answerRank = key;
-                  });
-
-                  // if both are already there then call the user defined function and reset
-                  if (answerFile != null && answerRank != null) {
-                    // if there are coordinates to avoid and if it is present in those coordinates then skip it
-                    if (isInToAvoid(
-                      Coordinates(answerFile!, answerRank!),
-                    )) {
-                      return;
-                    }
-
-                    await widget
-                        .onSelected(Coordinates(answerFile!, answerRank!));
-
-                    setState(() {
-                      answerFile = null;
-                      answerRank = null;
-                    });
-                  }
+                  await handleRankTap(key);
                 },
                 child: Container(
                   height: squareSize,
@@ -304,5 +228,91 @@ class _CoordinatesInputButtonsState extends State<CoordinatesInputButtons> {
     return widget.toAvoid!.any((element) =>
         element.getRank() == coordinates.getRank() &&
         element.getFile() == coordinates.getFile());
+  }
+
+  // function to get the answer text for file
+  String getFileText() {
+    // if answer file is empty then return '-'
+    if (answerFile == null) {
+      return '-';
+    } else {
+      return files[answerFile]!;
+    }
+  }
+
+  // function to get the rank text
+  String getRankText() {
+    // if rank file is empty then return '-'
+    if (answerRank == null) {
+      return '-';
+    } else {
+      return ranks[answerRank]!;
+    }
+  }
+
+  Color getTextColor(String text, bool isDark) {
+    // if answer file is not null, answer rank is not null, and the coordinates are also not in to avoid coordinates
+    if (answerFile != null &&
+        answerRank != null &&
+        !isInToAvoid(Coordinates(answerFile!, answerRank!))) {
+      // if the after selection color is provided then use that, otherwise use the primary color
+      return widget.afterSelectionColor ?? Theme.of(context).primaryColor;
+    }
+
+    // if text is empty then return the grayish color
+    if (text == '-') {
+      return kBoardDarkColor;
+    } else {
+      // otherwise if we do have some value then return the value according to the theme mode
+      return isDark ? kLightColorDarkTheme : Theme.of(context).primaryColor;
+    }
+  }
+
+  Future<void> handleFileTap(File key) async {
+    // updating the file
+    setState(() {
+      answerFile = key;
+    });
+
+    // if both are already there then call the user defined function and reset
+    if (answerFile != null && answerRank != null) {
+      // if there are coordinates to avoid and if it is present in those coordinates then skip it
+      if (isInToAvoid(
+        Coordinates(answerFile!, answerRank!),
+      )) {
+        return;
+      }
+
+      await widget.onSelected(Coordinates(answerFile!, answerRank!));
+
+      setState(() {
+        answerFile = null;
+        answerRank = null;
+      });
+    }
+  }
+
+  Future<void> handleRankTap(Rank key) async {
+    setState(() {
+      // setting up the rank
+      answerRank = key;
+    });
+
+    // if both are already there then call the user defined function and reset
+    if (answerFile != null && answerRank != null) {
+      // if there are coordinates to avoid and if it is present in those coordinates then skip it
+      if (isInToAvoid(
+        Coordinates(answerFile!, answerRank!),
+      )) {
+        return;
+      }
+
+      await widget.onSelected(Coordinates(answerFile!, answerRank!));
+
+      setState(() {
+        answerFile = null;
+        answerRank = null;
+      });
+    }
   }
 }

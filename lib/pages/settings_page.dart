@@ -37,11 +37,6 @@ class _SettingsPageState extends State<SettingsPage> {
   // loading state
   bool isLoading = false;
 
-  // method to pop the page
-  void goBack() {
-    Navigator.of(context).pop();
-  }
-
   @override
   Widget build(BuildContext context) {
     // grabbing the theme provider
@@ -149,7 +144,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             // setting the dark mode on the settings provider to update it in the state and the shared preferences
                             await consumerProvider.setDarkMode(value);
 
-                            // toggling up the dark mode on the theme provider so that the theme actually gets updated because this is where we are getting the theme mode and the actual respective themes
+                            // toggling up the dark mode on the theme provider so that the theme actually gets updated because this is where we are getting the theme mode and the actual respective themes in the material app configuration
                             toggleTheme();
                           },
                         ),
@@ -254,5 +249,10 @@ class _SettingsPageState extends State<SettingsPage> {
         duration: const Duration(seconds: 1),
       ),
     );
+  }
+
+  // method to pop the page
+  void goBack() {
+    Navigator.of(context).pop();
   }
 }

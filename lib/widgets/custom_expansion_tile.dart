@@ -38,34 +38,6 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
     selectedValues = widget.values.toList();
   }
 
-  // function to get the selected values string
-  String getSelectedValuesString() {
-    // getting the string values of the selected keys as a list
-    List<String> selectedValuesString =
-        selectedValues.map((e) => widget.keyValuePairs[e]!).toList();
-
-    // sorting the list alphabetically
-    selectedValuesString.sort();
-
-    // returning the final string
-    return selectedValuesString.toString().replaceAll(RegExp(r'[[\]]'), '');
-  }
-
-  // function to get the title
-  String getTitle() {
-    // if all the values are selected
-    if (selectedValues.length == widget.keyValuePairs.length) {
-      return widget.allSelectedText;
-    }
-
-    return getSelectedValuesString();
-  }
-
-  // function to return true or false indicating whether all the values are selected or not
-  bool areAllSelected() {
-    return selectedValues.length == widget.keyValuePairs.length;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Consumer<ThemeProvider>(builder: (context, themeProvider, child) {
@@ -273,5 +245,33 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
         ),
       );
     });
+  }
+
+  // function to get the selected values string
+  String getSelectedValuesString() {
+    // getting the string values of the selected keys as a list
+    List<String> selectedValuesString =
+        selectedValues.map((e) => widget.keyValuePairs[e]!).toList();
+
+    // sorting the list alphabetically
+    selectedValuesString.sort();
+
+    // returning the final string
+    return selectedValuesString.toString().replaceAll(RegExp(r'[[\]]'), '');
+  }
+
+  // function to get the title
+  String getTitle() {
+    // if all the values are selected
+    if (selectedValues.length == widget.keyValuePairs.length) {
+      return widget.allSelectedText;
+    }
+
+    return getSelectedValuesString();
+  }
+
+  // function to return true or false indicating whether all the values are selected or not
+  bool areAllSelected() {
+    return selectedValues.length == widget.keyValuePairs.length;
   }
 }

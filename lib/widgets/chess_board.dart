@@ -99,6 +99,17 @@ class _ChessBoardState extends State<ChessBoard> {
       throw '(!widget.viewOnly && widget.onTap == null) || (!widget.viewOnly && widget.questionCoordinates == null) == true';
     }
 
+    // if only piece to show is defined but showPieces is false then throw an error
+    if (widget.onlyPieceToShow != null && widget.showPieces == false) {
+      throw 'widget.onlyPieceToShow != null && widget.showPieces == false';
+    }
+
+    // if only piece to show is defined but the coordinates are not defined then throw an error
+    if (widget.onlyPieceToShow != null &&
+        widget.onlyPieceToShowCoordinates == null) {
+      throw 'widget.onlyPieceToShow != null && widget.onlyPieceToShowCoordinates == null';
+    }
+
     // getting the width for each square
     final double squareWidth = widget.width / 8;
 
@@ -327,18 +338,21 @@ class _ChessBoardState extends State<ChessBoard> {
   // function to get the color for view only mode
   Color getViewOnlyColor(Coordinates coords, bool isDark) {
     // if greens have it
-    if (widget.greens != null && widget.greens!.any((element) =>
-        element.getFile() == coords.getFile() &&
-        element.getRank() == coords.getRank())) {
+    if (widget.greens != null &&
+        widget.greens!.any((element) =>
+            element.getFile() == coords.getFile() &&
+            element.getRank() == coords.getRank())) {
       return kPositiveColor;
-    } else if (widget.reds != null && widget.reds!.any((element) =>
-        element.getFile() == coords.getFile() &&
-        element.getRank() == coords.getRank())) {
+    } else if (widget.reds != null &&
+        widget.reds!.any((element) =>
+            element.getFile() == coords.getFile() &&
+            element.getRank() == coords.getRank())) {
       // if any of the reds contain it then return red
       return kNegativeColor;
-    } else if (widget.accents != null && widget.accents!.any((element) =>
-        element.getFile() == coords.getFile() &&
-        element.getRank() == coords.getRank())) {
+    } else if (widget.accents != null &&
+        widget.accents!.any((element) =>
+            element.getFile() == coords.getFile() &&
+            element.getRank() == coords.getRank())) {
       // if any of the accents contain it then return the secondary color
       return Theme.of(context).colorScheme.secondary;
     } else {
@@ -428,17 +442,20 @@ class _ChessBoardState extends State<ChessBoard> {
 
   // function to check whether the coordinate is in view only coordinates or not
   bool isInViewOnlyCoordinates(Coordinates coords) {
-    if (widget.greens != null && widget.greens!.any((element) =>
-        element.getFile() == coords.getFile() &&
-        element.getRank() == coords.getRank())) {
+    if (widget.greens != null &&
+        widget.greens!.any((element) =>
+            element.getFile() == coords.getFile() &&
+            element.getRank() == coords.getRank())) {
       return true;
-    } else if (widget.reds != null && widget.reds!.any((element) =>
-        element.getFile() == coords.getFile() &&
-        element.getRank() == coords.getRank())) {
+    } else if (widget.reds != null &&
+        widget.reds!.any((element) =>
+            element.getFile() == coords.getFile() &&
+            element.getRank() == coords.getRank())) {
       return true;
-    } else if (widget.accents != null && widget.accents!.any((element) =>
-        element.getFile() == coords.getFile() &&
-        element.getRank() == coords.getRank())) {
+    } else if (widget.accents != null &&
+        widget.accents!.any((element) =>
+            element.getFile() == coords.getFile() &&
+            element.getRank() == coords.getRank())) {
       return true;
     }
 

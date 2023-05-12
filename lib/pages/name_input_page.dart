@@ -151,6 +151,5 @@ class _NameInputPageState extends State<NameInputPage> {
       // pushing the page
       pushReplacementHomePage();
     }
-    ;
   }
 }

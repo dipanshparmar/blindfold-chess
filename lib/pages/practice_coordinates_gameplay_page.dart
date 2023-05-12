@@ -45,21 +45,6 @@ class _PracticeCoordinatesGameplayPageState
   late final List<File> activeFiles;
   late final List<Rank> activeRanks;
 
-  // function to return the question coordinate
-  Coordinates getQuestionCoordinates() {
-    // getting random files and ranks
-    final File randomFile = activeFiles[Random().nextInt(activeFiles.length)];
-    final Rank randomRank = activeRanks[Random().nextInt(activeRanks.length)];
-
-    // returning the coordinate
-    return Coordinates(randomFile, randomRank);
-  }
-
-  // function to get the question text
-  String getCoordinatesAsText(Coordinates coordinates) {
-    return '${files[coordinates.getFile()]}${ranks[coordinates.getRank()]}';
-  }
-
   // to hold the question coordinates
   late Coordinates question;
 
@@ -72,33 +57,25 @@ class _PracticeCoordinatesGameplayPageState
   // the time defined above will change over time, so we get a copy of the original time
   late double originalTime;
 
-  // method to push the follow up page
-  void pushFollowUpPage() {
-    // preparing the data
-    final Map<String, dynamic> data = {
-      'practiceType':
-          DataHelper.getPracticeTypeKeyValuePairs()[PracticeType.coordinates],
-      'timeElapsed': '${originalTime}s',
-      'total': total.toString(),
-      'correct': correct.toString(),
-      'incorrect': (total - correct).toString(),
-      'questionsData': questionsData,
-    };
-
-    // if original time is -1 then removed the time elapsed field
-    if (originalTime == -1) {
-      data.removeWhere((key, value) => key == 'timeElapsed');
-    }
-
-    // pushing the page with the required data
-    Navigator.of(context).pushReplacementNamed(
-      ResultPage.routeName,
-      arguments: data,
-    );
-  }
-
   // provider
   late final PracticeCoordinatesConfigProvider provider;
+
+  // total questions
+  int total = 0; // 0 initially
+
+  // correct answers
+  int correct = 0; // 0 initially
+
+  // guess result
+  bool? result;
+
+  // user chosen coordinates
+  Coordinates? userChoice;
+
+  final Duration duration = const Duration(milliseconds: 300);
+
+  // map to store the each question data
+  final Map<int, Map<String, dynamic>> questionsData = {};
 
   @override
   void initState() {
@@ -121,29 +98,24 @@ class _PracticeCoordinatesGameplayPageState
     // getting the copy of original time
     originalTime = time;
 
-    // if time is -1 then return
-    if (time == -1) {
-      return;
+    // if time is not -1 only then set the timer
+    if (time != -1) {
+      // setting up a timer
+      timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+        // if time is greater than 1 then decrement it
+        if (time > 1) {
+          setState(() {
+            time--;
+          });
+        } else {
+          // if time reaches 0 then cancel the timer and push the results page
+          timer.cancel();
+
+          pushFollowUpPage();
+        }
+      });
     }
-
-    // setting up a timer
-    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      // if time is greater than 1 then decrement it
-      if (time > 1) {
-        setState(() {
-          time--;
-        });
-      } else {
-        // if time reaches 0 then cancel the timer and push the results page
-        timer.cancel();
-
-        pushFollowUpPage();
-      }
-    });
   }
-
-  // map to store the each question data
-  final Map<int, Map<String, dynamic>> questionsData = {};
 
   @override
   void dispose() {
@@ -153,23 +125,6 @@ class _PracticeCoordinatesGameplayPageState
     if (timer != null) {
       timer!.cancel();
     }
-  }
-
-  // total questions
-  int total = 0; // 0 initially
-
-  // correct answers
-  int correct = 0; // 0 initially
-
-  // result for name square
-  bool? result;
-
-  // user choice for name square
-  Coordinates? userChoice;
-
-  // method to pop the page
-  void popPage() {
-    Navigator.of(context).pop();
   }
 
   @override
@@ -297,18 +252,15 @@ class _PracticeCoordinatesGameplayPageState
                         viewOnly: consumerProvider
                                 .getActivePracticeCoordinatesType() ==
                             PracticeCoordinatesType.nameSquare,
-                        greens: userChoice != null
-                            ? userChoice!.getFile() == question.getFile() &&
-                                    userChoice!.getRank() == question.getRank()
+                        greens: result != null
+                            ? result!
                                 ? [question]
                                 : []
                             : [],
                         reds: result == null
                             ? []
                             : !result!
-                                ? userChoice != null
-                                    ? [userChoice!]
-                                    : []
+                                ? [userChoice!]
                                 : [],
                         accents: [question],
                         showCoordinates:
@@ -320,62 +272,13 @@ class _PracticeCoordinatesGameplayPageState
                             ShowPieces.show,
                         forWhite: consumerProvider.getActivePieceColor() ==
                             PieceColor.white,
-                        onTap: (result, userChose) async {
-                          // if we are doing name square then we don't want to execute anything below
-                          if (consumerProvider
-                                  .getActivePracticeCoordinatesType() ==
-                              PracticeCoordinatesType.nameSquare) {
-                            return;
-                          }
-
-                          // delay duration
-                          const Duration duration = Duration(milliseconds: 300);
-
-                          // waiting for duration time
-                          await Future.delayed(duration);
-
-                          // grabbing the question coordinates text and the user answered coordinates text
-                          final String questionText =
-                              getCoordinatesAsText(question);
-                          final String userChoseText =
-                              getCoordinatesAsText(userChose);
-
-                          // updating the questions data
-                          questionsData[total] = {
-                            'Square to choose': questionText,
-                            'You chose': userChoseText,
-                            'Result': result,
-                            'Board view': ChessBoard(
-                              greens: result ? [userChose] : [question],
-                              reds: result ? [] : [userChose],
-                              accents: const [],
-                              viewOnly: true,
-                              showPieces:
-                                  consumerProvider.getActiveShowPieces() ==
-                                      ShowPieces.show,
-                              showCoordinates:
-                                  consumerProvider.getActiveShowCoordinates() ==
-                                      ShowCoordinates.show,
-                              forWhite:
-                                  consumerProvider.getActivePieceColor() ==
-                                      PieceColor.white,
-                              width: deviceWidth -
-                                  42, // because on the next page we are going to have padding of 20 each side horizontally and the board itself is going to have borders of width 1 both side
-                            ),
-                          };
-
-                          setState(() {
-                            // incrementing the total
-                            total++;
-
-                            // if result is positive then increment the correct answers count
-                            if (result) {
-                              correct++;
-                            }
-
-                            // generating a new question
-                            question = getQuestionCoordinates();
-                          });
+                        onTap: (onTapResult, userChoiceForFindSquare) async {
+                          await handleOnBoardTap(
+                            consumerProvider: consumerProvider,
+                            deviceWidth: deviceWidth,
+                            onTapResult: onTapResult,
+                            userChoiceForFindSquare: userChoiceForFindSquare,
+                          );
                         },
                       ),
                       if (provider.getActivePracticeCoordinatesType() ==
@@ -388,7 +291,7 @@ class _PracticeCoordinatesGameplayPageState
                         Consumer<ThemeProvider>(
                           builder: (context, themeProvider, child) {
                             return Text(
-                              getCoordinatesAsText(question),
+                              question.toString(),
                               style: TextStyle(
                                 fontSize: kExtraLargeSize,
                                 color: themeProvider.isDark()
@@ -404,72 +307,12 @@ class _PracticeCoordinatesGameplayPageState
                 if (provider.getActivePracticeCoordinatesType() ==
                     PracticeCoordinatesType.nameSquare)
                   CoordinatesInputButtons(
-                    onSelected: (Coordinates userChose) async {
-                      // delay duration
-                      const Duration duration = Duration(milliseconds: 300);
-
-                      setState(() {
-                        // calculating the result
-                        result = userChose.getFile() == question.getFile() &&
-                            userChose.getRank() == question.getRank();
-
-                        // setting the user choice
-                        userChoice = userChose;
-                      });
-
-                      // waiting for duration time
-                      await Future.delayed(duration);
-
-                      // grabbing the question coordinates text and the user answered coordinates text
-                      final String questionText =
-                          getCoordinatesAsText(question);
-                      final String userChoseText =
-                          getCoordinatesAsText(userChose);
-
-                      // updating the questions data
-                      questionsData[total] = {
-                        'Square to choose': questionText,
-                        'You chose': userChoseText,
-                        'Result': result,
-                        'Board view': ChessBoard(
-                          greens: userChoice!.getFile() == question.getFile() &&
-                                  userChoice!.getRank() == question.getRank()
-                              ? [question]
-                              : [],
-                          reds: result == null
-                              ? []
-                              : !result!
-                                  ? [userChoice!]
-                                  : [],
-                          accents: [question],
-                          viewOnly: true,
-                          showPieces: consumerProvider.getActiveShowPieces() ==
-                              ShowPieces.show,
-                          showCoordinates:
-                              consumerProvider.getActiveShowCoordinates() ==
-                                  ShowCoordinates.show,
-                          forWhite: consumerProvider.getActivePieceColor() ==
-                              PieceColor.white,
-                          width: deviceWidth -
-                              42, // because on the next page we are going to have padding of 20 each side horizontally and the board itself is going to have borders of width 1 both side
-                        ),
-                      };
-
-                      setState(() {
-                        // incrementing the total
-                        total++;
-
-                        // if result is positive then increment the correct answers count
-                        if (result!) {
-                          correct++;
-                        }
-
-                        // resetting result
-                        result = null;
-
-                        // generating a new question
-                        question = getQuestionCoordinates();
-                      });
+                    onSelected: (Coordinates userChoiceForNameSquare) async {
+                      await handleOnCoordinatesInput(
+                        consumerProvider: consumerProvider,
+                        deviceWidth: deviceWidth,
+                        userChoiceForNameSquare: userChoiceForNameSquare,
+                      );
                     },
                   ),
               ],
@@ -478,5 +321,162 @@ class _PracticeCoordinatesGameplayPageState
         ),
       ),
     );
+  }
+
+  // function to return the question coordinate
+  Coordinates getQuestionCoordinates() {
+    // getting random files and ranks
+    final File randomFile = activeFiles[Random().nextInt(activeFiles.length)];
+    final Rank randomRank = activeRanks[Random().nextInt(activeRanks.length)];
+
+    // returning the coordinate
+    return Coordinates(randomFile, randomRank);
+  }
+
+  // method to push the follow up page
+  void pushFollowUpPage() {
+    // preparing the data
+    final Map<String, dynamic> data = {
+      'practiceType':
+          DataHelper.getPracticeTypeKeyValuePairs()[PracticeType.coordinates],
+      'timeElapsed': '${originalTime}s',
+      'total': total.toString(),
+      'correct': correct.toString(),
+      'incorrect': (total - correct).toString(),
+      'questionsData': questionsData,
+    };
+
+    // if original time is -1 then removed the time elapsed field
+    if (originalTime == -1) {
+      data.removeWhere((key, value) => key == 'timeElapsed');
+    }
+
+    // pushing the page with the required data
+    Navigator.of(context).pushReplacementNamed(
+      ResultPage.routeName,
+      arguments: data,
+    );
+  }
+
+  // method to pop the page
+  void popPage() {
+    Navigator.of(context).pop();
+  }
+
+  Future<void> handleOnBoardTap({
+    required bool onTapResult,
+    required Coordinates userChoiceForFindSquare,
+    required PracticeCoordinatesConfigProvider consumerProvider,
+    required double deviceWidth,
+  }) async {
+    // setting the result
+    setState(() {
+      result = onTapResult;
+
+      // setting the user choice
+      userChoice = userChoiceForFindSquare;
+    });
+
+    // waiting for duration time
+    await Future.delayed(duration);
+
+    // grabbing the question coordinates text and the user answered coordinates text
+    final String questionText = question.toString();
+    final String userChoiceText = userChoice.toString();
+
+    // updating the questions data
+    questionsData[total] = {
+      'Square to choose': questionText,
+      'You chose': userChoiceText,
+      'Result': result,
+      'Board view': ChessBoard(
+        greens: result! ? [userChoice!] : [question],
+        reds: result! ? [] : [userChoice!],
+        accents: const [],
+        viewOnly: true,
+        showPieces: consumerProvider.getActiveShowPieces() == ShowPieces.show,
+        showCoordinates:
+            consumerProvider.getActiveShowCoordinates() == ShowCoordinates.show,
+        forWhite: consumerProvider.getActivePieceColor() == PieceColor.white,
+        width: deviceWidth -
+            42, // because on the next page we are going to have padding of 20 each side horizontally and the board itself is going to have borders of width 1 both side
+      ),
+    };
+
+    setState(() {
+      // incrementing the total
+      total++;
+
+      // if result is positive then increment the correct answers count
+      if (result!) {
+        correct++;
+      }
+
+      // generating a new question
+      question = getQuestionCoordinates();
+    });
+  }
+
+  Future<void> handleOnCoordinatesInput({
+    required Coordinates userChoiceForNameSquare,
+    required PracticeCoordinatesConfigProvider consumerProvider,
+    required double deviceWidth,
+  }) async {
+    setState(() {
+      // calculating the result
+      result = userChoiceForNameSquare.getFile() == question.getFile() &&
+          userChoiceForNameSquare.getRank() == question.getRank();
+
+      // setting the user choice
+      userChoice = userChoiceForNameSquare;
+    });
+
+    // waiting for duration time
+    await Future.delayed(duration);
+
+    // grabbing the question coordinates text and the user answered coordinates text
+    final String questionText = question.toString();
+    final String userChoiceText = userChoice.toString();
+
+    // updating the questions data
+    questionsData[total] = {
+      'Square to choose': questionText,
+      'You chose': userChoiceText,
+      'Result': result,
+      'Board view': ChessBoard(
+        greens: result!
+            ? [question]
+            : [],
+        reds: result == null
+            ? []
+            : !result!
+                ? [userChoice!]
+                : [],
+        accents: [question],
+        viewOnly: true,
+        showPieces: consumerProvider.getActiveShowPieces() == ShowPieces.show,
+        showCoordinates:
+            consumerProvider.getActiveShowCoordinates() == ShowCoordinates.show,
+        forWhite: consumerProvider.getActivePieceColor() == PieceColor.white,
+        width: deviceWidth -
+            42, // because on the next page we are going to have padding of 20 each side horizontally and the board itself is going to have borders of width 1 both side
+      ),
+    };
+
+    setState(() {
+      // incrementing the total
+      total++;
+
+      // if result is positive then increment the correct answers count
+      if (result!) {
+        correct++;
+      }
+
+      // resetting result
+      result = null;
+
+      // generating a new question
+      question = getQuestionCoordinates();
+    });
   }
 }
