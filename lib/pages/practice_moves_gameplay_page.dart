@@ -86,7 +86,7 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
   List<Coordinates> reds = [];
 
   // duration for the pauses
-  final Duration duration = const Duration(milliseconds: 300);
+  final Duration duration = const Duration(milliseconds: 150);
 
   // to hold whether the coordinates is present in possible moves or not
   bool? isPresent;

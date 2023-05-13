@@ -73,7 +73,7 @@ class _PracticeSquareColorsGameplayPageState
   bool? result;
 
   // delay duration
-  final Duration duration = const Duration(milliseconds: 300);
+  final Duration duration = const Duration(milliseconds: 150);
 
   @override
   void initState() {
@@ -258,7 +258,7 @@ class _PracticeSquareColorsGameplayPageState
                             : result!
                                 ? [question]
                                 : [],
-                        showNativeBoardColors: result != null,
+                        showNativeBoardColors: false,
                         showCoordinates:
                             consumerProvider.getActiveShowCoordinates() != null
                                 ? consumerProvider.getActiveShowCoordinates() ==
@@ -295,7 +295,7 @@ class _PracticeSquareColorsGameplayPageState
                         onTap: () async {
                           await handleLightButtonTap(
                             consumerProvider: consumerProvider,
-                            boardWidth: deviceWidth,
+                            boardWidth: boardWidth,
                           );
                         },
                         child: Container(
@@ -335,7 +335,7 @@ class _PracticeSquareColorsGameplayPageState
                         onTap: () async {
                           await handleDarkButtonTap(
                             consumerProvider: consumerProvider,
-                            boardWidth: deviceWidth,
+                            boardWidth: boardWidth,
                           );
                         },
                         child: Container(

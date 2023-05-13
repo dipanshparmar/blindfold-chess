@@ -72,7 +72,7 @@ class _PracticeCoordinatesGameplayPageState
   // user chosen coordinates
   Coordinates? userChoice;
 
-  final Duration duration = const Duration(milliseconds: 300);
+  final Duration duration = const Duration(milliseconds: 150);
 
   // map to store the each question data
   final Map<int, Map<String, dynamic>> questionsData = {};
@@ -281,7 +281,7 @@ class _PracticeCoordinatesGameplayPageState
                         onTap: (onTapResult, userChoiceForFindSquare) async {
                           await handleOnBoardTap(
                             consumerProvider: consumerProvider,
-                            boardWidth: deviceWidth,
+                            boardWidth: boardWidth,
                             onTapResult: onTapResult,
                             userChoiceForFindSquare: userChoiceForFindSquare,
                           );
@@ -316,7 +316,7 @@ class _PracticeCoordinatesGameplayPageState
                     onSelected: (Coordinates userChoiceForNameSquare) async {
                       await handleOnCoordinatesInput(
                         consumerProvider: consumerProvider,
-                        boardWidth: deviceWidth,
+                        boardWidth: boardWidth,
                         userChoiceForNameSquare: userChoiceForNameSquare,
                       );
                     },
