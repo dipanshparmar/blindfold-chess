@@ -134,6 +134,13 @@ class _PracticeCoordinatesGameplayPageState
 
     final ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
 
+    final SettingsProvider settingsProvider =
+        Provider.of<SettingsProvider>(context);
+
+    final double boardWidth = settingsProvider.getExtendBoardToEdges()
+        ? deviceWidth - 2
+        : deviceWidth - 42;
+
     return WillPopScope(
       onWillPop: () async {
         return await showDialog(
@@ -221,8 +228,7 @@ class _PracticeCoordinatesGameplayPageState
                                       : kDarkColor,
                                 ),
                           ),
-                          if (Provider.of<SettingsProvider>(context)
-                              .getShowCorrectAnswers())
+                          if (settingsProvider.getShowCorrectAnswers())
                             Text(
                               'Correct: $correct',
                               textAlign: TextAlign.left,
@@ -266,7 +272,7 @@ class _PracticeCoordinatesGameplayPageState
                         showCoordinates:
                             consumerProvider.getActiveShowCoordinates() ==
                                 ShowCoordinates.show,
-                        width: deviceWidth - 42,
+                        width: boardWidth,
                         questionCoordinates: question,
                         showPieces: consumerProvider.getActiveShowPieces() ==
                             ShowPieces.show,
@@ -275,7 +281,7 @@ class _PracticeCoordinatesGameplayPageState
                         onTap: (onTapResult, userChoiceForFindSquare) async {
                           await handleOnBoardTap(
                             consumerProvider: consumerProvider,
-                            deviceWidth: deviceWidth,
+                            boardWidth: deviceWidth,
                             onTapResult: onTapResult,
                             userChoiceForFindSquare: userChoiceForFindSquare,
                           );
@@ -310,7 +316,7 @@ class _PracticeCoordinatesGameplayPageState
                     onSelected: (Coordinates userChoiceForNameSquare) async {
                       await handleOnCoordinatesInput(
                         consumerProvider: consumerProvider,
-                        deviceWidth: deviceWidth,
+                        boardWidth: deviceWidth,
                         userChoiceForNameSquare: userChoiceForNameSquare,
                       );
                     },
@@ -367,7 +373,7 @@ class _PracticeCoordinatesGameplayPageState
     required bool onTapResult,
     required Coordinates userChoiceForFindSquare,
     required PracticeCoordinatesConfigProvider consumerProvider,
-    required double deviceWidth,
+    required double boardWidth,
   }) async {
     // setting the result
     setState(() {
@@ -390,17 +396,15 @@ class _PracticeCoordinatesGameplayPageState
       'You chose': userChoiceText,
       'Result': result,
       'Board view': ChessBoard(
-        greens: result! ? [userChoice!] : [question],
-        reds: result! ? [] : [userChoice!],
-        accents: const [],
-        viewOnly: true,
-        showPieces: consumerProvider.getActiveShowPieces() == ShowPieces.show,
-        showCoordinates:
-            consumerProvider.getActiveShowCoordinates() == ShowCoordinates.show,
-        forWhite: consumerProvider.getActivePieceColor() == PieceColor.white,
-        width: deviceWidth -
-            42, // because on the next page we are going to have padding of 20 each side horizontally and the board itself is going to have borders of width 1 both side
-      ),
+          greens: result! ? [userChoice!] : [question],
+          reds: result! ? [] : [userChoice!],
+          accents: const [],
+          viewOnly: true,
+          showPieces: consumerProvider.getActiveShowPieces() == ShowPieces.show,
+          showCoordinates: consumerProvider.getActiveShowCoordinates() ==
+              ShowCoordinates.show,
+          forWhite: consumerProvider.getActivePieceColor() == PieceColor.white,
+          width: boardWidth),
     };
 
     setState(() {
@@ -420,7 +424,7 @@ class _PracticeCoordinatesGameplayPageState
   Future<void> handleOnCoordinatesInput({
     required Coordinates userChoiceForNameSquare,
     required PracticeCoordinatesConfigProvider consumerProvider,
-    required double deviceWidth,
+    required double boardWidth,
   }) async {
     setState(() {
       // setting the user choice
@@ -444,21 +448,19 @@ class _PracticeCoordinatesGameplayPageState
       'You chose': userChoiceText,
       'Result': result,
       'Board view': ChessBoard(
-        greens: result! ? [question] : [],
-        reds: result == null
-            ? []
-            : !result!
-                ? [userChoice!]
-                : [],
-        accents: [question],
-        viewOnly: true,
-        showPieces: consumerProvider.getActiveShowPieces() == ShowPieces.show,
-        showCoordinates:
-            consumerProvider.getActiveShowCoordinates() == ShowCoordinates.show,
-        forWhite: consumerProvider.getActivePieceColor() == PieceColor.white,
-        width: deviceWidth -
-            42, // because on the next page we are going to have padding of 20 each side horizontally and the board itself is going to have borders of width 1 both side
-      ),
+          greens: result! ? [question] : [],
+          reds: result == null
+              ? []
+              : !result!
+                  ? [userChoice!]
+                  : [],
+          accents: [question],
+          viewOnly: true,
+          showPieces: consumerProvider.getActiveShowPieces() == ShowPieces.show,
+          showCoordinates: consumerProvider.getActiveShowCoordinates() ==
+              ShowCoordinates.show,
+          forWhite: consumerProvider.getActivePieceColor() == PieceColor.white,
+          width: boardWidth),
     };
 
     setState(() {

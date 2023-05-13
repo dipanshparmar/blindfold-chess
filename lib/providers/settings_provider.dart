@@ -13,6 +13,7 @@ class SettingsProvider with ChangeNotifier {
   bool _darkMode = _prefs.getBool('darkMode')!;
   bool _showLearnSquareColorsButton =
       _prefs.getBool('showLearnSquareColorsButton')!;
+  bool _extendBoardToEdges = _prefs.getBool('extendBoardToEdges')!;
 
   // getters
   bool getShowCorrectAnswers() {
@@ -25,6 +26,10 @@ class SettingsProvider with ChangeNotifier {
 
   bool getShowLearnSquareColorsButton() {
     return _showLearnSquareColorsButton;
+  }
+
+  bool getExtendBoardToEdges() {
+    return _extendBoardToEdges;
   }
 
   // setters
@@ -48,6 +53,14 @@ class SettingsProvider with ChangeNotifier {
     await _prefs.setBool('showLearnSquareColorsButton', value);
 
     _showLearnSquareColorsButton = value;
+
+    notifyListeners();
+  }
+
+  Future<void> setExtendBoardToEdges(bool value) async {
+    await _prefs.setBool('extendBoardToEdges', value);
+
+    _extendBoardToEdges = value;
 
     notifyListeners();
   }

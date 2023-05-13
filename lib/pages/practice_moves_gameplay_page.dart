@@ -152,6 +152,14 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
 
     final ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
 
+    final SettingsProvider settingsProvider =
+        Provider.of<SettingsProvider>(context);
+
+    // board width
+    final double boardWidth = settingsProvider.getExtendBoardToEdges()
+        ? deviceWidth - 2
+        : deviceWidth - 42;
+
     return WillPopScope(
       onWillPop: () async {
         return await showDialog(
@@ -241,8 +249,7 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                                   : kDarkColor,
                             ),
                       ),
-                      if (Provider.of<SettingsProvider>(context)
-                          .getShowCorrectAnswers())
+                      if (settingsProvider.getShowCorrectAnswers())
                         Text(
                           'Correct: $correct',
                           style:
@@ -305,7 +312,7 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                       if (consumerProvider.getActiveShowBoard() ==
                           ShowBoard.show)
                         ChessBoard(
-                          width: deviceWidth - 42,
+                          width: boardWidth,
                           viewOnly: true,
                           reds: reds,
                           greens: greens,
@@ -394,7 +401,7 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                           await handleOnCoordinatesInput(
                             consumerProvider: consumerProvider,
                             coordinates: coordinates,
-                            deviceWidth: deviceWidth,
+                            boardWidth: boardWidth,
                             guessMovesQuestionText: guessMovesCountQuestionText,
                           );
                         },
@@ -408,7 +415,7 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                         onSelected: (number) async {
                           await handleOnMovesCountInput(
                             consumerProvider: consumerProvider,
-                            deviceWidth: deviceWidth,
+                            boardWidth: boardWidth,
                             guessMovesQuestionText: guessMovesCountQuestionText,
                             number: number,
                           );
@@ -978,7 +985,7 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
   Future<void> handleOnCoordinatesInput({
     required Coordinates coordinates,
     required String guessMovesQuestionText,
-    required double deviceWidth,
+    required double boardWidth,
     required PracticeMovesConfigProvider consumerProvider,
   }) async {
     // if present in answers then color it green, else red
@@ -1017,7 +1024,7 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
         'Incorrect guess': reds.first.toString(),
         'Result': getMissedMoves().isEmpty,
         'Board view': ChessBoard(
-          width: deviceWidth - 42,
+          width: boardWidth,
           viewOnly: true,
           greens: greens,
           reds: reds,
@@ -1057,7 +1064,7 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
         'Guessed correctly': possibleMoves.length == 1 ? 'Yes' : 'All',
         'Result': true,
         'Board view': ChessBoard(
-          width: deviceWidth - 42,
+          width: boardWidth,
           viewOnly: true,
           greens: greens,
           accents: getMissedMoves(),
@@ -1086,7 +1093,7 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
   Future<void> handleOnMovesCountInput({
     required int number,
     required String guessMovesQuestionText,
-    required double deviceWidth,
+    required double boardWidth,
     required PracticeMovesConfigProvider consumerProvider,
   }) async {
     // if the user number doesn't match with the length then it's wrong, so wait for some time and then generate a new question
@@ -1103,7 +1110,7 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
         'Your answer': number.toString(),
         'Result': result,
         'Board view': ChessBoard(
-          width: deviceWidth - 42,
+          width: boardWidth,
           viewOnly: true,
           accents: possibleMoves,
           onlyPieceToShow: questionPiece,
@@ -1143,7 +1150,7 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
         'Your answer': number.toString(),
         'Result': result,
         'Board view': ChessBoard(
-          width: deviceWidth - 42,
+          width: boardWidth,
           viewOnly: true,
           onlyPieceToShow: questionPiece,
           onlyPieceToShowCoordinates: questionCoordinates,

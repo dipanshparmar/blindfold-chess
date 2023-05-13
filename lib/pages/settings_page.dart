@@ -52,7 +52,6 @@ class _SettingsPageState extends State<SettingsPage> {
           icon: Icon(
             Icons.arrow_back_ios,
             size: 16,
-
             color: themeProvider.isDark() ? kLightColorDarkTheme : kLightColor,
           ),
           onPressed: () async {
@@ -120,6 +119,19 @@ class _SettingsPageState extends State<SettingsPage> {
                           onChanged: (value) async {
                             // setting the data for showCorrectAnswers
                             await consumerProvider.setShowCorrectAnswers(value);
+                          },
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      SettingsItem(
+                        leading: const Text('Extend the board to the edges'),
+                        trailing: CustomSwitch(
+                          value: consumerProvider.getExtendBoardToEdges(),
+                          onChanged: (value) async {
+                            // setting the data for extendBoardToEdges
+                            await consumerProvider.setExtendBoardToEdges(value);
                           },
                         ),
                       ),

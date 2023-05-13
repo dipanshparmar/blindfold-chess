@@ -187,6 +187,9 @@ class _QuestionDetailsState extends State<QuestionDetails> {
         ? const Color(0xFF585858)
         : const Color(0xFFE9E9EA);
 
+    final SettingsProvider settingsProvider =
+        Provider.of<SettingsProvider>(context);
+
     // MultiSliver supports both sliver widgets and box widgets
     // https://github.com/Kavantix/sliver_tools/pull/26
     return MultiSliver(
@@ -302,44 +305,59 @@ class _QuestionDetailsState extends State<QuestionDetails> {
             const SizedBox(
               height: 15,
             ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              width: double.infinity,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
 
-                // mapping through current questions' data
-                children: widget.data[activeKey]!.keys.map((key) {
-                  // getting the value
-                  final dynamic value = widget.data[activeKey]![key];
+              // mapping through current questions' data
+              children: widget.data[activeKey]!.keys.map((key) {
+                // getting the value
+                final dynamic value = widget.data[activeKey]![key];
 
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Text(
                         key,
                         style: Theme.of(context)
                             .textTheme
                             .bodySmall!
                             .copyWith(fontWeight: FontWeight.w500),
                       ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      value is List<Coordinates>
-                          ? Text(value.join(', '))
-                          : value is ChessBoard
-                              ? value
-                              : value is bool
-                                  ? Text(value ? 'Positive' : 'Negative')
-                                  : Text(value),
-                      const SizedBox(
-                        height: 15,
-                      )
-                    ],
-                  );
-                }).toList(),
-              ),
+                    ),
+                    SizedBox(
+                      height: value is ChessBoard ? 10 : 5,
+                    ),
+                    value is List<Coordinates>
+                        ? Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20.0,
+                            ),
+                            child: Text(value.join(', ')),
+                          )
+                        : value is ChessBoard
+                            ? Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal:
+                                        settingsProvider.getExtendBoardToEdges()
+                                            ? 0
+                                            : 20),
+                                child: value,
+                              )
+                            : Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20.0),
+                                child: value is bool
+                                    ? Text(value ? 'Positive' : 'Negative')
+                                    : Text(value),
+                              ),
+                    const SizedBox(
+                      height: 15,
+                    )
+                  ],
+                );
+              }).toList(),
             ),
             const SizedBox(
               height: 5, // this will add to the bottom sizedbox of 15 above

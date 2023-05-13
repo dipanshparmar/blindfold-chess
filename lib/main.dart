@@ -63,6 +63,7 @@ void main() async {
     await prefs.setBool('showCorrectAnswers', true);
     await prefs.setBool('darkMode', false);
     await prefs.setBool('showLearnSquareColorsButton', true);
+    await prefs.setBool('extendBoardToEdges', false);
   }
 
   runApp(

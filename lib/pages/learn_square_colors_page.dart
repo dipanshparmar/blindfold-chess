@@ -27,6 +27,13 @@ class LearnSquareColorsPage extends StatelessWidget {
     // getting the device width
     final double deviceWidth = MediaQuery.of(context).size.width;
 
+    final SettingsProvider settingsProvider =
+        Provider.of<SettingsProvider>(context);
+
+    final double boardWidth = settingsProvider.getExtendBoardToEdges()
+        ? deviceWidth - 2
+        : deviceWidth - 42;
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -146,7 +153,7 @@ class LearnSquareColorsPage extends StatelessWidget {
               width: double.infinity,
               alignment: Alignment.center,
               child: ChessBoard(
-                width: deviceWidth - 42,
+                width: boardWidth,
                 viewOnly: true,
                 showCoordinates: true,
               ),

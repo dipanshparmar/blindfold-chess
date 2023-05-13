@@ -130,10 +130,15 @@ class _PracticeSquareColorsGameplayPageState
     // getting the device width
     final double deviceWidth = MediaQuery.of(context).size.width;
 
-    // getting the board width
-    final double boardWidth = deviceWidth - 42;
-
     final ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
+
+    final SettingsProvider settingsProvider =
+        Provider.of<SettingsProvider>(context);
+
+    // getting the board width
+    final double boardWidth = settingsProvider.getExtendBoardToEdges()
+        ? deviceWidth - 2
+        : deviceWidth - 42;
 
     return WillPopScope(
       onWillPop: () async {
@@ -217,8 +222,7 @@ class _PracticeSquareColorsGameplayPageState
                                 : kDarkColor,
                           ),
                     ),
-                    if (Provider.of<SettingsProvider>(context)
-                        .getShowCorrectAnswers())
+                    if (settingsProvider.getShowCorrectAnswers())
                       Text(
                         'Correct: $correct',
                         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
@@ -291,7 +295,7 @@ class _PracticeSquareColorsGameplayPageState
                         onTap: () async {
                           await handleLightButtonTap(
                             consumerProvider: consumerProvider,
-                            deviceWidth: deviceWidth,
+                            boardWidth: deviceWidth,
                           );
                         },
                         child: Container(
@@ -331,7 +335,7 @@ class _PracticeSquareColorsGameplayPageState
                         onTap: () async {
                           await handleDarkButtonTap(
                             consumerProvider: consumerProvider,
-                            deviceWidth: deviceWidth,
+                            boardWidth: deviceWidth,
                           );
                         },
                         child: Container(
@@ -452,7 +456,7 @@ class _PracticeSquareColorsGameplayPageState
   }
 
   Future<void> handleLightButtonTap({
-    required double deviceWidth,
+    required double boardWidth,
     required PracticeSquareColorsConfigProvider consumerProvider,
   }) async {
     // if result is not null then do nothing
@@ -489,7 +493,7 @@ class _PracticeSquareColorsGameplayPageState
       'You chose': 'Light',
       'Result': result,
       'Board view': ChessBoard(
-        width: deviceWidth - 42,
+        width: boardWidth,
         questionCoordinates: question,
         viewOnly: true,
         accents: [question],
@@ -525,7 +529,7 @@ class _PracticeSquareColorsGameplayPageState
   }
 
   Future<void> handleDarkButtonTap({
-    required double deviceWidth,
+    required double boardWidth,
     required PracticeSquareColorsConfigProvider consumerProvider,
   }) async {
     // if result is not null then do nothing
@@ -562,7 +566,7 @@ class _PracticeSquareColorsGameplayPageState
       'You chose': 'Dark',
       'Result': result,
       'Board view': ChessBoard(
-        width: deviceWidth - 42,
+        width: boardWidth,
         questionCoordinates: question,
         viewOnly: true,
         reds: result == null
