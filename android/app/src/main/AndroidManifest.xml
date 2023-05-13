@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.chess_vision">
    <application
-        android:label="chess_vision"
+        android:label="Blindfold Chess"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity
