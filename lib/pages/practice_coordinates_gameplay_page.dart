@@ -423,12 +423,12 @@ class _PracticeCoordinatesGameplayPageState
     required double deviceWidth,
   }) async {
     setState(() {
-      // calculating the result
-      result = userChoiceForNameSquare.getFile() == question.getFile() &&
-          userChoiceForNameSquare.getRank() == question.getRank();
-
       // setting the user choice
       userChoice = userChoiceForNameSquare;
+
+      // calculating the result
+      result = userChoice!.getFile() == question.getFile() &&
+          userChoice!.getRank() == question.getRank();
     });
 
     // waiting for duration time
@@ -444,9 +444,7 @@ class _PracticeCoordinatesGameplayPageState
       'You chose': userChoiceText,
       'Result': result,
       'Board view': ChessBoard(
-        greens: result!
-            ? [question]
-            : [],
+        greens: result! ? [question] : [],
         reds: result == null
             ? []
             : !result!
