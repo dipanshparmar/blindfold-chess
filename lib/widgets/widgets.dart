@@ -7,3 +7,4 @@ export './moves_count_input_buttons.dart';
 export './custom_switch.dart';
 export './settings_item.dart';
 export './custom_alert_dialog.dart';
+export './show_playing_as.dart';

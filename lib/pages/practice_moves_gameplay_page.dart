@@ -268,37 +268,8 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Row(
-                    children: [
-                      Container(
-                        height: 15,
-                        width: 15,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Theme.of(context).primaryColor,
-                            width: 1,
-                          ),
-                          borderRadius: BorderRadius.circular(3),
-                          color: isPlayingWhite
-                              ? themeProvider.isDark()
-                                  ? kLightColorDarkTheme
-                                  : kLightColor
-                              : Theme.of(context).primaryColor,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 7,
-                      ),
-                      Text(
-                        '${isPlayingWhite ? 'White' : 'Black'} to move',
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                              fontWeight: FontWeight.w500,
-                              color: themeProvider.isDark()
-                                  ? kLightColorDarkTheme
-                                  : kDarkColor,
-                            ),
-                      ),
-                    ],
+                  child: ShowPlayingAs(
+                    isPlayingWhite: isPlayingWhite,
                   ),
                 ),
                 const SizedBox(

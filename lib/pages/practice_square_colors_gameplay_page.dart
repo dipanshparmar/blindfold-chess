@@ -235,6 +235,17 @@ class _PracticeSquareColorsGameplayPageState
                   ],
                 ),
               ),
+              if (consumerProvider.getActiveShowBoard() == ShowBoard.show)
+                const SizedBox(
+                  height: 15,
+                ),
+              if (consumerProvider.getActiveShowBoard() == ShowBoard.show)
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.0),
+                  child: ShowPlayingAs(
+                    isPlayingWhite: true,
+                  ),
+                ),
               const SizedBox(
                 height: 15,
               ),
@@ -245,26 +256,13 @@ class _PracticeSquareColorsGameplayPageState
                     if (consumerProvider.getActiveShowBoard() == ShowBoard.show)
                       ChessBoard(
                         width: boardWidth,
-                        questionCoordinates: question,
                         viewOnly: true,
-                        accents: [question],
-                        reds: result == null
-                            ? []
-                            : result!
-                                ? []
-                                : [question],
-                        greens: result == null
-                            ? []
-                            : result!
-                                ? [question]
-                                : [],
                         showNativeBoardColors: false,
                         showCoordinates:
                             consumerProvider.getActiveShowCoordinates() != null
                                 ? consumerProvider.getActiveShowCoordinates() ==
                                     ShowCoordinates.show
                                 : false,
-                        bordersOnly: true,
                       ),
                     if (consumerProvider.getActiveShowBoard() == ShowBoard.show)
                       const SizedBox(

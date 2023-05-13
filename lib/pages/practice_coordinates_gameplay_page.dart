@@ -204,6 +204,9 @@ class _PracticeCoordinatesGameplayPageState
         ),
         body: Consumer<PracticeCoordinatesConfigProvider>(
           builder: (context, consumerProvider, child) {
+            final bool isPlayingWhite =
+                consumerProvider.getActivePieceColor() == PieceColor.white;
+
             return Column(
               children: [
                 const SizedBox(
@@ -246,6 +249,13 @@ class _PracticeCoordinatesGameplayPageState
                       );
                     },
                   ),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: ShowPlayingAs(isPlayingWhite: isPlayingWhite),
                 ),
                 const SizedBox(
                   height: 15,
