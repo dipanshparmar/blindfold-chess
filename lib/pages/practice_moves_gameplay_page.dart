@@ -57,9 +57,6 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
   // the time defined above will change over time, so we get a copy of the original time
   late double originalTime;
 
-  // provider
-  late final PracticeMovesConfigProvider provider;
-
   // total questions
   int total = 0; // 0 initially
 
@@ -91,11 +88,14 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
   // to hold whether the coordinates is present in possible moves or not
   bool? isPresent;
 
+  // grabbing the provider
+  late final PracticeMovesConfigProvider provider;
+
   @override
   void initState() {
     super.initState();
 
-    // getting the provider
+    // assigning the provider
     provider = Provider.of<PracticeMovesConfigProvider>(context, listen: false);
 
     // grabbing the time from the config
@@ -160,6 +160,9 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
         ? deviceWidth - 2
         : deviceWidth - 42;
 
+    final bool isPlayingWhite =
+        provider.getActivePieceColor() == PieceColor.white;
+
     return WillPopScope(
       onWillPop: () async {
         return await showDialog(
@@ -221,180 +224,164 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
               )
           ],
         ),
-        body: Consumer<PracticeMovesConfigProvider>(
-          builder: (context, consumerProvider, child) {
-            final bool isPlayingWhite =
-                consumerProvider.getActivePieceColor() == PieceColor.white;
-
-            // getting the theme provider
-            final ThemeProvider themeProvider =
-                Provider.of<ThemeProvider>(context);
-
-            return Column(
-              children: [
-                const SizedBox(
-                  height: 20,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Total: $total',
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                              fontWeight: FontWeight.w500,
-                              color: themeProvider.isDark()
-                                  ? kLightColorDarkTheme
-                                  : kDarkColor,
-                            ),
-                      ),
-                      if (settingsProvider.getShowCorrectAnswers())
-                        Text(
-                          'Correct: $correct',
-                          style:
-                              Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    color: themeProvider.isDark()
-                                        ? kLightColorDarkTheme
-                                        : kDarkColor,
-                                  ),
+        body: Column(
+          children: [
+            const SizedBox(
+              height: 20,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Total: $total',
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          fontWeight: FontWeight.w500,
+                          color: themeProvider.isDark()
+                              ? kLightColorDarkTheme
+                              : kDarkColor,
                         ),
-                    ],
                   ),
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: ShowPlayingAs(
-                    isPlayingWhite: isPlayingWhite,
-                  ),
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // if showboard is set to true only then show the board
-                      if (consumerProvider.getActiveShowBoard() ==
-                          ShowBoard.show)
-                        ChessBoard(
-                          width: boardWidth,
-                          viewOnly: true,
-                          reds: reds,
-                          greens: greens,
-                          showCoordinates:
-                              consumerProvider.getActiveShowCoordinates() ==
-                                  ShowCoordinates.show,
-                          forWhite: consumerProvider.getActivePieceColor() !=
-                              PieceColor.black,
-                          showPieces: true,
-                          onlyPieceToShow: questionPiece,
-                          onlyPieceToShowCoordinates: questionCoordinates,
-                        ),
-
-                      // if showboard is set to true only then show the sized box
-                      if (consumerProvider.getActiveShowBoard() ==
-                          ShowBoard.show)
-                        const SizedBox(
-                          height: 15,
-                        ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        child: Text(
-                          result != null && result! && possibleMoves.isNotEmpty
-                              ? guessMovesCountQuestionText
-                              : guessMovesQuestionText,
-                          textAlign: TextAlign.center,
-                          style:
-                              Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                    color: themeProvider.isDark()
-                                        ? kLightColorDarkTheme
-                                        : kDarkColor,
-                                  ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                if (consumerProvider.getActiveShowBoard() == ShowBoard.hide &&
-                    possibleMoves.length == 1)
-                  const SizedBox(
-                    height: 15,
-                  ),
-                if (consumerProvider.getActiveShowBoard() == ShowBoard.hide)
-                  // if there are no greens
-                  if (greens.isEmpty)
-                    const Text(
-                      '',
-                      style: TextStyle(fontSize: kLargeSize),
-                    )
-                  // otherwise show the greens
-                  else
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Wrap(
-                        spacing: 10,
-                        runSpacing: 10,
-                        alignment: WrapAlignment.start,
-                        children: greens.asMap().keys.map((e) {
-                          // grabbing the value at current index
-                          final Coordinates value = greens[e];
-
-                          return Text(
-                            value.toString(),
-                            style: const TextStyle(
-                              color: kPositiveColor,
-                              fontWeight: FontWeight.w500,
-                              fontSize: kLargeSize,
-                            ),
-                          );
-                        }).toList(),
-                      ),
+                  if (settingsProvider.getShowCorrectAnswers())
+                    Text(
+                      'Correct: $correct',
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            fontWeight: FontWeight.w500,
+                            color: themeProvider.isDark()
+                                ? kLightColorDarkTheme
+                                : kDarkColor,
+                          ),
                     ),
-                const SizedBox(
-                  height: 15,
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: ShowPlayingAs(
+                isPlayingWhite: isPlayingWhite,
+              ),
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // if showboard is set to true only then show the board
+                  if (provider.getActiveShowBoard() == ShowBoard.show)
+                    ChessBoard(
+                      width: boardWidth,
+                      viewOnly: true,
+                      reds: reds,
+                      greens: greens,
+                      showCoordinates: provider.getActiveShowCoordinates() ==
+                          ShowCoordinates.show,
+                      forWhite:
+                          provider.getActivePieceColor() != PieceColor.black,
+                      showPieces: true,
+                      onlyPieceToShow: questionPiece,
+                      onlyPieceToShowCoordinates: questionCoordinates,
+                    ),
+
+                  // if showboard is set to true only then show the sized box
+                  if (provider.getActiveShowBoard() == ShowBoard.show)
+                    const SizedBox(
+                      height: 15,
+                    ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Text(
+                      result != null && result! && possibleMoves.isNotEmpty
+                          ? guessMovesCountQuestionText
+                          : guessMovesQuestionText,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            color: themeProvider.isDark()
+                                ? kLightColorDarkTheme
+                                : kDarkColor,
+                          ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            if (provider.getActiveShowBoard() == ShowBoard.hide &&
+                possibleMoves.length == 1)
+              const SizedBox(
+                height: 15,
+              ),
+            if (provider.getActiveShowBoard() == ShowBoard.hide)
+              // if there are no greens
+              if (greens.isEmpty)
+                const Text(
+                  '',
+                  style: TextStyle(fontSize: kLargeSize),
+                )
+              // otherwise show the greens
+              else
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Wrap(
+                    spacing: 10,
+                    runSpacing: 10,
+                    alignment: WrapAlignment.start,
+                    children: greens.asMap().keys.map((e) {
+                      // grabbing the value at current index
+                      final Coordinates value = greens[e];
+
+                      return Text(
+                        value.toString(),
+                        style: const TextStyle(
+                          color: kPositiveColor,
+                          fontWeight: FontWeight.w500,
+                          fontSize: kLargeSize,
+                        ),
+                      );
+                    }).toList(),
+                  ),
                 ),
-                result != null && result! && possibleMoves.isNotEmpty
-                    ? CoordinatesInputButtons(
-                        afterSelectionColor: isPresent == null
-                            ? null
-                            : isPresent!
-                                ? kPositiveColor
-                                : kNegativeColor,
-                        toAvoid: greens,
-                        onSelected: (coordinates) async {
-                          await handleOnCoordinatesInput(
-                            consumerProvider: consumerProvider,
-                            coordinates: coordinates,
-                            boardWidth: boardWidth,
-                            guessMovesQuestionText: guessMovesCountQuestionText,
-                          );
-                        },
-                      )
-                    : MovesCountInputButtons(
-                        afterSelectionColor: result != null
-                            ? result!
-                                ? kPositiveColor
-                                : kNegativeColor
-                            : null,
-                        onSelected: (number) async {
-                          await handleOnMovesCountInput(
-                            consumerProvider: consumerProvider,
-                            boardWidth: boardWidth,
-                            guessMovesQuestionText: guessMovesCountQuestionText,
-                            number: number,
-                          );
-                        },
-                      ),
-              ],
-            );
-          },
+            const SizedBox(
+              height: 15,
+            ),
+            result != null && result! && possibleMoves.isNotEmpty
+                ? CoordinatesInputButtons(
+                    afterSelectionColor: isPresent == null
+                        ? null
+                        : isPresent!
+                            ? kPositiveColor
+                            : kNegativeColor,
+                    toAvoid: greens,
+                    onSelected: (coordinates) async {
+                      await handleOnCoordinatesInput(
+                        consumerProvider: provider,
+                        coordinates: coordinates,
+                        boardWidth: boardWidth,
+                        guessMovesQuestionText: guessMovesCountQuestionText,
+                      );
+                    },
+                  )
+                : MovesCountInputButtons(
+                    afterSelectionColor: result != null
+                        ? result!
+                            ? kPositiveColor
+                            : kNegativeColor
+                        : null,
+                    onSelected: (number) async {
+                      await handleOnMovesCountInput(
+                        provider: provider,
+                        boardWidth: boardWidth,
+                        guessMovesQuestionText: guessMovesCountQuestionText,
+                        number: number,
+                      );
+                    },
+                  ),
+          ],
         ),
       ),
     );
@@ -432,8 +419,20 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
     // assigning the question piece
     questionPiece = getRandomPiece();
 
+    // is playing white
+    final bool isPlayingWhite =
+        provider.getActivePieceColor() == PieceColor.white;
+
     // getting the random coordinates
-    questionCoordinates = getRandomCoordinates();
+    questionCoordinates = getRandomCoordinates(
+      // if piece is pawn and we are playing white then omit the 1st rank
+      // else if piece is pawn and we are playing black then omit the eight rank
+      omitRanks: questionPiece == PieceType.pawn
+          ? isPlayingWhite
+              ? [Rank.one]
+              : [Rank.eight]
+          : null,
+    );
 
     // setting all the possible moves
     possibleMoves = getPossibleMovesFor(questionPiece, questionCoordinates);
@@ -455,14 +454,42 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
   }
 
   // function to get random coordinates
-  Coordinates getRandomCoordinates() {
+  Coordinates getRandomCoordinates(
+      {List<File>? omitFiles, List<Rank>? omitRanks}) {
     // to hold the random file and rank
     File randomFile;
     Rank randomRank;
 
     // getting random files and ranks
     randomFile = files.keys.toList()[Random().nextInt(files.length)];
+
+    // if omit files is not empty then run an infinte loop
+    if (omitFiles != null && omitFiles.isNotEmpty) {
+      while (true) {
+        // if random file is in the files to omit then generate another one
+        if (omitFiles.contains(randomFile)) {
+          randomFile = files.keys.toList()[Random().nextInt(files.length)];
+        } else {
+          // otherwise break the loop
+          break;
+        }
+      }
+    }
+
     randomRank = ranks.keys.toList()[Random().nextInt(ranks.length)];
+
+    // if omit ranks is not empty then run an infinte loop
+    if (omitRanks != null && omitRanks.isNotEmpty) {
+      while (true) {
+        // if random rank is in the ranks to omit then generate another one
+        if (omitRanks.contains(randomRank)) {
+          randomRank = ranks.keys.toList()[Random().nextInt(ranks.length)];
+        } else {
+          // break otehrwise
+          break;
+        }
+      }
+    }
 
     // returning the coordinates
     return Coordinates(randomFile, randomRank);
@@ -1065,7 +1092,7 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
     required int number,
     required String guessMovesQuestionText,
     required double boardWidth,
-    required PracticeMovesConfigProvider consumerProvider,
+    required PracticeMovesConfigProvider provider,
   }) async {
     // if the user number doesn't match with the length then it's wrong, so wait for some time and then generate a new question
     if (number != possibleMoves.length) {
@@ -1086,9 +1113,9 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
           accents: possibleMoves,
           onlyPieceToShow: questionPiece,
           onlyPieceToShowCoordinates: questionCoordinates,
-          showCoordinates: consumerProvider.getActiveShowCoordinates() ==
-              ShowCoordinates.show,
-          forWhite: consumerProvider.getActivePieceColor() != PieceColor.black,
+          showCoordinates:
+              provider.getActiveShowCoordinates() == ShowCoordinates.show,
+          forWhite: provider.getActivePieceColor() != PieceColor.black,
           showPieces: true,
         ),
       };
@@ -1125,9 +1152,9 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
           viewOnly: true,
           onlyPieceToShow: questionPiece,
           onlyPieceToShowCoordinates: questionCoordinates,
-          showCoordinates: consumerProvider.getActiveShowCoordinates() ==
-              ShowCoordinates.show,
-          forWhite: consumerProvider.getActivePieceColor() != PieceColor.black,
+          showCoordinates:
+              provider.getActiveShowCoordinates() == ShowCoordinates.show,
+          forWhite: provider.getActivePieceColor() != PieceColor.black,
           showPieces: true,
         ),
       };
