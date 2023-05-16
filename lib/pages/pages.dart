@@ -10,3 +10,4 @@ export './practice_square_colors_gameplay_page.dart';
 export './practice_moves_gameplay_page.dart';
 export './learn_square_colors_page.dart';
 export './settings_page.dart';
+export './practice_recreation_page.dart';
