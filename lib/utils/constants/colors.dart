@@ -15,3 +15,6 @@ const kScaffoldBackgrondColorDarkTheme = Color(0xFF3B3B3B);
 const kDarkColorDarkTheme = Color(0xFF444444);
 const kLightColorDarkTheme = Color(0xFFEEEEEE);
 const kBoardDarkColorDarkTheme = Color(0xFFAAAAAC);
+const kPositiveColorDarkTheme = Color(0xFF56A159);
+const kNegativeColorDarkTheme = Color(0xFFCE5249);
+const kSecondaryColorDarkTheme = Color(0xFFF7C956);

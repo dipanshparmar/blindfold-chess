@@ -320,15 +320,15 @@ class _ChessBoardState extends State<ChessBoard> {
               widget.questionCoordinates!.getRank() &&
           clickCoordinates!.getFile() ==
               widget.questionCoordinates!.getFile()) {
-        return kPositiveColor;
+        return isDark ? kPositiveColorDarkTheme : kPositiveColor;
       }
 
-      return kNegativeColor;
+      return isDark ? kNegativeColorDarkTheme : kNegativeColor;
       // this will help to color the correct coordinate if incorrect coordinate was clicked
     } else if (currentCoordinates.getRank() ==
             widget.questionCoordinates!.getRank() &&
         currentCoordinates.getFile() == widget.questionCoordinates!.getFile()) {
-      return kPositiveColor;
+      return isDark ? kPositiveColorDarkTheme : kPositiveColor;
     } else {
       return getNativeSquareColor(
           currentCoordinates.getFile(), currentCoordinates.getRank(), isDark);
@@ -342,19 +342,21 @@ class _ChessBoardState extends State<ChessBoard> {
         widget.greens!.any((element) =>
             element.getFile() == coords.getFile() &&
             element.getRank() == coords.getRank())) {
-      return kPositiveColor;
+      return isDark ? kPositiveColorDarkTheme : kPositiveColor;
     } else if (widget.reds != null &&
         widget.reds!.any((element) =>
             element.getFile() == coords.getFile() &&
             element.getRank() == coords.getRank())) {
       // if any of the reds contain it then return red
-      return kNegativeColor;
+      return isDark ? kNegativeColorDarkTheme : kNegativeColor;
     } else if (widget.accents != null &&
         widget.accents!.any((element) =>
             element.getFile() == coords.getFile() &&
             element.getRank() == coords.getRank())) {
       // if any of the accents contain it then return the secondary color
-      return Theme.of(context).colorScheme.secondary;
+      return isDark
+          ? kSecondaryColorDarkTheme
+          : Theme.of(context).colorScheme.secondary;
     } else {
       return getNativeSquareColor(coords.getFile(), coords.getRank(), isDark);
     }
