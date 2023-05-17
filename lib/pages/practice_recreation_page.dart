@@ -83,6 +83,7 @@ class PracticeRecreationPage extends StatelessWidget {
                   onChanged: (values) {
                     provider.setActivePiecesRange(values);
                   },
+                  max: provider.getMaxRangeValue(),
                 ),
                 const SizedBox(
                   height: 15,
@@ -111,13 +112,17 @@ class PiecesRangeSliderInput extends StatelessWidget {
     super.key,
     required this.values,
     required this.onChanged,
+    required this.max,
   });
 
   final SfRangeValues values;
   final Function(SfRangeValues) onChanged;
+  final double max;
 
   @override
   Widget build(BuildContext context) {
+    print(values);
+    print('max: $max');
     // grabbing the theme provider
     final ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
 
@@ -142,8 +147,8 @@ class PiecesRangeSliderInput extends StatelessWidget {
           overlayRadius: 0,
         ),
         child: SfRangeSlider(
-          min: 1,
-          max: 32,
+          min: 1.5,
+          max: max,
           values: values,
           startThumbIcon: Center(
             child: Text(

@@ -13,7 +13,10 @@ class PracticeRecreationConfigProvider with ChangeNotifier {
   double _activeSeconds = -1;
   List<File> _activeFiles = DataHelper.getFilesKeyValuePairs().keys.toList();
   List<Rank> _activeRanks = DataHelper.getRanksKeyValuePairs().keys.toList();
-  SfRangeValues _activePiecesRange = SfRangeValues(1, 32);
+  SfRangeValues _activePiecesRange = const SfRangeValues(1.5, 32);
+  // defines the maximum range value of the pieces range
+  // storing this as a separate variable as this will update over certain actions
+  double _maxRangeValue = 32;
 
   // getters
   ShowBoard getActiveShowBoard() {
@@ -70,11 +73,17 @@ class PracticeRecreationConfigProvider with ChangeNotifier {
   void setActiveFiles(List<File> files) {
     _activeFiles = files;
 
+    // setting up the new max range according to the selected files
+    _updateMaxRangeValue();
+
     notifyListeners();
   }
 
   void setActiveRanks(List<Rank> ranks) {
     _activeRanks = ranks;
+
+    // setting up the new max range according to the selected ranks
+    _updateMaxRangeValue();
 
     notifyListeners();
   }
@@ -83,5 +92,34 @@ class PracticeRecreationConfigProvider with ChangeNotifier {
     _activePiecesRange = activePiecesRange;
 
     notifyListeners();
+  }
+
+  // method to get the max range value for current files and ranks
+  double getMaxRangeValue() {
+    return _maxRangeValue;
+  }
+
+  // method to set up the new max range according to the new values of the ranks and files
+  void _updateMaxRangeValue() {
+    // getting the max
+    final double multiplicationResult =
+        (_activeFiles.length * _activeRanks.length).toDouble();
+
+    // if multiplication result exceeds 32 then we need max of 32 as that is the max possible pieces on a board
+    // otherwise if multiplication result is 1 then we want to add .7 to it as our min is 1.5 and we also want max to be 1 in case there is just one square
+    // otherwise just set up the multiplication result as the max
+    final double max = multiplicationResult > 32
+        ? 32
+        : multiplicationResult == 1
+            ? multiplicationResult + .7
+            : multiplicationResult;
+
+    _maxRangeValue = max;
+
+    // updating the selected range is the current range max is greater than max range
+    if (_activePiecesRange.end > _maxRangeValue) {
+      _activePiecesRange =
+          SfRangeValues(_activePiecesRange.start, _maxRangeValue);
+    }
   }
 }
