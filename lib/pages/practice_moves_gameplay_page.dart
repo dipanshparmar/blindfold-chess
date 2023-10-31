@@ -284,8 +284,9 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
                       forWhite:
                           provider.getActivePieceColor() != PieceColor.black,
                       showPieces: true,
-                      onlyPieceToShow: questionPiece,
-                      onlyPieceToShowCoordinates: questionCoordinates,
+                      onlyPieceToShowForCurrentSide: questionPiece,
+                      onlyPieceToShowForCurrentSideCoordinates:
+                          questionCoordinates,
                     ),
 
                   // if showboard is set to true only then show the sized box
@@ -398,9 +399,7 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
       final Coordinates currentPossibleMove = possibleMoves[i];
 
       // if current move is not in greens then it is missed
-      bool isMissed = !greens.any((element) =>
-          element.getRank() == currentPossibleMove.getRank() &&
-          element.getFile() == currentPossibleMove.getFile());
+      bool isMissed = !greens.any((element) => element == currentPossibleMove);
 
       // if move not in green then add it to the accents
       if (isMissed) {
@@ -988,9 +987,7 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
   }) async {
     // if present in answers then color it green, else red
     setState(() {
-      isPresent = possibleMoves.any((element) =>
-          element.getFile() == coordinates.getFile() &&
-          element.getRank() == coordinates.getRank());
+      isPresent = possibleMoves.any((element) => element == coordinates);
     });
 
     if (isPresent!) {
@@ -1027,8 +1024,8 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
           greens: greens,
           reds: reds,
           accents: getMissedMoves(),
-          onlyPieceToShow: questionPiece,
-          onlyPieceToShowCoordinates: questionCoordinates,
+          onlyPieceToShowForCurrentSide: questionPiece,
+          onlyPieceToShowForCurrentSideCoordinates: questionCoordinates,
           showCoordinates: consumerProvider.getActiveShowCoordinates() ==
               ShowCoordinates.show,
           forWhite: consumerProvider.getActivePieceColor() != PieceColor.black,
@@ -1066,8 +1063,8 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
           viewOnly: true,
           greens: greens,
           accents: getMissedMoves(),
-          onlyPieceToShow: questionPiece,
-          onlyPieceToShowCoordinates: questionCoordinates,
+          onlyPieceToShowForCurrentSide: questionPiece,
+          onlyPieceToShowForCurrentSideCoordinates: questionCoordinates,
           showCoordinates: consumerProvider.getActiveShowCoordinates() ==
               ShowCoordinates.show,
           forWhite: consumerProvider.getActivePieceColor() != PieceColor.black,
@@ -1111,8 +1108,8 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
           width: boardWidth,
           viewOnly: true,
           accents: possibleMoves,
-          onlyPieceToShow: questionPiece,
-          onlyPieceToShowCoordinates: questionCoordinates,
+          onlyPieceToShowForCurrentSide: questionPiece,
+          onlyPieceToShowForCurrentSideCoordinates: questionCoordinates,
           showCoordinates:
               provider.getActiveShowCoordinates() == ShowCoordinates.show,
           forWhite: provider.getActivePieceColor() != PieceColor.black,
@@ -1150,8 +1147,8 @@ class _PracticeMovesGameplayPageState extends State<PracticeMovesGameplayPage> {
         'Board view': ChessBoard(
           width: boardWidth,
           viewOnly: true,
-          onlyPieceToShow: questionPiece,
-          onlyPieceToShowCoordinates: questionCoordinates,
+          onlyPieceToShowForCurrentSide: questionPiece,
+          onlyPieceToShowForCurrentSideCoordinates: questionCoordinates,
           showCoordinates:
               provider.getActiveShowCoordinates() == ShowCoordinates.show,
           forWhite: provider.getActivePieceColor() != PieceColor.black,

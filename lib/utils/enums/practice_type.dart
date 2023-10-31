@@ -1,5 +1,6 @@
 enum PracticeType {
   coordinates,
   squareColors,
-  moves
+  moves,
+  recreation,
 }

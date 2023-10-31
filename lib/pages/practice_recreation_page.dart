@@ -30,6 +30,7 @@ class PracticeRecreationPage extends StatelessWidget {
       child: Consumer<PracticeRecreationConfigProvider>(
         builder: (context, provider, child) {
           return SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
             child: Column(
               children: [
                 const SizedBox(
@@ -89,7 +90,9 @@ class PracticeRecreationPage extends StatelessWidget {
                   height: 15,
                 ),
                 CustomTimeSlider(
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    provider.setActiveSeconds(value);
+                  },
                   value: provider.getActiveSeconds(),
                   min: 30,
                   count: 3,

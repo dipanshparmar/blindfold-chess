@@ -13,7 +13,7 @@ class PracticeRecreationConfigProvider with ChangeNotifier {
   double _activeSeconds = -1;
   List<File> _activeFiles = DataHelper.getFilesKeyValuePairs().keys.toList();
   List<Rank> _activeRanks = DataHelper.getRanksKeyValuePairs().keys.toList();
-  SfRangeValues _activePiecesRange = const SfRangeValues(1.5, 32);
+  SfRangeValues _activePiecesRange = const SfRangeValues(1.5, 32.0);
   // defines the maximum range value of the pieces range
   // storing this as a separate variable as this will update over certain actions
   double _maxRangeValue = 32;

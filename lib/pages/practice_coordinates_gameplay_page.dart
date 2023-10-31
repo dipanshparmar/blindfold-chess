@@ -441,8 +441,7 @@ class _PracticeCoordinatesGameplayPageState
       userChoice = userChoiceForNameSquare;
 
       // calculating the result
-      result = userChoice!.getFile() == question.getFile() &&
-          userChoice!.getRank() == question.getRank();
+      result = userChoice == question;
     });
 
     // waiting for duration time

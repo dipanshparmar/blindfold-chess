@@ -8,3 +8,4 @@ export './custom_switch.dart';
 export './settings_item.dart';
 export './custom_alert_dialog.dart';
 export './show_playing_as.dart';
+export './pieces_input_buttons.dart';

@@ -32,8 +32,11 @@ class ChessBoard extends StatefulWidget {
     this.accents,
     this.showNativeBoardColors = true,
     this.bordersOnly = false,
-    this.onlyPieceToShow,
-    this.onlyPieceToShowCoordinates,
+    this.onlyPieceToShowForCurrentSide,
+    this.onlyPieceToShowForCurrentSideCoordinates,
+    this.blackPiecesToShow,
+    this.whitePiecesToShow,
+    this.viewOnlyOnTap,
   });
 
   final bool showCoordinates;
@@ -48,8 +51,11 @@ class ChessBoard extends StatefulWidget {
   final bool forWhite;
   final bool showNativeBoardColors;
   final bool bordersOnly;
-  final PieceType? onlyPieceToShow;
-  final Coordinates? onlyPieceToShowCoordinates;
+  final PieceType? onlyPieceToShowForCurrentSide;
+  final Coordinates? onlyPieceToShowForCurrentSideCoordinates;
+  final Map<PieceType, List<Coordinates>>? whitePiecesToShow;
+  final Map<PieceType, List<Coordinates>>? blackPiecesToShow;
+  final Function(Coordinates)? viewOnlyOnTap;
 
   @override
   State<ChessBoard> createState() => _ChessBoardState();
@@ -100,14 +106,22 @@ class _ChessBoardState extends State<ChessBoard> {
     }
 
     // if only piece to show is defined but showPieces is false then throw an error
-    if (widget.onlyPieceToShow != null && widget.showPieces == false) {
-      throw 'widget.onlyPieceToShow != null && widget.showPieces == false';
+    if (widget.onlyPieceToShowForCurrentSide != null &&
+        widget.showPieces == false) {
+      throw 'widget.onlyPieceToShowForCurrentSide != null && widget.showPieces == false';
     }
 
     // if only piece to show is defined but the coordinates are not defined then throw an error
-    if (widget.onlyPieceToShow != null &&
-        widget.onlyPieceToShowCoordinates == null) {
-      throw 'widget.onlyPieceToShow != null && widget.onlyPieceToShowCoordinates == null';
+    if (widget.onlyPieceToShowForCurrentSide != null &&
+        widget.onlyPieceToShowForCurrentSideCoordinates == null) {
+      throw 'widget.onlyPieceToShowForCurrentSide != null && widget.onlyPieceToShowForCurrentSideCoordinates == null';
+    }
+
+    // if only piece to show is not null but black pieces to show or white pieces to show is also not null then throw an exception
+    if (widget.onlyPieceToShowForCurrentSide != null &&
+        (widget.blackPiecesToShow != null ||
+            widget.whitePiecesToShow != null)) {
+      throw 'widget.onlyPieceToShowForCurrentSide != null && (widget.blackPiecesToShow != null || widget.whitePiecesToShow != null';
     }
 
     // getting the width for each square
@@ -125,85 +139,87 @@ class _ChessBoardState extends State<ChessBoard> {
     // themeprovider
     final ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
 
-    return AbsorbPointer(
-      absorbing: widget.viewOnly,
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(width: 1, color: Theme.of(context).primaryColor),
-        ),
-        child: Column(
-          children: finalRanks.map((rank) {
-            return Row(
-              mainAxisSize: MainAxisSize.min,
-              children: finalFiles.map((file) {
-                return GestureDetector(
-                  onTap: () async {
-                    // if only viewOnly then just return
-                    if (widget.viewOnly) {
-                      return;
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(width: 1, color: Theme.of(context).primaryColor),
+      ),
+      child: Column(
+        children: finalRanks.map((rank) {
+          return Row(
+            mainAxisSize: MainAxisSize.min,
+            children: finalFiles.map((file) {
+              return GestureDetector(
+                onTap: () async {
+                  // if only viewOnly
+                  if (widget.viewOnly) {
+                    // if view only on tap is there then execute that otherwise just return
+                    if (widget.viewOnlyOnTap != null) {
+                      await widget.viewOnlyOnTap!(Coordinates(file, rank));
                     }
 
-                    await handleCoordinatesSelection(file, rank);
-                  },
-                  child: Container(
-                    height: squareWidth,
-                    width: squareWidth,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        width: getSquareBorderWidth(file, rank),
-                        color: getSquareBorderColor(
-                            file, rank, themeProvider, context),
-                      ),
-                      color: getSquareContainerColor(file, rank, themeProvider),
+                    return;
+                  }
+
+                  await handleCoordinatesSelection(file, rank);
+                },
+                child: Container(
+                  height: squareWidth,
+                  width: squareWidth,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      width: getSquareBorderWidth(file, rank),
+                      color: getSquareBorderColor(
+                          file, rank, themeProvider, context),
                     ),
-                    child: Stack(
-                      children: [
-                        widget.showCoordinates && rank == showFilesAtRank
-                            ? Positioned(
-                                right: 1,
-                                bottom: 0,
-                                child: Text(
-                                  _files[file]!,
-                                  style: TextStyle(
+                    color: getSquareContainerColor(file, rank, themeProvider),
+                  ),
+                  child: Stack(
+                    children: [
+                      widget.showCoordinates && rank == showFilesAtRank
+                          ? Positioned(
+                              right: 1,
+                              bottom: 0,
+                              child: Text(
+                                _files[file]!,
+                                style: TextStyle(
+                                  fontSize: kExtraSmallSize,
+                                  color: themeProvider.isDark()
+                                      ? kDarkColorDarkTheme
+                                      : kDarkColor,
+                                ),
+                              ),
+                            )
+                          : const SizedBox.shrink(),
+                      widget.showCoordinates && file == showRanksAtFile
+                          ? Positioned(
+                              left: 5,
+                              top: 0,
+                              child: Text(
+                                _ranks[rank]!,
+                                style: TextStyle(
                                     fontSize: kExtraSmallSize,
                                     color: themeProvider.isDark()
                                         ? kDarkColorDarkTheme
-                                        : kDarkColor,
-                                  ),
-                                ),
-                              )
-                            : const SizedBox.shrink(),
-                        widget.showCoordinates && file == showRanksAtFile
-                            ? Positioned(
-                                left: 5,
-                                top: 0,
-                                child: Text(
-                                  _ranks[rank]!,
-                                  style: TextStyle(
-                                      fontSize: kExtraSmallSize,
-                                      color: themeProvider.isDark()
-                                          ? kDarkColorDarkTheme
-                                          : kDarkColor),
-                                ),
-                              )
-                            : const SizedBox.shrink(),
-                        widget.showPieces
-                            ? Positioned(
-                                top: 5,
-                                bottom: 5,
-                                right: 5,
-                                left: 5,
-                                child: renderPiece(Coordinates(file, rank)),
-                              )
-                            : const SizedBox.shrink(),
-                      ],
-                    ),
+                                        : kDarkColor),
+                              ),
+                            )
+                          : const SizedBox.shrink(),
+                      widget.showPieces
+                          ? Positioned(
+                              top: 5,
+                              bottom: 5,
+                              right: 5,
+                              left: 5,
+                              child: renderPiece(Coordinates(file, rank)),
+                            )
+                          : const SizedBox.shrink(),
+                    ],
                   ),
-                );
-              }).toList(),
-            );
-          }).toList(),
-        ),
+                ),
+              );
+            }).toList(),
+          );
+        }).toList(),
       ),
     );
   }
@@ -314,20 +330,14 @@ class _ChessBoardState extends State<ChessBoard> {
       Coordinates currentCoordinates,
       Coordinates clickedCoordinates,
       bool isDark) {
-    if (currentCoordinates.getRank() == clickCoordinates!.getRank() &&
-        currentCoordinates.getFile() == clickedCoordinates.getFile()) {
-      if (clickCoordinates!.getRank() ==
-              widget.questionCoordinates!.getRank() &&
-          clickCoordinates!.getFile() ==
-              widget.questionCoordinates!.getFile()) {
+    if (currentCoordinates == clickCoordinates) {
+      if (clickCoordinates == widget.questionCoordinates) {
         return isDark ? kPositiveColorDarkTheme : kPositiveColor;
       }
 
       return isDark ? kNegativeColorDarkTheme : kNegativeColor;
       // this will help to color the correct coordinate if incorrect coordinate was clicked
-    } else if (currentCoordinates.getRank() ==
-            widget.questionCoordinates!.getRank() &&
-        currentCoordinates.getFile() == widget.questionCoordinates!.getFile()) {
+    } else if (currentCoordinates == widget.questionCoordinates) {
       return isDark ? kPositiveColorDarkTheme : kPositiveColor;
     } else {
       return getNativeSquareColor(
@@ -339,20 +349,14 @@ class _ChessBoardState extends State<ChessBoard> {
   Color getViewOnlyColor(Coordinates coords, bool isDark) {
     // if greens have it
     if (widget.greens != null &&
-        widget.greens!.any((element) =>
-            element.getFile() == coords.getFile() &&
-            element.getRank() == coords.getRank())) {
+        widget.greens!.any((element) => element == coords)) {
       return isDark ? kPositiveColorDarkTheme : kPositiveColor;
     } else if (widget.reds != null &&
-        widget.reds!.any((element) =>
-            element.getFile() == coords.getFile() &&
-            element.getRank() == coords.getRank())) {
+        widget.reds!.any((element) => element == coords)) {
       // if any of the reds contain it then return red
       return isDark ? kNegativeColorDarkTheme : kNegativeColor;
     } else if (widget.accents != null &&
-        widget.accents!.any((element) =>
-            element.getFile() == coords.getFile() &&
-            element.getRank() == coords.getRank())) {
+        widget.accents!.any((element) => element == coords)) {
       // if any of the accents contain it then return the secondary color
       return isDark
           ? kSecondaryColorDarkTheme
@@ -366,25 +370,76 @@ class _ChessBoardState extends State<ChessBoard> {
   // this will help to places pieces on their default locations
   Widget renderPiece(Coordinates coordinates) {
     // if only piece to show is present
-    if (widget.onlyPieceToShow != null) {
+    if (widget.onlyPieceToShowForCurrentSide != null) {
       // if these coordinates match
-      if (coordinates.getFile() ==
-              widget.onlyPieceToShowCoordinates!.getFile() &&
-          coordinates.getRank() ==
-              widget.onlyPieceToShowCoordinates!.getRank()) {
+      if (coordinates == widget.onlyPieceToShowForCurrentSideCoordinates) {
         // color string
         final String colorString = widget.forWhite == true ? 'white' : 'black';
 
         return SvgPicture.asset(
-          piecesData![widget.onlyPieceToShow]![colorString]!['imagePath'],
+          piecesData![widget.onlyPieceToShowForCurrentSide]![colorString]![
+              'imagePath'],
         );
       }
 
       return const SizedBox.shrink();
     }
 
-    // going through all the pieces
+    // if white pieces to show or black pieces to show exist
+    if (widget.whitePiecesToShow != null || widget.blackPiecesToShow != null) {
+      // if white pieces to show are there
+      if (widget.whitePiecesToShow != null) {
+        // running a for loop to go through all the keys
+        for (int i = 0; i < widget.whitePiecesToShow!.length; i++) {
+          // getting the current key
+          final PieceType currentPiece =
+              widget.whitePiecesToShow!.keys.toList()[i];
 
+          // getting the coordinates for the current pieces
+          final List<Coordinates> currentPieceCoordinates =
+              widget.whitePiecesToShow![currentPiece]!;
+
+          // if current coordinates matches any of the current piece coordinates then return the image
+          bool isFound =
+              currentPieceCoordinates.any((element) => element == coordinates);
+
+          if (isFound) {
+            return SvgPicture.asset(
+              piecesData![currentPiece]!['white']!['imagePath'],
+            );
+          }
+        }
+      }
+
+      // if black pieces to show are there
+      if (widget.blackPiecesToShow != null) {
+        // running a for loop to go through all the keys
+        for (int i = 0; i < widget.blackPiecesToShow!.length; i++) {
+          // getting the current key
+          final PieceType currentPiece =
+              widget.blackPiecesToShow!.keys.toList()[i];
+
+          // getting the coordinates for the current pieces
+          final List<Coordinates> currentPieceCoordinates =
+              widget.blackPiecesToShow![currentPiece]!;
+
+          // if current coordinates matches any of the current piece coordinates then return the image
+          bool isFound =
+              currentPieceCoordinates.any((element) => element == coordinates);
+
+          if (isFound) {
+            return SvgPicture.asset(
+              piecesData![currentPiece]!['black']!['imagePath'],
+            );
+          }
+        }
+      }
+
+      // returning a sized box if we didn't return any piece image above (should not be the case)
+      return const SizedBox.shrink();
+    }
+
+    // going through all the pieces
     for (int i = 0; i < piecesData!.keys.length; i++) {
       // getting the current key
       final key = piecesData!.keys.toList()[i];
@@ -407,8 +462,7 @@ class _ChessBoardState extends State<ChessBoard> {
 
       // if current key's coordinates for black have the passed location then return the black image
       bool blackFound = currentKeyCoordinatesForBlack.any((current) {
-        if (current.getFile() == coordinates.getFile() &&
-            current.getRank() == coordinates.getRank()) {
+        if (current == coordinates) {
           return true;
         }
         return false;
@@ -423,8 +477,7 @@ class _ChessBoardState extends State<ChessBoard> {
 
       // if current key's coordinates for white have the passed location then return the white image
       bool whiteFound = currentKeyCoordinatesForWhite.any((current) {
-        if (current.getFile() == coordinates.getFile() &&
-            current.getRank() == coordinates.getRank()) {
+        if (current == coordinates) {
           return true;
         }
         return false;
@@ -445,19 +498,13 @@ class _ChessBoardState extends State<ChessBoard> {
   // function to check whether the coordinate is in view only coordinates or not
   bool isInViewOnlyCoordinates(Coordinates coords) {
     if (widget.greens != null &&
-        widget.greens!.any((element) =>
-            element.getFile() == coords.getFile() &&
-            element.getRank() == coords.getRank())) {
+        widget.greens!.any((element) => element == coords)) {
       return true;
     } else if (widget.reds != null &&
-        widget.reds!.any((element) =>
-            element.getFile() == coords.getFile() &&
-            element.getRank() == coords.getRank())) {
+        widget.reds!.any((element) => element == coords)) {
       return true;
     } else if (widget.accents != null &&
-        widget.accents!.any((element) =>
-            element.getFile() == coords.getFile() &&
-            element.getRank() == coords.getRank())) {
+        widget.accents!.any((element) => element == coords)) {
       return true;
     }
 

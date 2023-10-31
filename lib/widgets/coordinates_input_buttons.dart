@@ -225,9 +225,7 @@ class _CoordinatesInputButtonsState extends State<CoordinatesInputButtons> {
     }
 
     // finding the coordinates in the toAvoid
-    return widget.toAvoid!.any((element) =>
-        element.getRank() == coordinates.getRank() &&
-        element.getFile() == coordinates.getFile());
+    return widget.toAvoid!.any((element) => element == coordinates);
   }
 
   // function to get the answer text for file

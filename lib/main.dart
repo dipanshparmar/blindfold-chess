@@ -144,6 +144,8 @@ class MyApp extends StatelessWidget {
               SettingsPage.routeName: (context) => const SettingsPage(),
               PracticeRecreationPage.routeName: (context) =>
                   const PracticeRecreationPage(),
+              PracticeRecreationGameplayPage.routeName: (context) =>
+                  const PracticeRecreationGameplayPage(),
             },
           );
         },

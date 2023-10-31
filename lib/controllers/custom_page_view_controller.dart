@@ -43,7 +43,7 @@ class _CustomPageViewControllerState extends State<CustomPageViewController> {
     PracticeCoordinatesGameplayPage.routeName,
     PracticeSquareColorsGameplayPage.routeName,
     PracticeMovesGameplayPage.routeName,
-    PracticeRecreationPage.routeName,
+    PracticeRecreationGameplayPage.routeName,
   ];
 
   @override

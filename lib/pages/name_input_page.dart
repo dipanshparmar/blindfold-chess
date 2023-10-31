@@ -39,6 +39,7 @@ class _NameInputPageState extends State<NameInputPage> {
     return Scaffold(
       appBar: pushedFromSettings
           ? AppBar(
+              title: const Text('Change Name'),
               leading: IconButton(
                 icon: Icon(
                   Icons.arrow_back_ios,

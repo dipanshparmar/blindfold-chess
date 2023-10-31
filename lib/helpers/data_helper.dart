@@ -75,6 +75,7 @@ class DataHelper {
     PracticeType.coordinates: 'Coordinates',
     PracticeType.squareColors: 'Square colors',
     PracticeType.moves: 'Moves',
+    PracticeType.recreation: 'Recreation',
   };
 
   // pieces and their images data
