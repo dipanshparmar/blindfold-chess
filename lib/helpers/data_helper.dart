@@ -82,36 +82,36 @@ class DataHelper {
   static final Map<PieceType, Map<String, Map<String, dynamic>>> _piecesData = {
     PieceType.king: {
       'white': {
-        'coordinates': [Coordinates(File.e, Rank.one)],
+        'coordinates': [const Coordinates(File.e, Rank.one)],
         'imagePath': 'assets/images/chess_pieces/white/king.svg'
       },
       'black': {
-        'coordinates': [Coordinates(File.e, Rank.eight)],
+        'coordinates': [const Coordinates(File.e, Rank.eight)],
         'imagePath': 'assets/images/chess_pieces/black/king.svg'
       }
     },
     PieceType.queen: {
       'white': {
-        'coordinates': [Coordinates(File.d, Rank.one)],
+        'coordinates': [const Coordinates(File.d, Rank.one)],
         'imagePath': 'assets/images/chess_pieces/white/queen.svg',
       },
       'black': {
-        'coordinates': [Coordinates(File.d, Rank.eight)],
+        'coordinates': [const Coordinates(File.d, Rank.eight)],
         'imagePath': 'assets/images/chess_pieces/black/queen.svg',
       }
     },
     PieceType.rook: {
       'white': {
         'coordinates': [
-          Coordinates(File.a, Rank.one),
-          Coordinates(File.h, Rank.one)
+          const Coordinates(File.a, Rank.one),
+          const Coordinates(File.h, Rank.one)
         ],
         'imagePath': 'assets/images/chess_pieces/white/rook.svg'
       },
       'black': {
         'coordinates': [
-          Coordinates(File.a, Rank.eight),
-          Coordinates(File.h, Rank.eight)
+          const Coordinates(File.a, Rank.eight),
+          const Coordinates(File.h, Rank.eight)
         ],
         'imagePath': 'assets/images/chess_pieces/black/rook.svg'
       }
@@ -119,15 +119,15 @@ class DataHelper {
     PieceType.bishop: {
       'white': {
         'coordinates': [
-          Coordinates(File.c, Rank.one),
-          Coordinates(File.f, Rank.one)
+          const Coordinates(File.c, Rank.one),
+          const Coordinates(File.f, Rank.one)
         ],
         'imagePath': 'assets/images/chess_pieces/white/bishop.svg',
       },
       'black': {
         'coordinates': [
-          Coordinates(File.c, Rank.eight),
-          Coordinates(File.f, Rank.eight)
+          const Coordinates(File.c, Rank.eight),
+          const Coordinates(File.f, Rank.eight)
         ],
         'imagePath': 'assets/images/chess_pieces/black/bishop.svg',
       }
@@ -135,15 +135,15 @@ class DataHelper {
     PieceType.knight: {
       'white': {
         'coordinates': [
-          Coordinates(File.b, Rank.one),
-          Coordinates(File.g, Rank.one)
+          const Coordinates(File.b, Rank.one),
+          const Coordinates(File.g, Rank.one)
         ],
         'imagePath': 'assets/images/chess_pieces/white/knight.svg'
       },
       'black': {
         'coordinates': [
-          Coordinates(File.b, Rank.eight),
-          Coordinates(File.g, Rank.eight)
+          const Coordinates(File.b, Rank.eight),
+          const Coordinates(File.g, Rank.eight)
         ],
         'imagePath': 'assets/images/chess_pieces/black/knight.svg'
       }
