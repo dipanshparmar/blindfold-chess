@@ -103,9 +103,6 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => ThemeProvider(),
         ),
-        ChangeNotifierProvider(
-          create: (context) => PracticeRecreationConfigProvider(),
-        ),
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {
@@ -142,10 +139,6 @@ class MyApp extends StatelessWidget {
               LearnSquareColorsPage.routeName: (context) =>
                   const LearnSquareColorsPage(),
               SettingsPage.routeName: (context) => const SettingsPage(),
-              PracticeRecreationPage.routeName: (context) =>
-                  const PracticeRecreationPage(),
-              PracticeRecreationGameplayPage.routeName: (context) =>
-                  const PracticeRecreationGameplayPage(),
             },
           );
         },
